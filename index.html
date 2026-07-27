@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>作品台帳 — 2026年の個人開発21プロダクト</title>
+<meta name="description" content="臨床の現場で使うために個人で開発した21のプロダクト。院内システム、iOSアプリ、ゲーム、ハードウェアまで。">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="website">
+<meta property="og:title" content="作品台帳 — 2026年の個人開発21プロダクト">
+<meta property="og:description" content="臨床の現場で使うために個人で開発した21のプロダクト。院内システム、iOSアプリ、ゲーム、ハードウェアまで。">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%93%87%3C/text%3E%3C/svg%3E">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; }
+  img, svg { max-width: 100%; }
+  button { font: inherit; color: inherit; }
+</style>
+
+<style>
+  .topline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s4);
+  }
+
+  .theme-toggle {
+    flex-shrink: 0;
+    background: var(--ground);
+    border: 1px solid var(--rule);
+    color: var(--ink-soft);
+    font-family: var(--f-data);
+    font-size: .68rem;
+    letter-spacing: .1em;
+    padding: .4rem .7rem;
+    cursor: pointer;
+    transition: border-color .15s, color .15s;
+  }
+  .theme-toggle:hover { border-color: var(--cobalt); color: var(--cobalt); }
+  .theme-toggle:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+</style>
+<style>
+  /* ─────────────────────────────────────────────
+     作品台帳 / Works Ledger
+     色: 細隙灯顕微鏡のコバルトブルーフィルタ由来
+     字: 明朝(見出し) × ゴシック(本文) × 等幅(数値)
+     組: カードを使わない、罫線だけの台帳組み
+     ───────────────────────────────────────────── */
+
+  :root {
+    --ground:      #F4F6F8;
+    --ground-sub:  #E9EDF1;
+    --ink:         #0F1620;
+    --ink-soft:    #3C4654;
+    --slate:       #63707F;
+    --rule:        #C9D2DB;
+    --rule-soft:   #DDE4EA;
+    --cobalt:      #1A46C8;
+    --cobalt-soft: #E4EAFA;
+    --fluor:       #7A9410;
+    --amber:       #A56A00;
+
+    --f-display: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Songti SC", serif;
+    --f-body:    "Hiragino Sans", "Yu Gothic", "YuGothic", system-ui, -apple-system, sans-serif;
+    --f-data:    ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
+
+    --s1: .25rem;  --s2: .5rem;   --s3: .75rem;  --s4: 1rem;
+    --s5: 1.5rem;  --s6: 2.25rem; --s7: 3.5rem;  --s8: 5.5rem;
+
+    --measure: 34rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground:      #0C1219;
+      --ground-sub:  #131C26;
+      --ink:         #E7EDF3;
+      --ink-soft:    #B4C0CD;
+      --slate:       #8593A2;
+      --rule:        #27333F;
+      --rule-soft:   #1B242E;
+      --cobalt:      #7D9CFF;
+      --cobalt-soft: #16233F;
+      --fluor:       #B9D93F;
+      --amber:       #D9A03C;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:      #0C1219;
+    --ground-sub:  #131C26;
+    --ink:         #E7EDF3;
+    --ink-soft:    #B4C0CD;
+    --slate:       #8593A2;
+    --rule:        #27333F;
+    --rule-soft:   #1B242E;
+    --cobalt:      #7D9CFF;
+    --cobalt-soft: #16233F;
+    --fluor:       #B9D93F;
+    --amber:       #D9A03C;
+  }
+
+  :root[data-theme="light"] {
+    --ground:      #F4F6F8;
+    --ground-sub:  #E9EDF1;
+    --ink:         #0F1620;
+    --ink-soft:    #3C4654;
+    --slate:       #63707F;
+    --rule:        #C9D2DB;
+    --rule-soft:   #DDE4EA;
+    --cobalt:      #1A46C8;
+    --cobalt-soft: #E4EAFA;
+    --fluor:       #7A9410;
+    --amber:       #A56A00;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--f-body);
+    font-size: 16px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "palt" 1;
+  }
+
+  .wrap {
+    max-width: 62rem;
+    margin: 0 auto;
+    padding: 0 var(--s5) var(--s8);
+  }
+
+  /* ── 視力表のように段階的に小さくなる導入部 ────────── */
+
+  .masthead {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s5);
+    padding: var(--s8) 0 var(--s7);
+    border-bottom: 2px solid var(--ink);
+  }
+
+  .eyebrow {
+    font-family: var(--f-data);
+    font-size: .7rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--cobalt);
+    margin: 0;
+  }
+
+  .chart {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s3);
+  }
+
+  .chart-1 {
+    font-family: var(--f-display);
+    font-size: clamp(2.75rem, 9vw, 5.25rem);
+    font-weight: 600;
+    line-height: 1.02;
+    letter-spacing: .04em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .chart-2 {
+    font-family: var(--f-display);
+    font-size: clamp(1.15rem, 3vw, 1.6rem);
+    font-weight: 400;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin: 0;
+    max-width: var(--measure);
+    text-wrap: balance;
+  }
+
+  .chart-3 {
+    font-size: .9rem;
+    line-height: 1.9;
+    color: var(--slate);
+    margin: 0;
+    max-width: var(--measure);
+  }
+
+  /* ── 集計 ──────────────────────────────────── */
+
+  .tally {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s6);
+    padding-top: var(--s2);
+  }
+
+  .tally-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .tally-n {
+    font-family: var(--f-data);
+    font-size: 1.75rem;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    color: var(--ink);
+  }
+
+  .tally-l {
+    font-family: var(--f-data);
+    font-size: .68rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--slate);
+  }
+
+  /* ── 絞り込み ───────────────────────────────── */
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s2);
+    align-items: center;
+    padding: var(--s5) 0;
+    border-bottom: 1px solid var(--rule);
+    position: sticky;
+    top: 0;
+    background: var(--ground);
+    z-index: 5;
+  }
+
+  .filters-label {
+    font-family: var(--f-data);
+    font-size: .68rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--slate);
+    margin-right: var(--s2);
+  }
+
+  .chip {
+    font-family: var(--f-body);
+    font-size: .82rem;
+    color: var(--ink-soft);
+    background: transparent;
+    border: 1px solid var(--rule);
+    padding: var(--s1) var(--s3);
+    cursor: pointer;
+    transition: border-color .15s, color .15s, background .15s;
+  }
+
+  .chip:hover { border-color: var(--cobalt); color: var(--cobalt); }
+
+  .chip:focus-visible {
+    outline: 2px solid var(--cobalt);
+    outline-offset: 2px;
+  }
+
+  .chip[aria-pressed="true"] {
+    background: var(--cobalt);
+    border-color: var(--cobalt);
+    color: var(--ground);
+  }
+
+  /* ── 台帳本体 ───────────────────────────────── */
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s3);
+    padding: var(--s7) 0 var(--s4);
+  }
+
+  .section-head h2 {
+    font-family: var(--f-display);
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    margin: 0;
+  }
+
+  .section-head .count {
+    font-family: var(--f-data);
+    font-size: .72rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--slate);
+  }
+
+  .section-head .fill {
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  .entry {
+    display: grid;
+    grid-template-columns: 6.5rem 1fr;
+    gap: 0 var(--s5);
+    padding: var(--s5) 0;
+    border-bottom: 1px solid var(--rule-soft);
+    transition: background .15s;
+  }
+
+  .entry:hover { background: var(--ground-sub); }
+
+  .entry-meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s2);
+    padding-top: 4px;
+  }
+
+  .date {
+    font-family: var(--f-data);
+    font-size: .72rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--slate);
+    letter-spacing: .02em;
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s2);
+    font-family: var(--f-data);
+    font-size: .68rem;
+    letter-spacing: .04em;
+    color: var(--ink-soft);
+  }
+
+  .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    background: var(--slate);
+  }
+
+  .dot.live  { background: var(--fluor); box-shadow: 0 0 0 3px color-mix(in srgb, var(--fluor) 22%, transparent); }
+  .dot.dev   { background: var(--cobalt); }
+  .dot.proto { background: var(--amber); }
+  .dot.idea  { background: transparent; border: 1px solid var(--slate); }
+
+  .entry-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s3);
+    min-width: 0;
+  }
+
+  .entry-title {
+    font-family: var(--f-display);
+    font-size: 1.22rem;
+    font-weight: 600;
+    line-height: 1.4;
+    margin: 0;
+    letter-spacing: .02em;
+  }
+
+  .entry-sum {
+    font-size: .92rem;
+    line-height: 1.85;
+    color: var(--ink-soft);
+    margin: 0;
+    max-width: 42rem;
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s2);
+  }
+
+  .tag {
+    font-family: var(--f-data);
+    font-size: .68rem;
+    letter-spacing: .02em;
+    color: var(--slate);
+    border: 1px solid var(--rule);
+    padding: 1px var(--s2);
+  }
+
+  .redacted {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s2);
+    font-family: var(--f-data);
+    font-size: .68rem;
+    color: var(--cobalt);
+    background: var(--cobalt-soft);
+    padding: 2px var(--s2);
+    align-self: flex-start;
+  }
+
+  /* ── 注記 ──────────────────────────────────── */
+
+  .note {
+    margin-top: var(--s8);
+    padding: var(--s5) 0 0;
+    border-top: 2px solid var(--ink);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s3);
+  }
+
+  .note h2 {
+    font-family: var(--f-display);
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: .06em;
+    margin: 0;
+  }
+
+  .note p {
+    font-size: .86rem;
+    line-height: 1.9;
+    color: var(--slate);
+    margin: 0;
+    max-width: 44rem;
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s5);
+    padding-top: var(--s2);
+  }
+
+  .legend .status { font-size: .72rem; }
+
+  @media (max-width: 40rem) {
+    .entry { grid-template-columns: 1fr; gap: var(--s3); }
+    .entry-meta { flex-direction: row; align-items: center; gap: var(--s4); padding-top: 0; }
+    .filters { position: static; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="topline">
+      <p class="eyebrow">Works Ledger — 2026</p>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="配色を切り替える">◐ THEME</button>
+    </div>
+    <div class="chart">
+      <h1 class="chart-1">作品台帳</h1>
+      <p class="chart-2">臨床の現場で困っていることを、その場でつくって直す。2026年に個人で開発した21のプロダクト。</p>
+      <p class="chart-3">院内システムから、iOSゲーム、呼び鈴デバイスまで。すべて自分が使う場所のために書いたもので、いくつかは今も現場で動いています。</p>
+    </div>
+    <div class="tally">
+      <div class="tally-item"><span class="tally-n">21</span><span class="tally-l">Projects</span></div>
+      <div class="tally-item"><span class="tally-n">7</span><span class="tally-l">運用中</span></div>
+      <div class="tally-item"><span class="tally-n">9</span><span class="tally-l">iOS / Native</span></div>
+      <div class="tally-item"><span class="tally-n">6</span><span class="tally-l">医療・臨床</span></div>
+    </div>
+  </header>
+
+  <nav class="filters" aria-label="分野で絞り込む">
+    <span class="filters-label">Filter</span>
+    <button class="chip" aria-pressed="true"  data-cat="all">すべて</button>
+    <button class="chip" aria-pressed="false" data-cat="med">医療・臨床</button>
+    <button class="chip" aria-pressed="false" data-cat="game">ゲーム</button>
+    <button class="chip" aria-pressed="false" data-cat="tool">アプリ・ツール</button>
+    <button class="chip" aria-pressed="false" data-cat="hw">ハードウェア</button>
+    <button class="chip" aria-pressed="false" data-cat="web">Web・文書</button>
+  </nav>
+
+  <main>
+
+    <!-- ══ 医療・臨床 ══════════════════════════ -->
+    <section data-sec="med">
+      <div class="section-head">
+        <h2>医療・臨床</h2><span class="count">6</span><span class="fill"></span>
+      </div>
+
+      <article class="entry" data-cat="med">
+        <div class="entry-meta">
+          <span class="date">2026.07.25</span>
+          <span class="status"><span class="dot live"></span>運用中</span>
+        </div>
+        <div class="entry-body">
+          <h3 class="entry-title">電子手術台帳</h3>
+          <p class="entry-sum">手術予定の登録・枠調整・申込書出力までを一手に引き受ける院内Webシステム。週間タイムライン上で枠を動かし、Excel取込とバックアップにも対応する。本体は約18,000行、リリースは48版を数え、実際の病院内サーバーで稼働中。操作方法をAIが日本語で答えるヘルプボットも付属する。</p>
+          <div class="tags"><span class="tag">Python</span><span class="tag">Flask</span><span class="tag">SQLite</span><span class="tag">Next.js</span><span class="tag">Gemini</span></div>
+          <span class="redacted">導入先の医療機関名は非公開</span>
+        </div>
+      </article>
+
+      <article class="entry" data-cat="med">
+        <div class="entry-meta">
+          <span class="date">2026.07.09</span>
+          <span class="status"><span class="dot dev"></span>開発中</span>
+        </div>
+        <div class="entry-body">
+          <h3 class="entry-title">KartePaste</h3>
+          <p class="entry-sum">診察中の会話をiPhoneで録音し、文字起こしからSOAP形式への整形までを端末内で完結させ、PC側のカルテ画面へ貼り付ける仕組み。iOSアプリ・中継サーバ・BLE小型デバイス・Windows常駐ツールの4つで構成される。音声を外部に送らない設計。</p>
+          <div class="tags"><span class="tag">SwiftUI</span><span class="tag">MLX / Gemma</span><span class="tag">Cloudflare Workers</span><span class="tag">BLE</span><span class="tag">ESP32-S3</span></div>
+        </div>
+      </article>
+
+      <article class="entry" data-cat="med">
+        <div class="entry-meta">
+          <span class="date">2026.07.08</span>
+          <span class="status"><span class="dot dev"></span>開発中</span>
+        </div>
+        <div class="entry-body">
+          <h3 class="entry-title">自分のオペ台帳</h3>
+          <p class="entry-sum">医師が自分の1日あたりの手術件数をカレンダーに記録するiOSアプリ。共有ダッシュボードで全員の累計・当月件数が一覧できるが、書き込めるのは自分の分だけ。扱うのは件数のみで、患者情報は持たない。</p>
+          <div class="tags"><span class="tag">SwiftUI</span><span class="tag">Firebase Auth</span><span class="tag">Firestore</span><span class="tag">XcodeGen</span></div>
+        </div>
+      </article>
+
+      <article class="entry" data-cat="med">
+        <div class="entry-meta">
+          <span class="date">2026.07.02</span>
+          <span class="status"><span class="dot dev"></span>開発中</span>
+        </div>
+        <div class="entry-body">
+          <h3 class="entry-title">Web電子カルテ（web-emr）</h3>
+          <p class="entry-sum">医療機関と非医療業種の両方に対応するクラウド型電子カルテSaaSの土台。カルテの改ざんを防ぐため、記録は上書きせず版を追記し、ハッシュチェーンで連結する設計を採った。国内の医療情報ガイドライン準拠を前提に、テナント分離の方針まで確定させた段階。</p>
+          <div class="tags"><span class="tag">Next.js 15</span><span class="tag">Hono</span><span class="tag">Drizzle ORM</span><span class="tag">Supabase</span><span class="tag">Zod</span></div>
+        </div>
+      </article>
+
+      <article class="entry" data-cat="med">
+        <div class="entry-meta">
+          <span class="date">2026.06.05</span>
+          <span class="status"><span class="dot live"></span>公開中</span>
+        </div>
+        <div class="entry-body">
+          <h3 class="entry-title">Wakoto — AI音声カルテ 紹介ページ</h3>
+          <p class="entry-sum">話した言葉をそのままカルテ文面にするサービスの紹介ページ。利用規約とプライバシーポリシーまで含めて公開済み。</p>
+          <div class="tags"><span class="tag">HTML / CSS</span><span class="tag">Vercel</span></div>
+        </div>
+      </article>
+
+      <article class="entry" data-cat="med">
+        <div class="entry-meta">
+          <span class="date">2026.06.06</span>
+          <span class="status"><span class="dot proto"></span>制作</span>
+        </div>
+        <div class="entry-body">
+          <h3 class="entry-title">歯科矯正 ランディングページ</h3>
+          <p class="entry-sum">小児・成人の歯列矯正をテーマにした1ページ完結の紹介ページ。WordPressにそのまま貼り付けられる形式も用意した。</p>
+          <div class="tags"><span class="tag">HTML / CSS</span><span class="tag">WordPress</span></div>
+          <span class="redacted">依頼元の医院名は非公開</span>
+        </div>
+      </article>
+    </section>
+
+    <!-- ══ ゲーム ══════════════════════════════ -->
+    <section data-sec="game">
+      <div class="section-head">
+        <h2>ゲーム</h2><span class="count">4</span><span class="fill"></span>
+      </div>
+
+      <article class="entry" data-cat="game">
+        <div class="entry-meta">
+          <span class="date">2026.07.17</span>
+          <span class="status"><span class="dot dev"></span>提出準備</span>
+        </div>
+        <div class="entry-body">
+          <h3 class="entry-title">百鬼夜空 — 和風弾幕シューティング</h3>
+          <p class="entry-sum">浮世絵風のビジュアルで妖怪を撃ち祓う縦スクロールシューティング。敵を倒すほど墨一色の夜空に色が戻る「浄化彩色」が核の仕掛け。図鑑・恒久強化・機体4種を備え、v1.5まで到達。</p>
+          <div class="tags"><span class="tag">SpriteKit</span><span class="tag">SwiftUI</span><span class="tag">StoreKit 2</span><span class="tag">XcodeGen</span></div>
+        </div>
+      </article>
+
+      <article class="entry" data-cat="game">
+        <div class="entry-meta">
+          <span class="date">2026.06.06</span>
+          <span class="status"><span class="dot dev"></span>提出準備</span>
+        </div>
+        <div class="entry-body">
+          <h3 class="entry-title">封印デッキ — ローグライク・デッキ構築</h3>
+          <p class="entry-sum">敵の妖怪を「倒す」のではなく「封印してカードにする」独自システムを核にした1人用デッキ構築ゲーム。分岐マップ・ショップ・レリック・難易度解放まで実装済み。アートと効果音は生成ツールを自作して用意した。</p>
+          <div class="tags"><span class="tag">SwiftUI</span><span class="tag">StoreKit 2</span><span class="tag">Supabase</span><span class="tag">Python</span></div>
+        </div>
+      </article>
+
+      <article class="entry" data-cat="game">
+        <div class="entry-meta">
+          <span class="date">2026.07.05</span>
+          <span class="status"><span class="dot dev"></span>開発中</span>
+        </div>
+        <div class="entry-body">
+          <h3 class="entry-title">チャリ走</h3>
+          <p class="entry-sum">Canvas製の横スクロールアクションを、ネイティブの殻でくるんだiPhoneアプリ。ステージ制エンジンと組み込み10ステージに加え、自分でコースを組めるステージエディタを備える。</p>
+          <div class="tags"><span class="tag">SwiftUI</span><span class="tag">WKWebView</span><span class="tag">HTML5 Canvas</span></div>
+        </div>
+      </article>
+
+      <article class="entry" data-cat="game">
+        <div class="entry-meta">
+          <span class="date">2026.07.06</span>
+          <span class="status"><span class="dot proto"></span>試作</span>
+        </div>
+        <div class="entry-body">
+          <h3 class="entry-title">アラームダンジョン 〜寝起きの勇者〜</h3>
+          <p class="entry-sum">時計の針が光るゾーンに入った瞬間にタップして戦う、縦画面のタイミングアクション。階層ごとのボス戦、コンボとフィーバー、加護カードの選択を1枚のHTMLに収めた。</p>
+          <div class="tags"><span class="tag">HTML5 Canvas</span><span class="tag">JavaScript</span></div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ══ アプリ・ツール ═══════════════════════ -->
+    <section data-sec="tool">
+      <div class="section-head">
+        <h2>アプリ・ツール</h2><span class="count">5</span><span class="fill"></span>
+      </div>
+
+      <article class="entry" data-cat="tool">
+        <div class="entry-meta">
+          <span class="date">2026.07.27</span>
+          <span class="status"><span class="dot live"></span>運用中</span>
+        </div>
+        <div class="entry-body">
+          <h3 class="entry-title">封筒宛名ラベル印刷</h3>
+          <p class="entry-sum">A4・21面のラベルシールに、位置ずれなく宛名を刷るためのアプリ。HTMLファイル1つで動くので、インターネットに繋がっていない事務用PCでもそのまま使える。日々の発送業務で稼働中。</p>
+          <div class="tags"><span class="tag">HTML</span><span class="tag">JavaScript</span><span class="tag">localStorage</span></div>
+        </div>
+      </article>
+
+      <article class="entry" data-cat="tool">
+        <div class="entry-meta">
+          <span class="date">2026.07.03</span>
+          <span class="status"><span class="dot live"></span>運用中</span>
+        </div>
+        <div class="entry-body">
+          <h3 class="entry-title">Clipboard Bridge</h3>
+          <p class="entry-sum">同じWi-Fi内のiPhoneとPCで、コピーした内容を双方向にやり取りするツール。PCでコピーするとiPhoneの画面にすぐ出て、iPhoneからは背面タップで送れる。クラウドを一切経由しない。</p>
+          <div class="tags"><span class="tag">Python</span><span class="tag">SSE</span><span class="tag">iOSショートカット</span></div>
+        </div>
+      </article>
+
+      <article class="entry" data-cat="tool">
+        <div class="entry-meta">
+          <span class="date">2026.06.29</span>
+          <span class="status"><span class="dot live"></span>運用中</span>
+        </div>
+        <div class="entry-body">
+          <h3 class="entry-title">daily-review — 毎朝の自動レビュー</h3>
+          <p class="entry-sum">毎朝、手がけている複数のプロジェクトをAIに自動でレビューさせ、改善提案のレポートを生成する仕組み。Macの定時実行で回り続け、これまでに193件のレポートが溜まった。記事の自動投稿系もこの一式に含まれる。</p>
+          <div class="tags"><span class="tag">zsh</span><span class="tag">Python</span><span class="tag">Claude Code CLI</span><span class="tag">launchd</span></div>
+        </div>
+      </article>
+
+      <article class="entry" data-cat="tool">
+        <div class="entry-meta">
+          <span class="date">2026.06.12</span>
+          <span class="status"><span class="dot dev"></span>審査対応中</span>
+        </div>
+        <div class="entry-body">
+          <h3 class="entry-title">AI占い — 完全オフライン</h3>
+          <p class="entry-sum">5人のキャラクター占い師と会話しながらタロットや相性を見るiPhoneアプリ。AIが端末内で動くので、生年月日も相談内容も外に出ない。ウィジェットと月額課金に対応。App Store提出済みで、初回審査の指摘に対応中。</p>
+          <div class="tags"><span class="tag">SwiftUI</span><span class="tag">MLX</span><span class="tag">Whisper</span><span class="tag">WidgetKit</span></div>
+        </div>
+      </article>
+
+      <article class="entry" data-cat="tool">
+        <div class="entry-meta">
+          <span class="date">2026.06.11</span>
+          <span class="status"><span class="dot dev"></span>提出準備</span>
+        </div>
+        <div class="entry-body">
+          <h3 class="entry-title">SimpleTranscriber</h3>
+          <p class="entry-sum">録音ボタンを押すだけで音声をテキストにするiPhoneアプリ。文字起こしは端末内で行い、音声を外部サーバーへ送らない。履歴保存・共有・画面ロック中の録音継続に対応。</p>
+          <div class="tags"><span class="tag">SwiftUI</span><span class="tag">Whisper large-v3-turbo</span><span class="tag">端末内LLM</span></div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ══ ハードウェア ═════════════════════════ -->
+    <section data-sec="hw">
+      <div class="section-head">
+        <h2>ハードウェア</h2><span class="count">1</span><span class="fill"></span>
+      </div>
+
+      <article class="entry" data-cat="hw">
+        <div class="entry-meta">
+          <span class="date">2026.07.13</span>
+          <span class="status"><span class="dot live"></span>運用中</span>
+        </div>
+        <div class="entry-body">
+          <h3 class="entry-title">ピンポンボタン</h3>
+          <p class="entry-sum">手のひらサイズのマイコンの画面を押すと、Wi-Fi経由でiPhoneにプッシュ通知が飛ぶ呼び鈴デバイス。ナースコールや来客の合図を想定して作り、実機での書き込みから動作確認までの手順を残してある。</p>
+          <div class="tags"><span class="tag">Arduino</span><span class="tag">M5Stack AtomS3</span><span class="tag">M5Unified</span><span class="tag">ntfy</span></div>
+        </div>
+      </article>
+    </section>
+
+    <!-- ══ Web・文書 ═══════════════════════════ -->
+    <section data-sec="web">
+      <div class="section-head">
+        <h2>Web・文書</h2><span class="count">5</span><span class="fill"></span>
+      </div>
+
+      <article class="entry" data-cat="web">
+        <div class="entry-meta">
+          <span class="date">2026.07.22</span>
+          <span class="status"><span class="dot dev"></span>開発中</span>
+        </div>
+        <div class="entry-body">
+          <h3 class="entry-title">LINE AI Bot Factory</h3>
+          <p class="entry-sum">LINEで質問に答えていくだけで、店舗向けの自動応答Bot（問い合わせ対応・予約受付）が作れるサービス。営業用の親Botが、顧客のLINE公式アカウントに繋がる子Botを生み出す多店舗対応の構成。</p>
+          <div class="tags"><span class="tag">Cloudflare Workers</span><span class="tag">D1</span><span class="tag">Hono</span><span class="tag">Claude API</span><span class="tag">Stripe</span></div>
+        </div>
+      </article>
+
+      <article class="entry" data-cat="web">
+        <div class="entry-meta">
+          <span class="date">2026.07.15</span>
+          <span class="status"><span class="dot live"></span>運用中</span>
+        </div>
+        <div class="entry-body">
+          <h3 class="entry-title">AIツールの使い方リポジトリ</h3>
+          <p class="entry-sum">AIコーディングツールとGitの使い方を、非エンジニアの立場から整理した練習用リポジトリ。「個人情報は置かない」「危険なコマンドは設定で物理的に止める」といった運用ルールを、共通指示書の規格に沿ってまとめてある。</p>
+          <div class="tags"><span class="tag">Markdown</span><span class="tag">Git / GitHub</span><span class="tag">AGENTS.md</span></div>
+        </div>
+      </article>
+
+      <article class="entry" data-cat="web">
+        <div class="entry-meta">
+          <span class="date">2026.06–07</span>
+          <span class="status"><span class="dot live"></span>公開中</span>
+        </div>
+        <div class="entry-body">
+          <h3 class="entry-title">アプリ法務ページ 一式（4サイト）</h3>
+          <p class="entry-sum">リリースするアプリごとに必要な、利用規約・プライバシーポリシー・特定商取引法表記・サポート窓口の静的サイト。KartePaste／百鬼夜空／封印デッキ／Kotodama Studio の4本ぶんを公開している。</p>
+          <div class="tags"><span class="tag">HTML / CSS</span><span class="tag">GitHub Pages</span></div>
+        </div>
+      </article>
+    </section>
+
+  </main>
+
+  <footer class="note">
+    <h2>掲載にあたって</h2>
+    <p>医療・臨床に関わるプロジェクトは、導入先の医療機関名、患者データ、契約に関する情報を一切掲載していません。技術構成と、何を解決するものかだけを記載しています。同様の理由で、契約書類のみのフォルダと、着手前の構想フォルダは一覧から外しました。</p>
+    <div class="legend">
+      <span class="status"><span class="dot live"></span>運用中 — 実際に使われている</span>
+      <span class="status"><span class="dot dev"></span>開発中 — 動くが未完</span>
+      <span class="status"><span class="dot proto"></span>試作 — 単発の実験</span>
+    </div>
+</footer>
+
+</div>
+
+<script>
+  (function () {
+    var chips = Array.prototype.slice.call(document.querySelectorAll('.chip'));
+    var entries = Array.prototype.slice.call(document.querySelectorAll('.entry'));
+    var sections = Array.prototype.slice.call(document.querySelectorAll('section[data-sec]'));
+
+    function apply(cat) {
+      entries.forEach(function (el) {
+        el.style.display = (cat === 'all' || el.dataset.cat === cat) ? '' : 'none';
+      });
+      sections.forEach(function (sec) {
+        sec.style.display = (cat === 'all' || sec.dataset.sec === cat) ? '' : 'none';
+      });
+    }
+
+    chips.forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        chips.forEach(function (c) { c.setAttribute('aria-pressed', String(c === chip)); });
+        apply(chip.dataset.cat);
+      });
+    });
+  })();
+</script>
+<script>
+  (function () {
+    var root = document.documentElement;
+    var btn  = document.getElementById('themeToggle');
+    var saved = null;
+    try { saved = localStorage.getItem('ledger-theme'); } catch (e) {}
+    if (saved) root.setAttribute('data-theme', saved);
+    btn.addEventListener('click', function () {
+      var cur = root.getAttribute('data-theme');
+      if (!cur) {
+        cur = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('ledger-theme', next); } catch (e) {}
+    });
+  })();
+</script>
+</body>
+</html>
