@@ -2,7 +2,7 @@
 
 2026年に個人で開発したプロダクトの一覧ページ。
 
-- 公開URL: （GitHub Pages 有効化後にここへ記載）
+- 公開URL: https://stvisualrevolution-sys.github.io/portfolio/
 - 単一の `index.html` のみ。ビルド不要、外部依存なし。
 
 ## 掲載方針
