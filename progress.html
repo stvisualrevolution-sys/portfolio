@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>進捗ダッシュボード — 医療 × AI 実装事例</title>
+<meta name="description" content="全プロジェクトの進捗をタイムラインで一覧。各項目を開くと、どこまで進んでいるか・次に何をやるかがわかる。">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://stvisualrevolution-sys.github.io/portfolio/progress.html">
+<meta property="og:site_name" content="医療 × AI 実装事例">
+<meta property="og:title" content="進捗ダッシュボード — 医療 × AI 実装事例">
+<meta property="og:description" content="全プロジェクトの進捗をタイムラインで一覧。各項目を開くと、どこまで進んでいるか・次に何をやるかがわかる。">
+<meta property="og:image" content="https://stvisualrevolution-sys.github.io/portfolio/ogp.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='13'%20fill='%230B1220'/%3E%3Cpath%20d='M7%2035h9.5l4.5-14%206.5%2027%205.5-18%203.5%205h15'%20fill='none'%20stroke='%234C7BFF'%20stroke-width='5'%20stroke-linecap='round'%20stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+  /* ─────────────────────────────────────────────
+     進捗ダッシュボード / Progress
+     index.html と同じデザイントークンを使用
+     ───────────────────────────────────────────── */
+
+  :root {
+    --ground:      #F4F6F8;
+    --ground-sub:  #E9EDF1;
+    --ink:         #0F1620;
+    --ink-soft:    #3C4654;
+    --slate:       #63707F;
+    --rule:        #C9D2DB;
+    --rule-soft:   #DDE4EA;
+    --cobalt:      #1A46C8;
+    --cobalt-soft: #E4EAFA;
+    --fluor:       #7A9410;
+    --amber:       #A56A00;
+
+    --f-display: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Songti SC", serif;
+    --f-body:    "Hiragino Sans", "Yu Gothic", "YuGothic", system-ui, -apple-system, sans-serif;
+    --f-data:    ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
+
+    --s1: .25rem;  --s2: .5rem;   --s3: .75rem;  --s4: 1rem;
+    --s5: 1.5rem;  --s6: 2.25rem; --s7: 3.5rem;  --s8: 5.5rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground:      #0C1219;
+      --ground-sub:  #131C26;
+      --ink:         #E7EDF3;
+      --ink-soft:    #B4C0CD;
+      --slate:       #8593A2;
+      --rule:        #27333F;
+      --rule-soft:   #1B242E;
+      --cobalt:      #7D9CFF;
+      --cobalt-soft: #16233F;
+      --fluor:       #B9D93F;
+      --amber:       #D9A03C;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:      #0C1219;
+    --ground-sub:  #131C26;
+    --ink:         #E7EDF3;
+    --ink-soft:    #B4C0CD;
+    --slate:       #8593A2;
+    --rule:        #27333F;
+    --rule-soft:   #1B242E;
+    --cobalt:      #7D9CFF;
+    --cobalt-soft: #16233F;
+    --fluor:       #B9D93F;
+    --amber:       #D9A03C;
+  }
+
+  :root[data-theme="light"] {
+    --ground:      #F4F6F8;
+    --ground-sub:  #E9EDF1;
+    --ink:         #0F1620;
+    --ink-soft:    #3C4654;
+    --slate:       #63707F;
+    --rule:        #C9D2DB;
+    --rule-soft:   #DDE4EA;
+    --cobalt:      #1A46C8;
+    --cobalt-soft: #E4EAFA;
+    --fluor:       #7A9410;
+    --amber:       #A56A00;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--f-body);
+    font-size: 16px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 68rem;
+    margin: 0 auto;
+    padding: var(--s6) var(--s5) var(--s8);
+  }
+
+  /* ── マストヘッド ─────────────────────────── */
+
+  .topline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s4);
+  }
+
+  .eyebrow {
+    font-family: var(--f-data);
+    font-size: .72rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--cobalt);
+    margin: 0;
+  }
+
+  .top-actions { display: flex; gap: var(--s3); flex-shrink: 0; }
+
+  .theme-toggle, .back-link {
+    background: var(--ground);
+    border: 1px solid var(--rule);
+    color: var(--ink-soft);
+    font-family: var(--f-data);
+    font-size: .68rem;
+    letter-spacing: .1em;
+    padding: .4rem .7rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: border-color .15s, color .15s;
+  }
+  .theme-toggle:hover, .back-link:hover { border-color: var(--cobalt); color: var(--cobalt); }
+  .theme-toggle:focus-visible, .back-link:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+
+  h1 {
+    font-family: var(--f-display);
+    font-weight: 600;
+    font-size: clamp(1.9rem, 5vw, 2.9rem);
+    letter-spacing: .04em;
+    line-height: 1.15;
+    margin: var(--s4) 0 var(--s3);
+    text-wrap: balance;
+  }
+
+  .lede {
+    max-width: 44rem;
+    margin: 0 0 var(--s5);
+    color: var(--ink-soft);
+    font-size: .95rem;
+  }
+
+  /* ── 凡例 ─────────────────────────────────── */
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s4) var(--s5);
+    padding: var(--s3) 0;
+    border-top: 2px solid var(--ink);
+    border-bottom: 1px solid var(--rule);
+    font-size: .74rem;
+    color: var(--slate);
+  }
+  .legend-item { display: inline-flex; align-items: center; gap: var(--s2); }
+  .swatch { width: 1.4em; height: .55em; flex-shrink: 0; }
+  .swatch.live { background: var(--fluor); }
+  .swatch.dev  { background: var(--cobalt); }
+  .swatch.fin  { background: var(--slate); }
+  .swatch.idle { background: var(--rule); }
+  .swatch.idea { background: transparent; border: 1px dashed var(--slate); }
+
+  /* ── フィルタ ─────────────────────────────── */
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s2);
+    padding: var(--s4) 0;
+    position: sticky;
+    top: 0;
+    background: var(--ground);
+    z-index: 5;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  .filters-label {
+    font-family: var(--f-data);
+    font-size: .68rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--slate);
+    margin-right: var(--s2);
+  }
+  .chip {
+    background: none;
+    border: 1px solid var(--rule);
+    color: var(--ink-soft);
+    font-size: .78rem;
+    padding: .25rem .75rem;
+    cursor: pointer;
+    transition: border-color .15s, color .15s, background .15s;
+  }
+  .chip:hover { border-color: var(--cobalt); color: var(--cobalt); }
+  .chip:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+  .chip[aria-pressed="true"] {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--ground);
+  }
+
+  /* ── ガント本体 ───────────────────────────── */
+
+  .gantt { margin-top: var(--s5); }
+
+  /* 月軸 */
+  .axis {
+    display: grid;
+    grid-template-columns: minmax(11rem, 16rem) 1fr;
+    position: sticky;
+    top: 3.3rem;
+    background: var(--ground);
+    z-index: 4;
+    border-bottom: 2px solid var(--ink);
+  }
+  .axis-label {
+    font-family: var(--f-data);
+    font-size: .68rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--slate);
+    padding: var(--s2) 0;
+  }
+  .axis-months { display: flex; }
+  .axis-months span {
+    flex: 1;
+    font-family: var(--f-data);
+    font-size: .68rem;
+    color: var(--slate);
+    padding: var(--s2) 0 var(--s2) var(--s2);
+    border-left: 1px solid var(--rule-soft);
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .row { border-bottom: 1px solid var(--rule-soft); }
+  .row[hidden] { display: none; }
+
+  .row-head {
+    display: grid;
+    grid-template-columns: minmax(11rem, 16rem) 1fr;
+    width: 100%;
+    background: none;
+    border: 0;
+    padding: 0;
+    text-align: left;
+    color: inherit;
+    cursor: pointer;
+    font: inherit;
+  }
+  .row-head:hover .p-name { color: var(--cobalt); }
+  .row-head:focus-visible { outline: 2px solid var(--cobalt); outline-offset: -2px; }
+
+  .p-cell {
+    padding: var(--s3) var(--s3) var(--s3) 0;
+    display: flex;
+    align-items: baseline;
+    gap: var(--s2);
+    min-width: 0;
+  }
+  .p-caret {
+    font-family: var(--f-data);
+    font-size: .7rem;
+    color: var(--slate);
+    flex-shrink: 0;
+    transition: transform .15s;
+  }
+  .row.open .p-caret { transform: rotate(90deg); }
+  .p-name {
+    font-size: .88rem;
+    font-weight: 600;
+    line-height: 1.45;
+    transition: color .15s;
+    overflow-wrap: anywhere;
+  }
+  .p-cat {
+    font-family: var(--f-data);
+    font-size: .62rem;
+    color: var(--slate);
+    border: 1px solid var(--rule);
+    padding: 0 var(--s1);
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
+  .track {
+    position: relative;
+    background-image: linear-gradient(to right, var(--rule-soft) 1px, transparent 1px);
+    background-size: calc(100% / var(--months)) 100%;
+  }
+  .bar {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: .55rem;
+    min-width: .55rem;
+  }
+  .bar.live { background: var(--fluor); }
+  .bar.dev  { background: var(--cobalt); }
+  .bar.fin  { background: var(--slate); }
+  .bar.idle { background: var(--rule); }
+  .bar.idea { background: transparent; border: 1px dashed var(--slate); }
+
+  .bar-label {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--f-data);
+    font-size: .62rem;
+    color: var(--slate);
+    white-space: nowrap;
+    padding-left: var(--s2);
+  }
+
+  /* ── 詳細パネル ───────────────────────────── */
+
+  .detail {
+    display: none;
+    padding: var(--s2) 0 var(--s5);
+  }
+  .row.open .detail { display: block; }
+
+  .detail-inner {
+    border-left: 2px solid var(--cobalt);
+    padding: var(--s3) var(--s4);
+    background: var(--ground-sub);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s4) var(--s5);
+  }
+  .detail h3 {
+    font-family: var(--f-data);
+    font-size: .68rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--slate);
+    margin: 0 0 var(--s2);
+    font-weight: 400;
+  }
+  .detail ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: .84rem;
+    line-height: 1.7;
+  }
+  .detail li { padding-left: 1.5em; position: relative; margin-bottom: var(--s1); }
+  .detail .done li::before { content: "✓"; position: absolute; left: 0; color: var(--fluor); font-weight: 700; }
+  .detail .next li::before { content: "□"; position: absolute; left: 0; color: var(--cobalt); }
+  .detail .empty { color: var(--slate); font-size: .8rem; }
+
+  .detail-meta {
+    grid-column: 1 / -1;
+    font-family: var(--f-data);
+    font-size: .7rem;
+    color: var(--slate);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s2) var(--s4);
+    border-top: 1px solid var(--rule);
+    padding-top: var(--s2);
+  }
+
+  /* ── 注記 ─────────────────────────────────── */
+
+  .note {
+    margin-top: var(--s7);
+    padding-top: var(--s4);
+    border-top: 2px solid var(--ink);
+    font-size: .82rem;
+    color: var(--slate);
+    max-width: 44rem;
+  }
+  .note p { margin: 0 0 var(--s2); }
+
+  /* ── モバイル ─────────────────────────────── */
+
+  @media (max-width: 640px) {
+    .wrap { padding: var(--s5) var(--s4) var(--s7); }
+    .axis, .row-head { grid-template-columns: minmax(8.5rem, 10rem) 1fr; }
+    .p-cat { display: none; }
+    .p-name { font-size: .8rem; }
+    .bar-label { display: none; }
+    .detail-inner { grid-template-columns: 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header>
+    <div class="topline">
+      <p class="eyebrow">Clinical AI Implementation — Progress</p>
+      <div class="top-actions">
+        <a class="back-link" href="./">← 実装事例一覧</a>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="配色を切り替える">◐ THEME</button>
+      </div>
+    </div>
+    <h1>進捗ダッシュボード</h1>
+    <p class="lede">全プロジェクトの現在地をひとつのタイムラインに。各行を押すと、どこまで進んでいるか・次に何をやるかが開きます。導入先の医療機関名・患者情報・契約情報は掲載していません。</p>
+  </header>
+
+  <div class="legend" aria-label="ステータスの凡例">
+    <span class="legend-item"><span class="swatch live"></span>運用中 — 実際の現場で稼働している</span>
+    <span class="legend-item"><span class="swatch dev"></span>開発中</span>
+    <span class="legend-item"><span class="swatch fin"></span>完成</span>
+    <span class="legend-item"><span class="swatch idle"></span>休止中</span>
+    <span class="legend-item"><span class="swatch idea"></span>構想段階</span>
+  </div>
+
+  <nav class="filters" aria-label="分野で絞り込む">
+    <span class="filters-label">Filter</span>
+    <button class="chip" aria-pressed="true"  data-cat="all">すべて</button>
+    <button class="chip" aria-pressed="false" data-cat="med">医療・臨床</button>
+    <button class="chip" aria-pressed="false" data-cat="game">ゲーム</button>
+    <button class="chip" aria-pressed="false" data-cat="tool">アプリ・ツール</button>
+    <button class="chip" aria-pressed="false" data-cat="hw">ハードウェア</button>
+    <button class="chip" aria-pressed="false" data-cat="web">Web・文書</button>
+  </nav>
+
+  <div class="gantt">
+    <div class="axis">
+      <span class="axis-label">Project</span>
+      <div class="axis-months" id="axisMonths"></div>
+    </div>
+    <div id="rows"></div>
+  </div>
+
+  <footer class="note">
+    <p>進捗はコミット履歴・作業メモから自動集計したものを、公開できる範囲に整えて掲載しています。</p>
+    <p>導入先の医療機関名・患者データ・契約に関する情報は、方針として一切掲載しません。</p>
+  </footer>
+
+</div>
+
+<script>
+/* ── データ ──────────────────────────────────
+   cat: med / game / tool / hw / web
+   status: live(運用中) dev(開発中) fin(完成) idle(休止) idea(構想)
+   start: YYYY-MM, last: YYYY-MM-DD
+──────────────────────────────────────────── */
+var DATA = [
+  {
+    name: "KartePaste", cat: "med", status: "dev",
+    start: "2026-06", last: "2026-07-10", commits: 27,
+    done: ["iOSアプリ本体（音声文字起こし・SOAP整形）", "Gemini中継バックエンド（Cloudflare Workers）", "使用量計測・課金まわりの実装", "iPhone–Windows連携ブリッジ 4フェーズ完了", "発売前チェックリスト整備"],
+    next: ["課金必須モードでの本番デプロイ", "ストア連携設定の最終確認", "TestFlightでの課金テスト", "ブースター購入UIの実装", "返金時の動作確認"],
+    note: "電子カルテ補助アプリ。発売準備中"
+  },
+  {
+    name: "Web電子カルテ（web-emr）", cat: "med", status: "dev",
+    start: "2026-07", last: "2026-07-02", commits: 1,
+    done: ["モノレポ雛形（Hono API + Next.js）", "Zod共有型スキーマ整備", "Drizzle ORMスキーマ定義", "法令トレーサビリティ表の整備", "マルチテナント設計方針の確定"],
+    next: ["Supabaseプロジェクト作成", "認証の実装", "RLS・監査ログの実処理実装", "DBマイグレーション実行", "KartePasteとのSOAP同期連携"],
+    note: "国内の医療情報ガイドライン準拠を前提としたSaaSの土台"
+  },
+  {
+    name: "百鬼夜空 — 和風弾幕シューティング", cat: "game", status: "dev",
+    start: "2026-07", last: "2026-07-15", commits: 14,
+    done: ["ゲーム本体v1.5（敵12種・ボス・図鑑・式神）", "サウンド（BGM 2曲 + SE 13種）", "買い切りIAPの実装", "アイコン・署名・リリース設定", "ストア用テキスト・スクショ・法務ページ"],
+    next: ["IAP審査用スクリーンショット撮影", "ストアへのIAP登録・提出", "実機での課金テスト", "アーカイブ & アップロード", "v1.6候補: Game Center対応"],
+    note: "浮世絵風の縦スクロールSTG。コード完成・ストア提出準備中"
+  },
+  {
+    name: "封印デッキ — ローグライク・デッキ構築", cat: "game", status: "dev",
+    start: "2026-05", last: "2026-06-08", commits: null,
+    done: ["戦闘ループ + 封印システム実装", "分岐マップ・店・レリック・ポーション", "和風妖怪アート約39枚を生成", "効果音11種 + BGM 2種", "チュートリアル + 高難度モード"],
+    next: ["タイトル・世界観テーマの確定", "キャラ数・コンセプトの決定", "アートスタイルの最終確定", "価格・販売プラットフォームの決定"],
+    note: "封印システムが差別化点"
+  },
+  {
+    name: "チャリ走", cat: "game", status: "dev",
+    start: "2026-07", last: "2026-07-07", commits: 12,
+    done: ["WKWebViewネイティブシェル作成", "HTML5 Canvasゲーム本体を移植", "シミュレータビルド成功", "コース作成・アンドゥ・自動保存"],
+    next: [],
+    note: "HTML5ゲームをiPhoneアプリ化"
+  },
+  {
+    name: "アラームダンジョン 〜寝起きの勇者〜", cat: "game", status: "fin",
+    start: "2026-07", last: "2026-07-06", commits: null,
+    done: ["単一HTMLのブラウザゲームとして実装"],
+    next: [],
+    note: "単一HTMLの試作ゲーム"
+  },
+  {
+    name: "AI占い — 完全オフライン", cat: "tool", status: "dev",
+    start: "2026-04", last: "2026-06-15", commits: null,
+    done: ["占い師5キャラのロールプレイ実装", "課金基盤（StoreKit 2）の配線", "会話型オンボーディング実装", "SNSシェア・推し占いモード", "ストア提出情報の改訂（リジェクト対応）"],
+    next: ["法務ページの実URL差し替え", "サブスク商品のストア登録", "実機での初回起動・課金の確認"],
+    note: "オンデバイスLLMで完全オフライン動作。未リリース"
+  },
+  {
+    name: "SimpleTranscriber", cat: "tool", status: "fin",
+    start: "2026-04", last: "2026-06-11", commits: 4,
+    done: ["オンデバイス録音・文字起こし実装", "バックグラウンド録音・一時停止対応", "共有・コピー・履歴自動保存", "ストア提出情報・プライバシーポリシー整備"],
+    next: [],
+    note: "iPhone完結・オフラインの文字起こしアプリ"
+  },
+  {
+    name: "Clipboard Bridge", cat: "tool", status: "live",
+    start: "2026-06", last: "2026-07-03", commits: 10,
+    done: ["iPhone⇄Win/Macの双方向クリップボード共有", "LAN内完結・日本語/絵文字対応", "背面タップ + ショートカット連携", "テストコード整備", "起動スクリプト（Mac/Windows）"],
+    next: ["リファクタリング計画の実行", "特性テストでベースライン確認"],
+    note: "同一Wi-Fi内でコピペを共有"
+  },
+  {
+    name: "daily-review — 毎朝の自動レビュー", cat: "tool", status: "live",
+    start: "2026-06", last: "2026-07-27", commits: null,
+    done: ["毎朝の自動レビューを常駐化（launchd）", "改善レポート自動生成", "記事生成パイプライン", "WordPress自動投稿", "アイキャッチ画像の自動生成"],
+    next: [],
+    note: "毎朝、各プロジェクトを自動レビューする運用ツール"
+  },
+  {
+    name: "LINE AI Bot Factory", cat: "web", status: "dev",
+    start: "2026-07", last: "2026-07-22", commits: 3,
+    done: ["Bot生成の本体（マルチテナント構成）", "Cloudflare Workers + D1 + Claude API", "事業ロードマップの策定", "決済まわりの開設準備"],
+    next: ["屋号ドメイン取得とLPの拡充", "SNSでの直販立ち上げ", "受託案件からSaaS化候補を観察"],
+    note: "「Botを作れるBot」。紹介ページ公開中"
+  },
+  {
+    name: "AIツールの使い方リポジトリ", cat: "web", status: "live",
+    start: "2026-07", last: "2026-07-15", commits: 3,
+    done: ["Git / GitHubの基本操作メモ", "AIへの依頼フレーズ集", "権限設定の解説", "共通指示書の整備"],
+    next: [],
+    note: "AI協働のためのナレッジ集"
+  },
+  {
+    name: "電子手術台帳", cat: "med", status: "live",
+    start: "2026-06", last: "2026-07-25", commits: null,
+    done: ["予約登録・編集・検索・入れ替え機能", "空き枠検索と週間タイムライン表示", "手術申込書の表示・印刷", "IE11とモダンブラウザ両対応", "院内サーバーで本稼働・自動バックアップ運用"],
+    next: ["申込書画像のクリップボードコピー（モダン版）", "入れ替え方式を3種類に拡張", "編集画面の並び改善・描画バグ修正", "監査ログの記録漏れ3件を修正", "運用を院内の管理へ引き継ぐ準備"],
+    note: "実際の病院内で稼働中。開始時期は記録が残る範囲での概算"
+  },
+  {
+    name: "自分のオペ台帳", cat: "med", status: "dev",
+    start: "2026-07", last: "2026-07-08", commits: 2,
+    done: ["SwiftUIでiOSアプリ実装", "Firebase Auth / Firestore連携", "月間カレンダーでオペ件数記録", "共有サマリーでリアルタイム集計", "Firestoreセキュリティルール整備"],
+    next: ["データ増に備えた購読・集計の見直し", "Cloud Functions・複合インデックスの導入検討"],
+    note: "医師別のオペ件数を記録するMVP"
+  },
+  {
+    name: "Wakoto — AI音声カルテ 紹介ページ", cat: "med", status: "live",
+    start: "2026-06", last: "2026-06-05", commits: null,
+    done: ["ランディングページ作成", "プライバシー / 利用規約ページ作成", "Vercelへデプロイ"],
+    next: [],
+    note: ""
+  },
+  {
+    name: "歯科矯正 ランディングページ", cat: "med", status: "fin",
+    start: "2026-06", last: "2026-06-06", commits: null,
+    done: ["ランディングページ作成", "WordPress貼付用のHTML / テキスト書き出し"],
+    next: [],
+    note: "依頼元の医院名は非公開"
+  },
+  {
+    name: "封筒宛名ラベル印刷", cat: "tool", status: "live",
+    start: "2026-07", last: "2026-07-27", commits: null,
+    done: ["エーワン72321用の宛名ラベル印刷HTML", "完全オフライン動作・住所録自動保存", "敬称 / 施設名+医師名の書式対応", "使い方マニュアル整備"],
+    next: [],
+    note: "単一HTMLで動くオフラインアプリ"
+  },
+  {
+    name: "ピンポンボタン", cat: "hw", status: "live",
+    start: "2026-07", last: "2026-07-27", commits: null,
+    done: ["AtomS3 → iPhone通知の実装", "ntfy.sh連携で無料プッシュ通知", "AtomLite版も作成", "セットアップ手順書の整備"],
+    next: [],
+    note: "呼び鈴用の物理ボタン。Arduino + ntfy.sh"
+  },
+  {
+    name: "アプリ法務ページ 一式（4サイト）", cat: "web", status: "live",
+    start: "2026-05", last: "2026-06-11", commits: 15,
+    done: ["4アプリ分のプライバシーポリシー / 利用規約", "特商法表記・サポートページ", "GitHub Pagesで公開"],
+    next: ["一部ページの事業者情報プレースホルダを実値に置換"],
+    note: "リリース済みiOSアプリの法的情報ページ"
+  },
+  {
+    name: "実装事例ページ（このサイト）", cat: "web", status: "live",
+    start: "2026-07", last: "2026-07-27", commits: 6,
+    done: ["21プロダクトの一覧ページ公開", "SNSカード用OGP画像の作成", "GitHub Pagesで公開"],
+    next: ["進捗ダッシュボードの拡充"],
+    note: ""
+  },
+  {
+    name: "予約システム", cat: "tool", status: "idea",
+    start: "2026-07", last: "2026-07-21", commits: null,
+    done: [], next: [], note: "構想段階。着手前"
+  },
+  {
+    name: "給与計算システム", cat: "tool", status: "idea",
+    start: "2026-07", last: "2026-07-21", commits: null,
+    done: [], next: [], note: "構想段階。着手前"
+  },
+  {
+    name: "動画編集支援ツール", cat: "tool", status: "idea",
+    start: "2026-06", last: "2026-06-21", commits: null,
+    done: [], next: [], note: "構想段階。環境準備のみ"
+  }
+];
+
+var STATUS_LABEL = { live: "運用中", dev: "開発中", fin: "完成", idle: "休止中", idea: "構想段階" };
+var CAT_LABEL = { med: "医療・臨床", game: "ゲーム", tool: "アプリ・ツール", hw: "ハードウェア", web: "Web・文書" };
+
+/* ── 時間軸の計算 ── */
+function ym(s) { var p = s.split("-"); return parseInt(p[0], 10) * 12 + (parseInt(p[1], 10) - 1); }
+function monthPos(dateStr) {
+  // 月内の日割り位置 (0..1) を加える
+  var p = dateStr.split("-");
+  var m = ym(dateStr);
+  var day = p.length > 2 ? parseInt(p[2], 10) : 1;
+  return m + Math.min((day - 1) / 30, 1);
+}
+
+var minM = Infinity, maxM = -Infinity;
+DATA.forEach(function (d) {
+  minM = Math.min(minM, ym(d.start));
+  maxM = Math.max(maxM, ym(d.last));
+});
+maxM += 1; // 最終月を月末まで描く
+var span = maxM - minM;
+
+/* ── 月軸の描画 ── */
+var axis = document.getElementById("axisMonths");
+for (var m = minM; m < maxM; m++) {
+  var s = document.createElement("span");
+  var year = Math.floor(m / 12), mon = (m % 12) + 1;
+  s.textContent = (mon === 1 || m === minM) ? year + "." + mon : mon + "月";
+  axis.appendChild(s);
+}
+
+/* ── 行の描画 ── */
+function el(tag, cls, text) {
+  var e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text) e.textContent = text;
+  return e;
+}
+
+var rowsHost = document.getElementById("rows");
+DATA.slice().sort(function (a, b) { return a.start < b.start ? -1 : a.start > b.start ? 1 : 0; })
+.forEach(function (d) {
+  var row = el("div", "row");
+  row.dataset.cat = d.cat;
+
+  var head = el("button", "row-head");
+  head.type = "button";
+  head.setAttribute("aria-expanded", "false");
+
+  var cell = el("div", "p-cell");
+  cell.appendChild(el("span", "p-caret", "▸"));
+  cell.appendChild(el("span", "p-name", d.name));
+  cell.appendChild(el("span", "p-cat", CAT_LABEL[d.cat]));
+  head.appendChild(cell);
+
+  var track = el("div", "track");
+  track.style.setProperty("--months", span);
+  var left = ((ym(d.start) - minM) / span) * 100;
+  var width = Math.max(((monthPos(d.last) - ym(d.start)) / span) * 100, 1.2);
+  var bar = el("div", "bar " + d.status);
+  bar.style.left = left + "%";
+  bar.style.width = width + "%";
+  track.appendChild(bar);
+
+  var label = el("span", "bar-label", STATUS_LABEL[d.status]);
+  if (left + width < 72) {
+    label.style.left = (left + width) + "%";
+  } else {
+    label.style.left = "auto";
+    label.style.right = (100 - left) + "%";
+    label.style.paddingLeft = "0";
+    label.style.paddingRight = ".5rem";
+  }
+  track.appendChild(label);
+  head.appendChild(track);
+  row.appendChild(head);
+
+  var detail = el("div", "detail");
+  var inner = el("div", "detail-inner");
+
+  var doneBox = el("div", "done");
+  doneBox.appendChild(el("h3", null, "✓ ここまでできている"));
+  if (d.done.length) {
+    var ulD = el("ul", null);
+    d.done.forEach(function (t) { ulD.appendChild(el("li", null, t)); });
+    doneBox.appendChild(ulD);
+  } else {
+    doneBox.appendChild(el("p", "empty", "まだ着手していません"));
+  }
+  inner.appendChild(doneBox);
+
+  var nextBox = el("div", "next");
+  nextBox.appendChild(el("h3", null, "□ 次にやること"));
+  if (d.next.length) {
+    var ulN = el("ul", null);
+    d.next.forEach(function (t) { ulN.appendChild(el("li", null, t)); });
+    nextBox.appendChild(ulN);
+  } else {
+    nextBox.appendChild(el("p", "empty", d.status === "idea" ? "計画づくりから" : "当面の残タスクなし"));
+  }
+  inner.appendChild(nextBox);
+
+  var meta = el("div", "detail-meta");
+  meta.appendChild(el("span", null, "期間: " + d.start + " → " + d.last));
+  if (d.commits) meta.appendChild(el("span", null, "commits: " + d.commits));
+  if (d.note) meta.appendChild(el("span", null, d.note));
+  inner.appendChild(meta);
+
+  detail.appendChild(inner);
+  row.appendChild(detail);
+
+  head.addEventListener("click", function () {
+    var open = row.classList.toggle("open");
+    head.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+
+  rowsHost.appendChild(row);
+});
+
+/* ── フィルタ ── */
+var chips = Array.prototype.slice.call(document.querySelectorAll(".chip"));
+chips.forEach(function (chip) {
+  chip.addEventListener("click", function () {
+    chips.forEach(function (c) { c.setAttribute("aria-pressed", c === chip ? "true" : "false"); });
+    var cat = chip.dataset.cat;
+    Array.prototype.slice.call(rowsHost.children).forEach(function (row) {
+      row.hidden = (cat !== "all" && row.dataset.cat !== cat);
+    });
+  });
+});
+
+/* ── テーマ切替（index.html と同じキーを共有） ── */
+(function () {
+  var saved = null;
+  try { saved = localStorage.getItem("ledger-theme"); } catch (e) {}
+  if (saved === "dark" || saved === "light") document.documentElement.dataset.theme = saved;
+  document.getElementById("themeToggle").addEventListener("click", function () {
+    var cur = document.documentElement.dataset.theme;
+    if (!cur) cur = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    var next = cur === "dark" ? "light" : "dark";
+    document.documentElement.dataset.theme = next;
+    try { localStorage.setItem("ledger-theme", next); } catch (e) {}
+  });
+})();
+</script>
+</body>
+</html>

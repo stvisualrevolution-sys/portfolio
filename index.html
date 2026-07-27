@@ -35,6 +35,8 @@
     gap: var(--s4);
   }
 
+  .top-actions { display: flex; gap: var(--s3); flex-shrink: 0; }
+
   .theme-toggle {
     flex-shrink: 0;
     background: var(--ground);
@@ -45,6 +47,9 @@
     letter-spacing: .1em;
     padding: .4rem .7rem;
     cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
     transition: border-color .15s, color .15s;
   }
   .theme-toggle:hover { border-color: var(--cobalt); color: var(--cobalt); }
@@ -478,7 +483,10 @@
   <header class="masthead">
     <div class="topline">
       <p class="eyebrow">Clinical AI Implementation — 2026</p>
-      <button class="theme-toggle" id="themeToggle" type="button" aria-label="配色を切り替える">◐ THEME</button>
+      <div class="top-actions">
+        <a class="theme-toggle" href="progress.html">進捗 →</a>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="配色を切り替える">◐ THEME</button>
+      </div>
     </div>
     <div class="chart">
       <h1 class="chart-1">医療 × AI 実装事例</h1>

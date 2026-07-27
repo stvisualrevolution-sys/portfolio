@@ -3,7 +3,8 @@
 現役の眼科医が、自分の現場の困りごとをシステムにしてきた実装事例の一覧ページ。
 
 - 公開URL: https://stvisualrevolution-sys.github.io/portfolio/
-- 単一の `index.html` のみ。ビルド不要、外部依存なし。
+- 進捗ダッシュボード: https://stvisualrevolution-sys.github.io/portfolio/progress.html
+- `index.html`（一覧）と `progress.html`（ガントチャート）。ビルド不要、外部依存なし。
 - `ogp.png` はSNSカード用の画像（1200x630）。
 
 ## 掲載方針
