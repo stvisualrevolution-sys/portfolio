@@ -406,6 +406,24 @@
     align-self: flex-start;
   }
 
+  .entry-link {
+    display: inline-flex;
+    align-items: center;
+    gap: .4em;
+    font-family: var(--f-data);
+    font-size: .72rem;
+    letter-spacing: .03em;
+    color: var(--cobalt);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1px;
+    align-self: flex-start;
+    transition: border-color .15s;
+  }
+  .entry-link:hover { border-color: var(--cobalt); }
+  .entry-link:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+  .entry-link .arrow { font-size: .85em; }
+
   /* ── 注記 ──────────────────────────────────── */
 
   .note {
@@ -724,6 +742,7 @@
           <h3 class="entry-title">LINE AI Bot Factory</h3>
           <p class="entry-sum">LINEで質問に答えていくだけで、店舗向けの自動応答Bot（問い合わせ対応・予約受付）が作れるサービス。営業用の親Botが、顧客のLINE公式アカウントに繋がる子Botを生み出す多店舗対応の構成。</p>
           <div class="tags"><span class="tag">Cloudflare Workers</span><span class="tag">D1</span><span class="tag">Hono</span><span class="tag">Claude API</span><span class="tag">Stripe</span></div>
+          <a class="entry-link" href="https://line-bot-factory.stvisualrevolution.workers.dev/" target="_blank" rel="noopener">紹介ページを見る <span class="arrow">↗</span></a>
         </div>
       </article>
 
