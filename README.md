@@ -1,9 +1,10 @@
-# 作品台帳 / Works Ledger
+# 医療 × AI 実装事例 / Clinical AI Implementation
 
-2026年に個人で開発したプロダクトの一覧ページ。
+現役の眼科医が、自分の現場の困りごとをシステムにしてきた実装事例の一覧ページ。
 
 - 公開URL: https://stvisualrevolution-sys.github.io/portfolio/
 - 単一の `index.html` のみ。ビルド不要、外部依存なし。
+- `ogp.png` はSNSカード用の画像（1200x630）。
 
 ## 掲載方針
 
