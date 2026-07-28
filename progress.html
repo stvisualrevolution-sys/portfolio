@@ -378,6 +378,32 @@
     padding-top: var(--s2);
   }
 
+  .p-ext {
+    font-family: var(--f-data);
+    font-size: .7rem;
+    color: var(--cobalt);
+    flex-shrink: 0;
+  }
+
+  .detail-links {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s2) var(--s4);
+  }
+  .detail-links a {
+    font-family: var(--f-data);
+    font-size: .74rem;
+    letter-spacing: .03em;
+    color: var(--cobalt);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1px;
+    transition: border-color .15s;
+  }
+  .detail-links a:hover { border-color: var(--cobalt); }
+  .detail-links a:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+
   /* ── 注記 ─────────────────────────────────── */
 
   .note {
@@ -467,7 +493,8 @@ var DATA = [
     start: "2026-07", last: "2026-07-28", commits: 1,
     done: ["医療法の義務項目（指針・研修・記録）の管理画面", "年度ごとの実施記録を1枚で印刷・PDF保存", "端末内保存のみ・サーバー送信なしの設計", "義務項目の根拠条文リストを整備", "GitHub Pagesで公開"],
     next: [],
-    note: "無床診療所向け。患者情報は扱わない前提"
+    note: "無床診療所向け。患者情報は扱わない前提",
+    links: [{ t: "アプリを使ってみる", h: "https://stvisualrevolution-sys.github.io/innai-taisei-check/" }]
   },
   {
     name: "KartePaste", cat: "med", status: "dev",
@@ -544,7 +571,8 @@ var DATA = [
     start: "2026-07", last: "2026-07-22", commits: 3,
     done: ["Bot生成の本体（マルチテナント構成）", "Cloudflare Workers + D1 + Claude API", "事業ロードマップの策定", "決済まわりの開設準備"],
     next: ["屋号ドメイン取得とLPの拡充", "SNSでの直販立ち上げ", "受託案件からSaaS化候補を観察"],
-    note: "「Botを作れるBot」。紹介ページ公開中"
+    note: "「Botを作れるBot」。紹介ページ公開中",
+    links: [{ t: "紹介ページを見る", h: "https://line-bot-factory.stvisualrevolution.workers.dev/" }]
   },
   {
     name: "AIツールの使い方リポジトリ", cat: "web", status: "live",
@@ -600,14 +628,19 @@ var DATA = [
     start: "2026-05", last: "2026-06-11", commits: 15,
     done: ["4アプリ分のプライバシーポリシー / 利用規約", "特商法表記・サポートページ", "GitHub Pagesで公開"],
     next: ["一部ページの事業者情報プレースホルダを実値に置換"],
-    note: "リリース済みiOSアプリの法的情報ページ"
+    note: "リリース済みiOSアプリの法的情報ページ",
+    links: [
+      { t: "KartePaste 法務ページ", h: "https://stvisualrevolution-sys.github.io/kartepaste-legal/" },
+      { t: "kotodama 法務ページ", h: "https://stvisualrevolution-sys.github.io/kotodama-legal/" }
+    ]
   },
   {
     name: "実装事例ページ（このサイト）", cat: "web", status: "live",
     start: "2026-07", last: "2026-07-27", commits: 6,
-    done: ["21プロダクトの一覧ページ公開", "SNSカード用OGP画像の作成", "GitHub Pagesで公開"],
-    next: ["進捗ダッシュボードの拡充"],
-    note: ""
+    done: ["22プロダクトの一覧ページ公開", "SNSカード用OGP画像の作成", "進捗ダッシュボードの公開", "GitHub Pagesで公開"],
+    next: [],
+    note: "",
+    links: [{ t: "一覧ページを見る", h: "./" }]
   },
   {
     name: "予約システム", cat: "tool", status: "idea",
@@ -677,6 +710,7 @@ DATA.slice().sort(function (a, b) { return a.start < b.start ? -1 : a.start > b.
   var cell = el("div", "p-cell");
   cell.appendChild(el("span", "p-caret", "▸"));
   cell.appendChild(el("span", "p-name", d.name));
+  if (d.links && d.links.length) cell.appendChild(el("span", "p-ext", "↗"));
   cell.appendChild(el("span", "p-cat", CAT_LABEL[d.cat]));
   head.appendChild(cell);
 
@@ -726,6 +760,17 @@ DATA.slice().sort(function (a, b) { return a.start < b.start ? -1 : a.start > b.
     nextBox.appendChild(el("p", "empty", d.status === "idea" ? "計画づくりから" : "当面の残タスクなし"));
   }
   inner.appendChild(nextBox);
+
+  if (d.links && d.links.length) {
+    var linkBox = el("div", "detail-links");
+    d.links.forEach(function (L) {
+      var a = el("a", null, L.t + " ↗");
+      a.href = L.h;
+      if (L.h.indexOf("http") === 0) { a.target = "_blank"; a.rel = "noopener"; }
+      linkBox.appendChild(a);
+    });
+    inner.appendChild(linkBox);
+  }
 
   var meta = el("div", "detail-meta");
   meta.appendChild(el("span", null, "期間: " + d.start + " → " + d.last));
