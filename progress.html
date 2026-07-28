@@ -518,11 +518,12 @@ var DATA = [
     note: "浮世絵風の縦スクロールSTG。コード完成・ストア提出準備中"
   },
   {
-    name: "封印デッキ — ローグライク・デッキ構築", cat: "game", status: "dev",
+    name: "封印デッキ — ローグライク・デッキ構築", cat: "game", status: "live",
     start: "2026-05", last: "2026-06-08", commits: null,
-    done: ["戦闘ループ + 封印システム実装", "分岐マップ・店・レリック・ポーション", "和風妖怪アート約39枚を生成", "効果音11種 + BGM 2種", "チュートリアル + 高難度モード"],
-    next: ["タイトル・世界観テーマの確定", "キャラ数・コンセプトの決定", "アートスタイルの最終確定", "価格・販売プラットフォームの決定"],
-    note: "封印システムが差別化点"
+    done: ["戦闘ループ + 封印システム実装", "分岐マップ・店・レリック・ポーション", "和風妖怪アート約39枚を生成", "効果音11種 + BGM 2種", "チュートリアル + 高難度モード", "App Storeで配信開始（2026-06-07・無料）"],
+    next: [],
+    note: "封印システムが差別化点。App Store配信中",
+    links: [{ t: "App Storeで見る", h: "https://apps.apple.com/jp/app/id6775309819" }]
   },
   {
     name: "チャリ走", cat: "game", status: "dev",
@@ -546,11 +547,20 @@ var DATA = [
     note: "オンデバイスLLMで完全オフライン動作。未リリース"
   },
   {
-    name: "SimpleTranscriber", cat: "tool", status: "fin",
+    name: "SimpleTranscriber（シンプル録音文字起こし）", cat: "tool", status: "live",
     start: "2026-04", last: "2026-06-11", commits: 4,
-    done: ["オンデバイス録音・文字起こし実装", "バックグラウンド録音・一時停止対応", "共有・コピー・履歴自動保存", "ストア提出情報・プライバシーポリシー整備"],
+    done: ["オンデバイス録音・文字起こし実装", "バックグラウンド録音・一時停止対応", "共有・コピー・履歴自動保存", "ストア提出情報・プライバシーポリシー整備", "App Storeで配信開始（2026-04-20）"],
     next: [],
-    note: "iPhone完結・オフラインの文字起こしアプリ"
+    note: "iPhone完結・オフラインの文字起こしアプリ。App Store配信中",
+    links: [{ t: "App Storeで見る", h: "https://apps.apple.com/jp/app/id6762348161" }]
+  },
+  {
+    name: "最強ジャーナリングアプリ — 音声入力AI・完全オフライン", cat: "tool", status: "live",
+    start: "2026-05", last: "2026-05-27", commits: null,
+    done: ["音声入力ジャーナリング（音声 + テキストを端末内保存）", "完全オフラインの文字起こし・AI整形", "App Storeで配信開始（2026-05-18・買い切り）", "v3.0まで更新"],
+    next: [],
+    note: "話すだけのボイス日記。App Store配信中",
+    links: [{ t: "App Storeで見る", h: "https://apps.apple.com/jp/app/id6769603544" }]
   },
   {
     name: "Clipboard Bridge", cat: "tool", status: "live",
