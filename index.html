@@ -116,18 +116,53 @@
     align-items: center;
     gap: .5em;
     background: var(--cobalt);
-    color: #fff;
+    color: var(--ground);
     font-size: .95rem;
     font-weight: 600;
     text-decoration: none;
     padding: .95em 1.9em;
     border-radius: 3px;
+    transition: opacity .15s;
   }
+  .featured-cta:hover { opacity: .88; }
+  .featured-cta:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 3px; }
   .featured-price {
     font-family: var(--f-data);
     font-size: .78rem;
     color: var(--slate);
   }
+
+  /* 2番手の掲載。1番手と同じ組みのまま、面と枠だけ一段落とす */
+  .featured.featured-sub {
+    border-width: 1px;
+    background: var(--ground-sub);
+  }
+  .featured.featured-sub h2 { font-size: clamp(1.7rem, 4.4vw, 2.5rem); }
+
+  .featured-amount {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--s2) var(--s3);
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+    padding: var(--s4) 0;
+    margin-bottom: var(--s5);
+  }
+  .featured-amount .figure {
+    font-family: var(--f-data);
+    font-size: clamp(1.35rem, 3.6vw, 1.8rem);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: .01em;
+    color: var(--ink);
+  }
+  .featured-amount .unit { font-size: .62em; }
+  .featured-amount .terms {
+    font-size: .82rem;
+    line-height: 1.7;
+    color: var(--slate);
+  }
+
   @media (max-width: 560px) {
     .featured { padding: var(--s5) var(--s4) var(--s4); }
   }
@@ -712,6 +747,50 @@
         <a class="featured-cta" href="https://drreply.jp" target="_blank" rel="noopener">使ってみる <span aria-hidden="true">↗</span></a>
         <span class="featured-price">月額 ¥5,478（税込）から ／ 解約はいつでも</span>
       </div>
+    </section>
+
+    <!-- ══ 注目：電子手術台帳（導入受付） ══════════ -->
+    <section class="featured featured-sub" aria-labelledby="ledger-title">
+      <span class="featured-flag"><span class="dot"></span>導入相談 受付中</span>
+      <h2 id="ledger-title">電子手術台帳</h2>
+
+      <p class="featured-lead">
+        手術予定の管理を、ホワイトボードとExcelから引き上げるための院内Webシステムです。
+        週間タイムライン上で枠をつかんで動かし、決まった予定はそのまま<strong>申込書として出力</strong>できます。
+        いま実際の病院内サーバーで動いているものを、<strong>そちらの運用に合わせて仕立て直す形</strong>でお渡しします。
+      </p>
+
+      <ul class="featured-points">
+        <li>
+          <b>枠の調整を画面の上で終わらせる</b>
+          <span>週間タイムラインで手術枠をドラッグして動かせます。既存のExcel台帳は取り込めるので、これまでの記録を捨てずに移行できます。</span>
+        </li>
+        <li>
+          <b>作って終わりではないものを渡す</b>
+          <span>本体は約18,000行、リリースは48版を重ねています。実際の現場で回しながら直し続けてきたものが土台です。</span>
+        </li>
+        <li>
+          <b>操作を人に聞かなくて済む</b>
+          <span>「この画面で何ができるか」をAIが日本語で答えるヘルプボットが付属します。スタッフへの説明にかかる手間を減らせます。</span>
+        </li>
+      </ul>
+
+      <div class="featured-amount">
+        <span class="figure">9.8<span class="unit">万円</span> 〜 99.8<span class="unit">万円</span></span>
+        <span class="terms">施設の規模と、どこまで作り込むかによって変わります。まずは現状をうかがったうえでお見積りします。</span>
+      </div>
+
+      <p class="featured-who">
+        単科クリニック ／ 有床診療所 ／ 中小規模の病院 ／ 手術室を複数持つ施設<br>
+        既存の電子カルテはそのままで、手術予定の管理だけを切り出して導入できます
+      </p>
+
+      <div class="featured-actions">
+        <a class="featured-cta" href="contact.html?type=surgical-ledger#form">導入について相談する <span aria-hidden="true">→</span></a>
+        <span class="featured-price">フォームは「電子手術台帳の導入相談」で開きます ／ 氏名と連絡先だけで送信できます</span>
+      </div>
+
+      <p style="margin: var(--s5) 0 0;"><span class="redacted">導入先の医療機関名は非公開</span></p>
     </section>
 
     <!-- ══ 医療・臨床 ══════════════════════════ -->

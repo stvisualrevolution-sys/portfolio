@@ -289,6 +289,36 @@
 
   .caution strong { color: var(--ink); font-weight: 600; }
 
+  /* ── プリセット案内 ────────────────────────── */
+
+  .preset {
+    display: none;
+    flex-direction: column;
+    gap: var(--s2);
+    border-left: 2px solid var(--cobalt);
+    background: var(--cobalt-soft);
+    padding: var(--s4) var(--s5);
+    margin-bottom: var(--s6);
+  }
+
+  .preset[data-shown="1"] { display: flex; }
+
+  .preset-title {
+    margin: 0;
+    font-family: var(--f-data);
+    font-size: .7rem;
+    letter-spacing: .12em;
+    color: var(--cobalt);
+  }
+
+  .preset-body {
+    margin: 0;
+    font-size: .89rem;
+    line-height: 1.85;
+    color: var(--ink-soft);
+    max-width: 40rem;
+  }
+
   /* ── フォーム ──────────────────────────────── */
 
   .form { display: flex; flex-direction: column; gap: var(--s5); }
@@ -562,9 +592,15 @@
     </div>
   </section>
 
-  <section>
+  <section id="form">
     <div class="section-head">
       <h2>ご相談フォーム</h2><span class="fill"></span>
+    </div>
+
+    <!-- ?type=... で開かれたときだけ出る。JSが中身を入れて表示する -->
+    <div class="preset" id="preset" data-shown="0">
+      <p class="preset-title" id="presetTitle"></p>
+      <p class="preset-body" id="presetBody"></p>
     </div>
 
     <form class="form" id="contactForm" novalidate>
@@ -590,6 +626,7 @@
           <label for="f-type">ご相談の種類 <span class="req">必須</span></label>
           <select id="f-type" name="type" required>
             <option value="">選択してください</option>
+            <option>電子手術台帳の導入相談</option>
             <option>新規開発のご依頼</option>
             <option>既存システムの改修・引き継ぎ</option>
             <option>相談・壁打ち（単発）</option>
@@ -671,11 +708,59 @@
      ───────────────────────────────────────────── */
   var ENDPOINT = 'https://script.google.com/macros/s/AKfycbzSK2xescsWfq_oslAh5ejwUVizrOITqqHw5MEVcGFICM7nO0cKApLd8axeKwSQqzntrg/exec';
 
+  /* ─────────────────────────────────────────────
+     一覧ページの各ボタンから ?type=... で開かれたときに、
+     種類と本文を先に入れておく。氏名と連絡先だけで送れる状態にする
+     ───────────────────────────────────────────── */
+  var PRESETS = {
+    'surgical-ledger': {
+      type:    '電子手術台帳の導入相談',
+      title:   '電子手術台帳の導入相談',
+      note:    'ご相談の種類と本文は入力済みです。お名前とメールアドレスをご記入いただければ、そのまま送信できます。施設の規模や現在の管理方法が分かると、お見積りが具体的になります。',
+      message: '電子手術台帳の導入を検討しています。詳しい内容と費用を教えてください。'
+    }
+  };
+
   (function () {
     var form   = document.getElementById('contactForm');
     var btn    = document.getElementById('submitBtn');
     var status = document.getElementById('status');
     var done   = document.getElementById('done');
+
+    /* ── プリセットの適用 ── */
+    (function applyPreset() {
+      var key = null;
+      try {
+        key = new URLSearchParams(location.search).get('type');
+      } catch (e) { return; }
+
+      var p = key && PRESETS[key];
+      if (!p) return;
+
+      var typeEl = document.getElementById('f-type');
+      var msgEl  = document.getElementById('f-message');
+      var box    = document.getElementById('preset');
+
+      // 該当する選択肢があるときだけ選ぶ。文言を変えても壊れないように
+      var matched = false;
+      for (var i = 0; i < typeEl.options.length; i++) {
+        if (typeEl.options[i].text === p.type) { typeEl.selectedIndex = i; matched = true; break; }
+      }
+      if (!matched) return;
+
+      if (!msgEl.value) msgEl.value = p.message;
+
+      document.getElementById('presetTitle').textContent = p.title;
+      document.getElementById('presetBody').textContent  = p.note;
+      box.setAttribute('data-shown', '1');
+
+      // 種類を変えたら、この案内は合わなくなるので下げる
+      typeEl.addEventListener('change', function () {
+        if (typeEl.value !== p.type) box.setAttribute('data-shown', '0');
+      });
+
+      document.getElementById('f-name').focus({ preventScroll: true });
+    })();
 
     function say(text, cls) {
       status.className = 'status' + (cls ? ' ' + cls : '');
