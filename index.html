@@ -157,10 +157,25 @@
     color: var(--ink);
   }
   .featured-amount .unit { font-size: .62em; }
+  .featured-amount .tax {
+    font-size: .5em;
+    letter-spacing: .1em;
+    color: var(--slate);
+    margin-left: .6em;
+    vertical-align: .25em;
+  }
+  .featured-amount .gross {
+    font-family: var(--f-data);
+    font-size: .72rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--slate);
+    letter-spacing: .02em;
+  }
   .featured-amount .terms {
     font-size: .82rem;
     line-height: 1.7;
     color: var(--slate);
+    flex-basis: 100%;
   }
 
   @media (max-width: 560px) {
@@ -575,6 +590,25 @@
   .entry-link:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
   .entry-link .arrow { font-size: .85em; }
 
+  /* 各項目からフォームへ。種類と本文が入った状態で開く */
+  .entry-ask {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: .45em;
+    font-family: var(--f-data);
+    font-size: .7rem;
+    letter-spacing: .06em;
+    color: var(--cobalt);
+    text-decoration: none;
+    border: 1px solid var(--rule);
+    padding: .3em .85em;
+    transition: border-color .15s, background .15s, color .15s;
+  }
+  .entry-ask:hover { border-color: var(--cobalt); background: var(--cobalt); color: var(--ground); }
+  .entry-ask:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+  .entry-ask .arrow { font-size: .85em; }
+
   /* ── 依頼への導線 ───────────────────────────── */
 
   .cta-band {
@@ -776,7 +810,8 @@
       </ul>
 
       <div class="featured-amount">
-        <span class="figure">9.8<span class="unit">万円</span> 〜 99.8<span class="unit">万円</span></span>
+        <span class="figure">9.8<span class="unit">万円</span> 〜 99.8<span class="unit">万円</span><span class="tax">税別</span></span>
+        <span class="gross">税込 107,800円 〜 1,097,800円</span>
         <span class="terms">施設の規模と、どこまで作り込むかによって変わります。まずは現状をうかがったうえでお見積りします。</span>
       </div>
 
@@ -809,6 +844,7 @@
           <p class="entry-sum">無床診療所が医療法で義務づけられている指針・研修・記録（医療法6条の12／施行規則1条の11）を1か所で管理し、年度ごとに1枚の実施記録として印刷・PDF保存できる道具。データは端末内にのみ保存しサーバーへは一切送らない設計で、患者情報は扱わない前提。ビルド不要・外部ライブラリなしの静的アプリ。</p>
           <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><span class="tag">GitHub Pages</span></div>
           <a class="entry-link" href="https://stvisualrevolution-sys.github.io/innai-taisei-check/" target="_blank" rel="noopener">アプリを使ってみる <span class="arrow">↗</span></a>
+          <a class="entry-ask" href="contact.html?type=innai-check#form">導入について相談する <span class="arrow">→</span></a>
         </div>
       </article>
 
@@ -822,6 +858,7 @@
           <p class="entry-sum">手術予定の登録・枠調整・申込書出力までを一手に引き受ける院内Webシステム。週間タイムライン上で枠を動かし、Excel取込とバックアップにも対応する。本体は約18,000行、リリースは48版を数え、実際の病院内サーバーで稼働中。操作方法をAIが日本語で答えるヘルプボットも付属する。</p>
           <div class="tags"><span class="tag">Python</span><span class="tag">Flask</span><span class="tag">SQLite</span><span class="tag">Next.js</span><span class="tag">Gemini</span></div>
           <span class="redacted">導入先の医療機関名は非公開</span>
+          <a class="entry-ask" href="contact.html?type=surgical-ledger#form">導入について相談する <span class="arrow">→</span></a>
         </div>
       </article>
 
@@ -834,6 +871,7 @@
           <h3 class="entry-title">KartePaste</h3>
           <p class="entry-sum">診察中の会話をiPhoneで録音し、文字起こしからSOAP形式への整形までを端末内で完結させ、PC側のカルテ画面へ貼り付ける仕組み。iOSアプリ・中継サーバ・BLE小型デバイス・Windows常駐ツールの4つで構成される。音声を外部に送らない設計。</p>
           <div class="tags"><span class="tag">SwiftUI</span><span class="tag">MLX / Gemma</span><span class="tag">Cloudflare Workers</span><span class="tag">BLE</span><span class="tag">ESP32-S3</span></div>
+          <a class="entry-ask" href="contact.html?type=kartepaste#form">導入について相談する <span class="arrow">→</span></a>
         </div>
       </article>
 
@@ -846,6 +884,7 @@
           <h3 class="entry-title">自分のオペ台帳</h3>
           <p class="entry-sum">医師が自分の1日あたりの手術件数をカレンダーに記録するiOSアプリ。共有ダッシュボードで全員の累計・当月件数が一覧できるが、書き込めるのは自分の分だけ。扱うのは件数のみで、患者情報は持たない。</p>
           <div class="tags"><span class="tag">SwiftUI</span><span class="tag">Firebase Auth</span><span class="tag">Firestore</span><span class="tag">XcodeGen</span></div>
+          <a class="entry-ask" href="contact.html?type=my-op-ledger#form">導入について相談する <span class="arrow">→</span></a>
         </div>
       </article>
 
@@ -858,6 +897,7 @@
           <h3 class="entry-title">Web電子カルテ（web-emr）</h3>
           <p class="entry-sum">医療機関と非医療業種の両方に対応するクラウド型電子カルテSaaSの土台。カルテの改ざんを防ぐため、記録は上書きせず版を追記し、ハッシュチェーンで連結する設計を採った。国内の医療情報ガイドライン準拠を前提に、テナント分離の方針まで確定させた段階。</p>
           <div class="tags"><span class="tag">Next.js 15</span><span class="tag">Hono</span><span class="tag">Drizzle ORM</span><span class="tag">Supabase</span><span class="tag">Zod</span></div>
+          <a class="entry-ask" href="contact.html?type=web-emr#form">導入について相談する <span class="arrow">→</span></a>
         </div>
       </article>
 
@@ -870,6 +910,7 @@
           <h3 class="entry-title">Wakoto — AI音声カルテ 紹介ページ</h3>
           <p class="entry-sum">話した言葉をそのままカルテ文面にするサービスの紹介ページ。利用規約とプライバシーポリシーまで含めて公開済み。</p>
           <div class="tags"><span class="tag">HTML / CSS</span><span class="tag">Vercel</span></div>
+          <a class="entry-ask" href="contact.html?type=wakoto#form">導入について相談する <span class="arrow">→</span></a>
         </div>
       </article>
 
@@ -883,6 +924,7 @@
           <p class="entry-sum">小児・成人の歯列矯正をテーマにした1ページ完結の紹介ページ。WordPressにそのまま貼り付けられる形式も用意した。</p>
           <div class="tags"><span class="tag">HTML / CSS</span><span class="tag">WordPress</span></div>
           <span class="redacted">依頼元の医院名は非公開</span>
+          <a class="entry-ask" href="contact.html?type=ortho-lp#form">同じようなものを相談する <span class="arrow">→</span></a>
         </div>
       </article>
     </section>
@@ -902,6 +944,7 @@
           <h3 class="entry-title">百鬼夜空 — 和風弾幕シューティング</h3>
           <p class="entry-sum">浮世絵風のビジュアルで妖怪を撃ち祓う縦スクロールシューティング。敵を倒すほど墨一色の夜空に色が戻る「浄化彩色」が核の仕掛け。図鑑・恒久強化・機体4種を備え、v1.5まで到達。</p>
           <div class="tags"><span class="tag">SpriteKit</span><span class="tag">SwiftUI</span><span class="tag">StoreKit 2</span><span class="tag">XcodeGen</span></div>
+          <a class="entry-ask" href="contact.html?type=hyakki-yazora#form">同じようなものを相談する <span class="arrow">→</span></a>
         </div>
       </article>
 
@@ -915,6 +958,7 @@
           <p class="entry-sum">敵の妖怪を「倒す」のではなく「封印してカードにする」独自システムを核にした1人用デッキ構築ゲーム。分岐マップ・ショップ・レリック・難易度解放まで実装済み。アートと効果音は生成ツールを自作して用意した。App Storeで配信中（無料）。</p>
           <div class="tags"><span class="tag">SwiftUI</span><span class="tag">StoreKit 2</span><span class="tag">Supabase</span><span class="tag">Python</span></div>
           <a class="entry-link" href="https://apps.apple.com/jp/app/id6775309819" target="_blank" rel="noopener">App Storeで見る <span class="arrow">↗</span></a>
+          <a class="entry-ask" href="contact.html?type=fuin-deck#form">同じようなものを相談する <span class="arrow">→</span></a>
         </div>
       </article>
 
@@ -927,6 +971,7 @@
           <h3 class="entry-title">チャリ走</h3>
           <p class="entry-sum">Canvas製の横スクロールアクションを、ネイティブの殻でくるんだiPhoneアプリ。ステージ制エンジンと組み込み10ステージに加え、自分でコースを組めるステージエディタを備える。</p>
           <div class="tags"><span class="tag">SwiftUI</span><span class="tag">WKWebView</span><span class="tag">HTML5 Canvas</span></div>
+          <a class="entry-ask" href="contact.html?type=chari-sou#form">同じようなものを相談する <span class="arrow">→</span></a>
         </div>
       </article>
 
@@ -939,6 +984,7 @@
           <h3 class="entry-title">アラームダンジョン 〜寝起きの勇者〜</h3>
           <p class="entry-sum">時計の針が光るゾーンに入った瞬間にタップして戦う、縦画面のタイミングアクション。階層ごとのボス戦、コンボとフィーバー、加護カードの選択を1枚のHTMLに収めた。</p>
           <div class="tags"><span class="tag">HTML5 Canvas</span><span class="tag">JavaScript</span></div>
+          <a class="entry-ask" href="contact.html?type=alarm-dungeon#form">同じようなものを相談する <span class="arrow">→</span></a>
         </div>
       </article>
     </section>
@@ -959,6 +1005,7 @@
           <p class="entry-sum">業種と専門領域を設定しておくと、X上の実在する公開投稿から「返信する価値が高い相手」をAIが採点して並べ、あわせて自分用の投稿案とトレンド要約を用意する承認型のX運用サービス。自動フォロー・自動DM・無差別返信は行わず、送信は必ず人の確認を挟む。医療・美容・士業・クリエイターなど12業種に対応し、業種ごとに検索する母集団とAIへの表現上の注意を切り替える。Cloudflare Workers + D1 上で動き、認証はパスワードなしのマジックリンク、決済はStripeのサブスクリプション。</p>
           <div class="tags"><span class="tag">Next.js</span><span class="tag">Cloudflare Workers</span><span class="tag">D1</span><span class="tag">Stripe</span><span class="tag">X API</span><span class="tag">Grok</span></div>
           <a class="entry-link" href="https://drreply.jp" target="_blank" rel="noopener">サービスを見る <span class="arrow">↗</span></a>
+          <a class="entry-ask" href="contact.html?type=dr-reply#form">同じようなものを相談する <span class="arrow">→</span></a>
         </div>
       </article>
 
@@ -971,6 +1018,7 @@
           <h3 class="entry-title">封筒宛名ラベル印刷</h3>
           <p class="entry-sum">A4・21面のラベルシールに、位置ずれなく宛名を刷るためのアプリ。HTMLファイル1つで動くので、インターネットに繋がっていない事務用PCでもそのまま使える。日々の発送業務で稼働中。</p>
           <div class="tags"><span class="tag">HTML</span><span class="tag">JavaScript</span><span class="tag">localStorage</span></div>
+          <a class="entry-ask" href="contact.html?type=envelope-label#form">導入について相談する <span class="arrow">→</span></a>
         </div>
       </article>
 
@@ -983,6 +1031,7 @@
           <h3 class="entry-title">Clipboard Bridge</h3>
           <p class="entry-sum">同じWi-Fi内のiPhoneとPCで、コピーした内容を双方向にやり取りするツール。PCでコピーするとiPhoneの画面にすぐ出て、iPhoneからは背面タップで送れる。クラウドを一切経由しない。</p>
           <div class="tags"><span class="tag">Python</span><span class="tag">SSE</span><span class="tag">iOSショートカット</span></div>
+          <a class="entry-ask" href="contact.html?type=clipboard-bridge#form">導入について相談する <span class="arrow">→</span></a>
         </div>
       </article>
 
@@ -995,6 +1044,7 @@
           <h3 class="entry-title">daily-review — 毎朝の自動レビュー</h3>
           <p class="entry-sum">毎朝、手がけている複数のプロジェクトをAIに自動でレビューさせ、改善提案のレポートを生成する仕組み。Macの定時実行で回り続け、これまでに193件のレポートが溜まった。記事の自動投稿系もこの一式に含まれる。</p>
           <div class="tags"><span class="tag">zsh</span><span class="tag">Python</span><span class="tag">Claude Code CLI</span><span class="tag">launchd</span></div>
+          <a class="entry-ask" href="contact.html?type=daily-review#form">導入について相談する <span class="arrow">→</span></a>
         </div>
       </article>
 
@@ -1007,6 +1057,7 @@
           <h3 class="entry-title">AI占い — 完全オフライン</h3>
           <p class="entry-sum">5人のキャラクター占い師と会話しながらタロットや相性を見るiPhoneアプリ。AIが端末内で動くので、生年月日も相談内容も外に出ない。ウィジェットと月額課金に対応。App Store提出済みで、初回審査の指摘に対応中。</p>
           <div class="tags"><span class="tag">SwiftUI</span><span class="tag">MLX</span><span class="tag">Whisper</span><span class="tag">WidgetKit</span></div>
+          <a class="entry-ask" href="contact.html?type=ai-uranai#form">同じようなものを相談する <span class="arrow">→</span></a>
         </div>
       </article>
 
@@ -1020,6 +1071,7 @@
           <p class="entry-sum">録音ボタンを押すだけで音声をテキストにするiPhoneアプリ。文字起こしは端末内で行い、音声を外部サーバーへ送らない。履歴保存・共有・画面ロック中の録音継続に対応。「シンプル録音文字起こし」としてApp Storeで配信中。</p>
           <div class="tags"><span class="tag">SwiftUI</span><span class="tag">Whisper large-v3-turbo</span><span class="tag">端末内LLM</span></div>
           <a class="entry-link" href="https://apps.apple.com/jp/app/id6762348161" target="_blank" rel="noopener">App Storeで見る <span class="arrow">↗</span></a>
+          <a class="entry-ask" href="contact.html?type=simple-transcriber#form">同じようなものを相談する <span class="arrow">→</span></a>
         </div>
       </article>
 
@@ -1033,6 +1085,7 @@
           <p class="entry-sum">大きなマイクボタンをワンタップして話すだけで、音声とテキストが端末内に保存されるジャーナリングアプリ。「書くまでの手間」をなくして日記の三日坊主を防ぐ。文字起こしと整形は端末内で完結し、外部サーバーへは送らない。買い切りでApp Storeで配信中。</p>
           <div class="tags"><span class="tag">iOS</span><span class="tag">音声認識</span><span class="tag">オンデバイスAI</span><span class="tag">買い切り</span></div>
           <a class="entry-link" href="https://apps.apple.com/jp/app/id6769603544" target="_blank" rel="noopener">App Storeで見る <span class="arrow">↗</span></a>
+          <a class="entry-ask" href="contact.html?type=journaling#form">同じようなものを相談する <span class="arrow">→</span></a>
         </div>
       </article>
     </section>
@@ -1052,6 +1105,7 @@
           <h3 class="entry-title">ピンポンボタン</h3>
           <p class="entry-sum">手のひらサイズのマイコンの画面を押すと、Wi-Fi経由でiPhoneにプッシュ通知が飛ぶ呼び鈴デバイス。ナースコールや来客の合図を想定して作り、実機での書き込みから動作確認までの手順を残してある。</p>
           <div class="tags"><span class="tag">Arduino</span><span class="tag">M5Stack AtomS3</span><span class="tag">M5Unified</span><span class="tag">ntfy</span></div>
+          <a class="entry-ask" href="contact.html?type=pingpong-button#form">導入について相談する <span class="arrow">→</span></a>
         </div>
       </article>
     </section>
@@ -1072,6 +1126,7 @@
           <p class="entry-sum">LINEで質問に答えていくだけで、店舗向けの自動応答Bot（問い合わせ対応・予約受付）が作れるサービス。営業用の親Botが、顧客のLINE公式アカウントに繋がる子Botを生み出す多店舗対応の構成。</p>
           <div class="tags"><span class="tag">Cloudflare Workers</span><span class="tag">D1</span><span class="tag">Hono</span><span class="tag">Claude API</span><span class="tag">Stripe</span></div>
           <a class="entry-link" href="https://line-bot-factory.stvisualrevolution.workers.dev/" target="_blank" rel="noopener">紹介ページを見る <span class="arrow">↗</span></a>
+          <a class="entry-ask" href="contact.html?type=line-bot-factory#form">導入について相談する <span class="arrow">→</span></a>
         </div>
       </article>
 
@@ -1084,6 +1139,7 @@
           <h3 class="entry-title">AIツールの使い方リポジトリ</h3>
           <p class="entry-sum">AIコーディングツールとGitの使い方を、非エンジニアの立場から整理した練習用リポジトリ。「個人情報は置かない」「危険なコマンドは設定で物理的に止める」といった運用ルールを、共通指示書の規格に沿ってまとめてある。</p>
           <div class="tags"><span class="tag">Markdown</span><span class="tag">Git / GitHub</span><span class="tag">AGENTS.md</span></div>
+          <a class="entry-ask" href="contact.html?type=ai-tools-repo#form">講演・執筆を相談する <span class="arrow">→</span></a>
         </div>
       </article>
 
@@ -1096,6 +1152,7 @@
           <h3 class="entry-title">アプリ法務ページ 一式（4サイト）</h3>
           <p class="entry-sum">リリースするアプリごとに必要な、利用規約・プライバシーポリシー・特定商取引法表記・サポート窓口の静的サイト。KartePaste／百鬼夜空／封印デッキ／Kotodama Studio の4本ぶんを公開している。</p>
           <div class="tags"><span class="tag">HTML / CSS</span><span class="tag">GitHub Pages</span></div>
+          <a class="entry-ask" href="contact.html?type=legal-pages#form">同じようなものを相談する <span class="arrow">→</span></a>
         </div>
       </article>
     </section>

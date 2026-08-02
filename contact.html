@@ -627,6 +627,7 @@
           <select id="f-type" name="type" required>
             <option value="">選択してください</option>
             <option>電子手術台帳の導入相談</option>
+            <option>既存プロダクトの導入相談</option>
             <option>新規開発のご依頼</option>
             <option>既存システムの改修・引き継ぎ</option>
             <option>相談・壁打ち（単発）</option>
@@ -709,17 +710,82 @@
   var ENDPOINT = 'https://script.google.com/macros/s/AKfycbzSK2xescsWfq_oslAh5ejwUVizrOITqqHw5MEVcGFICM7nO0cKApLd8axeKwSQqzntrg/exec';
 
   /* ─────────────────────────────────────────────
-     一覧ページの各ボタンから ?type=... で開かれたときに、
-     種類と本文を先に入れておく。氏名と連絡先だけで送れる状態にする
+     一覧ページの各項目のボタンから ?type=... で開かれたときの初期値。
+     種類と本文が入った状態で開き、氏名と連絡先だけで送れるようにする。
+
+     項目を増やすときは PRODUCTS に1行足すだけでよい。
+     index.html 側のリンクを contact.html?type=キー#form に合わせること。
      ───────────────────────────────────────────── */
+
+  var ASK_NOTE = 'ご相談の種類と本文は入力済みです。お名前とメールアドレスをご記入いただければ、そのまま送信できます。書き足したいことがあれば、ご相談内容欄にどうぞ。';
+
+  var ASK_MODES = {
+    /* 手元にあるものを、そちらの現場に入れたい */
+    deploy: {
+      type: '既存プロダクトの導入相談',
+      body: function (n) { return '「' + n + '」の導入を検討しています。詳しい内容と費用を教えてください。'; }
+    },
+    /* 同じようなものを作ってほしい */
+    build: {
+      type: '新規開発のご依頼',
+      body: function (n) { return '「' + n + '」のようなものを作りたいと考えています。ご相談させてください。'; }
+    },
+    /* 話してほしい・書いてほしい */
+    talk: {
+      type: '講演・執筆・取材',
+      body: function (n) { return '「' + n + '」に関連して、講演・執筆のご相談です。'; }
+    }
+  };
+
+  /* URLのキー → [掲載名, モード] */
+  var PRODUCTS = {
+    'innai-check':       ['院内体制チェック', 'deploy'],
+    'kartepaste':        ['KartePaste', 'deploy'],
+    'my-op-ledger':      ['自分のオペ台帳', 'deploy'],
+    'web-emr':           ['Web電子カルテ', 'deploy'],
+    'wakoto':            ['Wakoto — AI音声カルテ', 'deploy'],
+    'ortho-lp':          ['歯科矯正 ランディングページ', 'build'],
+    'hyakki-yazora':     ['百鬼夜空', 'build'],
+    'fuin-deck':         ['封印デッキ', 'build'],
+    'chari-sou':         ['チャリ走', 'build'],
+    'alarm-dungeon':     ['アラームダンジョン', 'build'],
+    'dr-reply':          ['Dr. Reply', 'build'],
+    'envelope-label':    ['封筒宛名ラベル印刷', 'deploy'],
+    'clipboard-bridge':  ['Clipboard Bridge', 'deploy'],
+    'daily-review':      ['daily-review', 'deploy'],
+    'ai-uranai':         ['AI占い', 'build'],
+    'simple-transcriber':['SimpleTranscriber', 'build'],
+    'journaling':        ['最強ジャーナリングアプリ', 'build'],
+    'pingpong-button':   ['ピンポンボタン', 'deploy'],
+    'line-bot-factory':  ['LINE AI Bot Factory', 'deploy'],
+    'ai-tools-repo':     ['AIツールの使い方リポジトリ', 'talk'],
+    'legal-pages':       ['アプリ法務ページ 一式', 'build']
+  };
+
+  /* 電子手術台帳だけは価格を掲載しているので、専用の種類と文面を持たせる */
   var PRESETS = {
     'surgical-ledger': {
       type:    '電子手術台帳の導入相談',
-      title:   '電子手術台帳の導入相談',
+      title:   '電子手術台帳 — 導入のご相談',
       note:    'ご相談の種類と本文は入力済みです。お名前とメールアドレスをご記入いただければ、そのまま送信できます。施設の規模や現在の管理方法が分かると、お見積りが具体的になります。',
       message: '電子手術台帳の導入を検討しています。詳しい内容と費用を教えてください。'
     }
   };
+
+  (function buildPresets() {
+    for (var key in PRODUCTS) {
+      if (PRESETS[key]) continue;
+      var name = PRODUCTS[key][0];
+      var mode = ASK_MODES[PRODUCTS[key][1]];
+      if (!mode) continue;
+      PRESETS[key] = {
+        type:    mode.type,
+        title:   name + ' — ' + mode.type,
+        note:    ASK_NOTE,
+        message: mode.body(name)
+      };
+    }
+  })();
 
   (function () {
     var form   = document.getElementById('contactForm');
