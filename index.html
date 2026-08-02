@@ -25,7 +25,114 @@
   body { margin: 0; }
   img, svg { max-width: 100%; }
   button { font: inherit; color: inherit; }
-</style>
+
+  /* ── Featured: Dr. Reply ───────────────────────────── */
+  .featured {
+    border: 2px solid var(--cobalt);
+    border-radius: 4px;
+    background: linear-gradient(180deg, var(--cobalt-soft), transparent 62%);
+    padding: var(--s6) var(--s5) var(--s5);
+    margin: var(--s6) 0 var(--s5);
+  }
+  .featured-flag {
+    display: inline-flex;
+    align-items: center;
+    gap: .5em;
+    font-family: var(--f-data);
+    font-size: .68rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--cobalt);
+    border: 1px solid var(--cobalt);
+    border-radius: 999px;
+    padding: .34em .9em;
+    margin-bottom: var(--s4);
+  }
+  .featured-flag .dot {
+    width: .45em; height: .45em; border-radius: 50%;
+    background: var(--fluor); display: inline-block;
+  }
+  .featured h2 {
+    font-family: var(--f-display);
+    font-size: clamp(2rem, 5.2vw, 3rem);
+    font-weight: 600;
+    letter-spacing: .01em;
+    line-height: 1.15;
+    margin: 0 0 var(--s2);
+  }
+  .featured .featured-url {
+    font-family: var(--f-data);
+    font-size: .78rem;
+    color: var(--cobalt);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+  }
+  .featured-lead {
+    font-size: 1.06rem;
+    line-height: 1.85;
+    color: var(--ink-soft);
+    max-width: var(--measure);
+    margin: var(--s4) 0 var(--s5);
+  }
+  .featured-points {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: var(--s4);
+    margin-bottom: var(--s5);
+    padding: 0;
+    list-style: none;
+  }
+  .featured-points li {
+    border-top: 1px solid var(--rule);
+    padding-top: var(--s3);
+  }
+  .featured-points b {
+    display: block;
+    font-size: .95rem;
+    margin-bottom: .35em;
+    color: var(--ink);
+  }
+  .featured-points span {
+    font-size: .84rem;
+    line-height: 1.75;
+    color: var(--slate);
+  }
+  .featured-who {
+    font-family: var(--f-data);
+    font-size: .74rem;
+    line-height: 2;
+    color: var(--slate);
+    letter-spacing: .02em;
+    margin-bottom: var(--s5);
+  }
+  .featured-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s4);
+  }
+  .featured-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: .5em;
+    background: var(--cobalt);
+    color: #fff;
+    font-size: .95rem;
+    font-weight: 600;
+    text-decoration: none;
+    padding: .95em 1.9em;
+    border-radius: 3px;
+  }
+  .featured-price {
+    font-family: var(--f-data);
+    font-size: .78rem;
+    color: var(--slate);
+  }
+  @media (max-width: 560px) {
+    .featured { padding: var(--s5) var(--s4) var(--s4); }
+  }
+
+  </style>
 
 <style>
   .topline {
@@ -545,13 +652,13 @@
     <div class="chart">
       <h1 class="chart-1">医療 × AI 実装事例</h1>
       <p class="chart-2">現役の眼科医が、自分の現場の困りごとをそのままシステムにしてきた記録です。要件を決めるところから実装・運用まで、診療の合間に一人で回しています。</p>
-      <p class="chart-3">「AIは良さそうだけど、何から手を付ければ？」——答えは、自院で一番めんどくさい作業から。ここに並ぶ23件は、その考え方で実際につくって、いくつかは今も病院の中で動いているものです。</p>
+      <p class="chart-3">「AIは良さそうだけど、何から手を付ければ？」——答えは、自院で一番めんどくさい作業から。ここに並ぶ22件は、その考え方で実際につくって、いくつかは今も病院の中で動いているものです。</p>
     </div>
     <div class="tally">
-      <div class="tally-item"><span class="tally-n">23</span><span class="tally-l">実装したもの</span></div>
-      <div class="tally-item"><span class="tally-n">7</span><span class="tally-l">現場で稼働中</span></div>
+      <div class="tally-item"><span class="tally-n">22</span><span class="tally-l">実装したもの</span></div>
+      <div class="tally-item"><span class="tally-n">8</span><span class="tally-l">現場で稼働中</span></div>
       <div class="tally-item"><span class="tally-n">7</span><span class="tally-l">医療・臨床</span></div>
-      <div class="tally-item"><span class="tally-n">10</span><span class="tally-l">iOS / ネイティブ</span></div>
+      <div class="tally-item"><span class="tally-n">8</span><span class="tally-l">iOS / ネイティブ</span></div>
     </div>
   </header>
 
@@ -566,6 +673,46 @@
   </nav>
 
   <main>
+
+    <!-- ══ 注目：Dr. Reply ══════════════════════ -->
+    <section class="featured" aria-labelledby="featured-title">
+      <span class="featured-flag"><span class="dot"></span>Now Live — 一般公開中</span>
+      <h2 id="featured-title">Dr. Reply</h2>
+      <a class="featured-url" href="https://drreply.jp" target="_blank" rel="noopener">https://drreply.jp</a>
+
+      <p class="featured-lead">
+        Xを伸ばしたいけど、何を書けばいいか分からない。そもそも毎日開く時間がない。
+        ——その2つを、朝の数分に畳んでしまう道具をつくりました。
+        あなたの業種と専門領域を設定しておくと、<strong>いま反応すべき実在の投稿</strong>と、
+        <strong>あなたらしい投稿案</strong>が用意された状態で1日が始まります。
+      </p>
+
+      <ul class="featured-points">
+        <li>
+          <b>探す時間をゼロにする</b>
+          <span>設定した業種とキーワードでX上の公開投稿を集め、返信する価値が高い順にAIが採点します。眺めるのは上位だけで済みます。</span>
+        </li>
+        <li>
+          <b>勝手に投稿しない</b>
+          <span>自動フォロー・自動DM・無差別な自動返信は一切しません。文面はすべて下書きで、あなたが確認して押した時だけ送信されます。</span>
+        </li>
+        <li>
+          <b>業種に合わせて変わる</b>
+          <span>医療なら医療広告、美容なら薬機法。業種ごとに踏みやすい表現をAIに避けさせています。検索する母集団も業種ごとに切り替わります。</span>
+        </li>
+      </ul>
+
+      <p class="featured-who">
+        医療・クリニック ／ 歯科 ／ 美容サロン・エステ ／ パーソナルジム ／ 士業 ／
+        コーチ・コンサル ／ クリエイター・アーティスト ／ 飲食 ／ EC・ハンドメイド ／
+        不動産 ／ 教室・スクール ／ フリーランス・個人事業主
+      </p>
+
+      <div class="featured-actions">
+        <a class="featured-cta" href="https://drreply.jp" target="_blank" rel="noopener">使ってみる <span aria-hidden="true">↗</span></a>
+        <span class="featured-price">月額 ¥5,478（税込）から ／ 解約はいつでも</span>
+      </div>
+    </section>
 
     <!-- ══ 医療・臨床 ══════════════════════════ -->
     <section data-sec="med">
@@ -720,8 +867,21 @@
     <!-- ══ アプリ・ツール ═══════════════════════ -->
     <section data-sec="tool">
       <div class="section-head">
-        <h2>アプリ・ツール</h2><span class="count">6</span><span class="fill"></span>
+        <h2>アプリ・ツール</h2><span class="count">7</span><span class="fill"></span>
       </div>
+
+      <article class="entry" data-cat="tool">
+        <div class="entry-meta">
+          <span class="date">2026.08.02</span>
+          <span class="status"><span class="dot live"></span>運用中</span>
+        </div>
+        <div class="entry-body">
+          <h3 class="entry-title">Dr. Reply</h3>
+          <p class="entry-sum">業種と専門領域を設定しておくと、X上の実在する公開投稿から「返信する価値が高い相手」をAIが採点して並べ、あわせて自分用の投稿案とトレンド要約を用意する承認型のX運用サービス。自動フォロー・自動DM・無差別返信は行わず、送信は必ず人の確認を挟む。医療・美容・士業・クリエイターなど12業種に対応し、業種ごとに検索する母集団とAIへの表現上の注意を切り替える。Cloudflare Workers + D1 上で動き、認証はパスワードなしのマジックリンク、決済はStripeのサブスクリプション。</p>
+          <div class="tags"><span class="tag">Next.js</span><span class="tag">Cloudflare Workers</span><span class="tag">D1</span><span class="tag">Stripe</span><span class="tag">X API</span><span class="tag">Grok</span></div>
+          <a class="entry-link" href="https://drreply.jp" target="_blank" rel="noopener">サービスを見る <span class="arrow">↗</span></a>
+        </div>
+      </article>
 
       <article class="entry" data-cat="tool">
         <div class="entry-meta">
@@ -820,7 +980,7 @@
     <!-- ══ Web・文書 ═══════════════════════════ -->
     <section data-sec="web">
       <div class="section-head">
-        <h2>Web・文書</h2><span class="count">5</span><span class="fill"></span>
+        <h2>Web・文書</h2><span class="count">3</span><span class="fill"></span>
       </div>
 
       <article class="entry" data-cat="web">
