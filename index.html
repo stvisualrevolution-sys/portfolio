@@ -32,10 +32,11 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--s4);
+    flex-wrap: wrap;
+    gap: var(--s3) var(--s4);
   }
 
-  .top-actions { display: flex; gap: var(--s3); flex-shrink: 0; }
+  .top-actions { display: flex; flex-wrap: wrap; gap: var(--s3); flex-shrink: 0; }
 
   .theme-toggle {
     flex-shrink: 0;
@@ -54,6 +55,9 @@
   }
   .theme-toggle:hover { border-color: var(--cobalt); color: var(--cobalt); }
   .theme-toggle:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+
+  .theme-toggle.cta { border-color: var(--cobalt); color: var(--cobalt); }
+  .theme-toggle.cta:hover { background: var(--cobalt); color: var(--ground); }
 </style>
 <style>
   /* ─────────────────────────────────────────────
@@ -429,6 +433,55 @@
   .entry-link:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
   .entry-link .arrow { font-size: .85em; }
 
+  /* ── 依頼への導線 ───────────────────────────── */
+
+  .cta-band {
+    margin-top: var(--s8);
+    padding: var(--s7) 0;
+    border-top: 2px solid var(--ink);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s3);
+  }
+
+  .cta-band h2 {
+    font-family: var(--f-display);
+    font-size: clamp(1.5rem, 4vw, 2.1rem);
+    font-weight: 600;
+    letter-spacing: .04em;
+    line-height: 1.3;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .cta-band p {
+    font-size: .9rem;
+    line-height: 1.9;
+    color: var(--ink-soft);
+    margin: 0;
+    max-width: 40rem;
+  }
+
+  .cta-link {
+    align-self: flex-start;
+    margin-top: var(--s3);
+    font-family: var(--f-data);
+    font-size: .78rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ground);
+    background: var(--cobalt);
+    border: 1px solid var(--cobalt);
+    padding: var(--s3) var(--s6);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: .5em;
+    transition: opacity .15s;
+  }
+  .cta-link:hover { opacity: .85; }
+  .cta-link:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 3px; }
+
   /* ── 注記 ──────────────────────────────────── */
 
   .note {
@@ -485,6 +538,7 @@
       <p class="eyebrow">Clinical AI Implementation — 2026</p>
       <div class="top-actions">
         <a class="theme-toggle" href="progress.html">進捗 →</a>
+        <a class="theme-toggle cta" href="contact.html">仕事の相談 →</a>
         <button class="theme-toggle" id="themeToggle" type="button" aria-label="配色を切り替える">◐ THEME</button>
       </div>
     </div>
@@ -808,6 +862,13 @@
     </section>
 
   </main>
+
+  <section class="cta-band">
+    <h2>同じことを、あなたの現場でも。</h2>
+    <p>ここに並んでいるものは、どれも「自院の一番めんどくさい作業」から始まっています。要件が固まっていない、そもそも何から手を付けるか分からない——その段階からご相談ください。医療現場の言葉がそのまま通じます。</p>
+    <p>新規開発のご依頼、既存システムの改修、単発の相談・壁打ち、講演や執筆まで。</p>
+    <a class="cta-link" href="contact.html">仕事の相談をする <span aria-hidden="true">→</span></a>
+  </section>
 
   <footer class="note">
     <h2>掲載にあたって</h2>

@@ -109,7 +109,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--s4);
+    flex-wrap: wrap;
+    gap: var(--s3) var(--s4);
   }
 
   .eyebrow {
@@ -121,7 +122,7 @@
     margin: 0;
   }
 
-  .top-actions { display: flex; gap: var(--s3); flex-shrink: 0; }
+  .top-actions { display: flex; flex-wrap: wrap; gap: var(--s3); flex-shrink: 0; }
 
   .theme-toggle, .back-link {
     background: var(--ground);
@@ -139,6 +140,9 @@
   }
   .theme-toggle:hover, .back-link:hover { border-color: var(--cobalt); color: var(--cobalt); }
   .theme-toggle:focus-visible, .back-link:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+
+  .back-link.cta { border-color: var(--cobalt); color: var(--cobalt); }
+  .back-link.cta:hover { background: var(--cobalt); color: var(--ground); }
 
   h1 {
     font-family: var(--f-display);
@@ -441,6 +445,7 @@
       <p class="eyebrow">Clinical AI Implementation — Progress</p>
       <div class="top-actions">
         <a class="back-link" href="./">← 実装事例一覧</a>
+        <a class="back-link cta" href="contact.html">仕事の相談 →</a>
         <button class="theme-toggle" id="themeToggle" type="button" aria-label="配色を切り替える">◐ THEME</button>
       </div>
     </div>

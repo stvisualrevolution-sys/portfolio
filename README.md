@@ -4,8 +4,13 @@
 
 - 公開URL: https://stvisualrevolution-sys.github.io/portfolio/
 - 進捗ダッシュボード: https://stvisualrevolution-sys.github.io/portfolio/progress.html
-- `index.html`（一覧）と `progress.html`（ガントチャート）。ビルド不要、外部依存なし。
+- 仕事のご相談: https://stvisualrevolution-sys.github.io/portfolio/contact.html
+- `index.html`（一覧）、`progress.html`（ガントチャート）、`contact.html`（依頼フォーム）。
+  ビルド不要、外部依存なし。
 - `ogp.png` はSNSカード用の画像（1200x630）。
+- `apps-script/` は問い合わせフォームの受け口（Google Apps Script）。
+  GitHub Pages は静的ホスティングでサーバー処理が動かないため、ここだけ外に置いている。
+  セットアップ手順は `apps-script/README.md`。
 
 ## 掲載方針
 

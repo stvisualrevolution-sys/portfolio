@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>仕事のご相談 — 医療 × AI 実装事例</title>
+<meta name="description" content="現役眼科医が医療現場向けのシステム開発・業務効率化・AI組み込みのご相談を受け付けています。開発の依頼、相談・壁打ち、講演や執筆まで。">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://stvisualrevolution-sys.github.io/portfolio/contact.html">
+<meta property="og:site_name" content="医療 × AI 実装事例">
+<meta property="og:title" content="仕事のご相談 — 医療 × AI 実装事例">
+<meta property="og:description" content="医療現場向けのシステム開発・業務効率化・AI組み込みのご相談を受け付けています。">
+<meta property="og:image" content="https://stvisualrevolution-sys.github.io/portfolio/ogp.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="医療 × AI 実装事例 — 仕事のご相談">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="仕事のご相談 — 医療 × AI 実装事例">
+<meta name="twitter:description" content="医療現場向けのシステム開発・業務効率化・AI組み込みのご相談を受け付けています。">
+<meta name="twitter:image" content="https://stvisualrevolution-sys.github.io/portfolio/ogp.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='13'%20fill='%230B1220'/%3E%3Cpath%20d='M7%2035h9.5l4.5-14%206.5%2027%205.5-18%203.5%205h15'%20fill='none'%20stroke='%234C7BFF'%20stroke-width='5'%20stroke-linecap='round'%20stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; }
+  img, svg { max-width: 100%; }
+  button, input, select, textarea { font: inherit; color: inherit; }
+</style>
+
+<style>
+  /* ─────────────────────────────────────────────
+     医療 × AI 実装事例 / Clinical AI Implementation
+     色: 細隙灯顕微鏡のコバルトブルーフィルタ由来
+     字: 明朝(見出し) × ゴシック(本文) × 等幅(数値)
+     組: カードを使わない、罫線だけの診療録組み
+     ───────────────────────────────────────────── */
+
+  :root {
+    --ground:      #F4F6F8;
+    --ground-sub:  #E9EDF1;
+    --ink:         #0F1620;
+    --ink-soft:    #3C4654;
+    --slate:       #63707F;
+    --rule:        #C9D2DB;
+    --rule-soft:   #DDE4EA;
+    --cobalt:      #1A46C8;
+    --cobalt-soft: #E4EAFA;
+    --fluor:       #7A9410;
+    --amber:       #A56A00;
+    --alert:       #B3261E;
+
+    --f-display: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Songti SC", serif;
+    --f-body:    "Hiragino Sans", "Yu Gothic", "YuGothic", system-ui, -apple-system, sans-serif;
+    --f-data:    ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
+
+    --s1: .25rem;  --s2: .5rem;   --s3: .75rem;  --s4: 1rem;
+    --s5: 1.5rem;  --s6: 2.25rem; --s7: 3.5rem;  --s8: 5.5rem;
+
+    --measure: 34rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground:      #0C1219;
+      --ground-sub:  #131C26;
+      --ink:         #E7EDF3;
+      --ink-soft:    #B4C0CD;
+      --slate:       #8593A2;
+      --rule:        #27333F;
+      --rule-soft:   #1B242E;
+      --cobalt:      #7D9CFF;
+      --cobalt-soft: #16233F;
+      --fluor:       #B9D93F;
+      --amber:       #D9A03C;
+      --alert:       #F2837B;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:      #0C1219;
+    --ground-sub:  #131C26;
+    --ink:         #E7EDF3;
+    --ink-soft:    #B4C0CD;
+    --slate:       #8593A2;
+    --rule:        #27333F;
+    --rule-soft:   #1B242E;
+    --cobalt:      #7D9CFF;
+    --cobalt-soft: #16233F;
+    --fluor:       #B9D93F;
+    --amber:       #D9A03C;
+    --alert:       #F2837B;
+  }
+
+  :root[data-theme="light"] {
+    --ground:      #F4F6F8;
+    --ground-sub:  #E9EDF1;
+    --ink:         #0F1620;
+    --ink-soft:    #3C4654;
+    --slate:       #63707F;
+    --rule:        #C9D2DB;
+    --rule-soft:   #DDE4EA;
+    --cobalt:      #1A46C8;
+    --cobalt-soft: #E4EAFA;
+    --fluor:       #7A9410;
+    --amber:       #A56A00;
+    --alert:       #B3261E;
+  }
+
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--f-body);
+    font-size: 16px;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "palt" 1;
+  }
+
+  .wrap {
+    max-width: 62rem;
+    margin: 0 auto;
+    padding: 0 var(--s5) var(--s8);
+  }
+
+  /* ── 上部ナビ ───────────────────────────────── */
+
+  .topline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--s3) var(--s4);
+  }
+
+  .top-actions { display: flex; flex-wrap: wrap; gap: var(--s3); flex-shrink: 0; }
+
+  .theme-toggle {
+    flex-shrink: 0;
+    background: var(--ground);
+    border: 1px solid var(--rule);
+    color: var(--ink-soft);
+    font-family: var(--f-data);
+    font-size: .68rem;
+    letter-spacing: .1em;
+    padding: .4rem .7rem;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: border-color .15s, color .15s;
+  }
+  .theme-toggle:hover { border-color: var(--cobalt); color: var(--cobalt); }
+  .theme-toggle:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+
+  /* ── 導入部 ────────────────────────────────── */
+
+  .masthead {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s5);
+    padding: var(--s8) 0 var(--s7);
+    border-bottom: 2px solid var(--ink);
+  }
+
+  .eyebrow {
+    font-family: var(--f-data);
+    font-size: .7rem;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--cobalt);
+    margin: 0;
+  }
+
+  .chart { display: flex; flex-direction: column; gap: var(--s3); }
+
+  .chart-1 {
+    font-family: var(--f-display);
+    font-size: clamp(2.5rem, 8vw, 4.5rem);
+    font-weight: 600;
+    line-height: 1.02;
+    letter-spacing: .04em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .chart-2 {
+    font-family: var(--f-display);
+    font-size: clamp(1.15rem, 3vw, 1.6rem);
+    font-weight: 400;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin: 0;
+    max-width: var(--measure);
+    text-wrap: balance;
+  }
+
+  .chart-3 {
+    font-size: .9rem;
+    line-height: 1.9;
+    color: var(--slate);
+    margin: 0;
+    max-width: var(--measure);
+  }
+
+  /* ── 見出し ────────────────────────────────── */
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s3);
+    padding: var(--s7) 0 var(--s4);
+  }
+
+  .section-head h2 {
+    font-family: var(--f-display);
+    font-size: 1.3rem;
+    font-weight: 600;
+    letter-spacing: .08em;
+    margin: 0;
+  }
+
+  .section-head .fill { flex: 1; height: 1px; background: var(--rule); }
+
+  /* ── 受付範囲の一覧 ─────────────────────────── */
+
+  .scope {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 0 var(--s6);
+  }
+
+  .scope-col { border-top: 1px solid var(--rule); padding-top: var(--s4); }
+
+  .scope-col h3 {
+    font-family: var(--f-data);
+    font-size: .68rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--slate);
+    margin: 0 0 var(--s3);
+    font-weight: 400;
+  }
+
+  .scope-col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s2);
+  }
+
+  .scope-col li {
+    font-size: .88rem;
+    line-height: 1.8;
+    color: var(--ink-soft);
+    display: flex;
+    gap: var(--s3);
+  }
+
+  .scope-col li::before {
+    content: "—";
+    color: var(--slate);
+    flex-shrink: 0;
+  }
+
+  .scope-col.no li { color: var(--slate); }
+
+  /* ── 注意書き ──────────────────────────────── */
+
+  .caution {
+    margin-top: var(--s6);
+    border-left: 2px solid var(--cobalt);
+    background: var(--cobalt-soft);
+    padding: var(--s4) var(--s5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s2);
+  }
+
+  .caution p {
+    margin: 0;
+    font-size: .86rem;
+    line-height: 1.9;
+    color: var(--ink-soft);
+    max-width: 44rem;
+  }
+
+  .caution strong { color: var(--ink); font-weight: 600; }
+
+  /* ── フォーム ──────────────────────────────── */
+
+  .form { display: flex; flex-direction: column; gap: var(--s5); }
+
+  .row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: var(--s5);
+  }
+
+  .field { display: flex; flex-direction: column; gap: var(--s2); min-width: 0; }
+
+  .field > label {
+    font-family: var(--f-data);
+    font-size: .68rem;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--slate);
+    display: flex;
+    align-items: center;
+    gap: var(--s2);
+  }
+
+  .req {
+    color: var(--cobalt);
+    font-size: .62rem;
+    letter-spacing: .08em;
+    border: 1px solid currentColor;
+    padding: 0 3px;
+    line-height: 1.5;
+  }
+
+  .hint { font-size: .78rem; color: var(--slate); line-height: 1.7; }
+
+  input[type="text"],
+  input[type="email"],
+  select,
+  textarea {
+    font-family: var(--f-body);
+    font-size: .95rem;
+    line-height: 1.7;
+    color: var(--ink);
+    background-color: var(--ground-sub);
+    border: 1px solid var(--rule);
+    border-radius: 0;
+    padding: var(--s3) var(--s4);
+    width: 100%;
+    transition: border-color .15s, background .15s;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  select {
+    background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+                      linear-gradient(135deg, currentColor 50%, transparent 50%);
+    background-position: calc(100% - 1.15rem) center, calc(100% - .85rem) center;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+    padding-right: var(--s7);
+    cursor: pointer;
+  }
+
+  textarea { resize: vertical; min-height: 11rem; }
+
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--cobalt);
+    background-color: var(--ground);
+  }
+
+  input:focus-visible, select:focus-visible, textarea:focus-visible {
+    outline: 2px solid var(--cobalt);
+    outline-offset: 1px;
+  }
+
+  input:user-invalid, textarea:user-invalid { border-color: var(--alert); }
+
+  /* ハニーポット — 人間には見えない。埋まっていれば送信は破棄される */
+  .trap {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .consent {
+    display: flex;
+    gap: var(--s3);
+    align-items: flex-start;
+    border-top: 1px solid var(--rule);
+    padding-top: var(--s5);
+  }
+
+  .consent input[type="checkbox"] {
+    width: 1.05rem;
+    height: 1.05rem;
+    margin: .38rem 0 0;
+    accent-color: var(--cobalt);
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  .consent label {
+    font-size: .86rem;
+    line-height: 1.85;
+    color: var(--ink-soft);
+    cursor: pointer;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: var(--s5);
+    flex-wrap: wrap;
+  }
+
+  .submit {
+    font-family: var(--f-data);
+    font-size: .78rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ground);
+    background: var(--cobalt);
+    border: 1px solid var(--cobalt);
+    padding: var(--s3) var(--s6);
+    cursor: pointer;
+    transition: opacity .15s;
+  }
+
+  .submit:hover { opacity: .85; }
+  .submit:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 3px; }
+  .submit[disabled] { opacity: .45; cursor: default; }
+
+  .status {
+    font-family: var(--f-data);
+    font-size: .74rem;
+    line-height: 1.8;
+    letter-spacing: .02em;
+    color: var(--slate);
+  }
+  .status.err { color: var(--alert); }
+  .status.ok  { color: var(--fluor); }
+  .status a { color: inherit; }
+
+  /* ── 送信完了 ──────────────────────────────── */
+
+  .done {
+    border-top: 2px solid var(--ink);
+    border-bottom: 2px solid var(--ink);
+    padding: var(--s7) 0;
+    display: none;
+    flex-direction: column;
+    gap: var(--s3);
+  }
+
+  .done[data-shown="1"] { display: flex; }
+
+  .done h2 {
+    font-family: var(--f-display);
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: .06em;
+    margin: 0;
+  }
+
+  .done p {
+    margin: 0;
+    font-size: .9rem;
+    line-height: 1.9;
+    color: var(--ink-soft);
+    max-width: 40rem;
+  }
+
+  .done .back {
+    font-family: var(--f-data);
+    font-size: .72rem;
+    letter-spacing: .03em;
+    color: var(--cobalt);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+    align-self: flex-start;
+    margin-top: var(--s3);
+    padding-bottom: 1px;
+  }
+  .done .back:hover { border-color: var(--cobalt); }
+
+  /* ── 注記 ──────────────────────────────────── */
+
+  .note {
+    margin-top: var(--s8);
+    padding: var(--s5) 0 0;
+    border-top: 2px solid var(--ink);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s3);
+  }
+
+  .note h2 {
+    font-family: var(--f-display);
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: .06em;
+    margin: 0;
+  }
+
+  .note p {
+    font-size: .86rem;
+    line-height: 1.9;
+    color: var(--slate);
+    margin: 0;
+    max-width: 44rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <div class="topline">
+      <p class="eyebrow">Contact — 仕事のご相談</p>
+      <div class="top-actions">
+        <a class="theme-toggle" href="index.html">← 実装事例</a>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="配色を切り替える">◐ THEME</button>
+      </div>
+    </div>
+    <div class="chart">
+      <h1 class="chart-1">仕事のご相談</h1>
+      <p class="chart-2">「現場のこれ、どうにかならないか」の段階でかまいません。要件が固まっていない状態からご相談ください。</p>
+      <p class="chart-3">現役の眼科医として診療をしながら、要件定義から実装・運用まで一人で回しています。医療現場の言葉がそのまま通じることが、たぶん一番の強みです。診療の合間に確認しているため、返信までに数日いただくことがあります。</p>
+    </div>
+  </header>
+
+  <section>
+    <div class="section-head">
+      <h2>受けられるもの / 受けられないもの</h2><span class="fill"></span>
+    </div>
+
+    <div class="scope">
+      <div class="scope-col">
+        <h3>受けられます</h3>
+        <ul>
+          <li>院内業務の効率化ツール・院内システムの新規開発</li>
+          <li>既存システムへの生成AIの組み込み、既存ツールの改修</li>
+          <li>iOS / Web アプリの企画・実装</li>
+          <li>「何から手を付けるか」の相談・壁打ち（単発可）</li>
+          <li>医療 × AI に関する講演・執筆・取材</li>
+        </ul>
+      </div>
+      <div class="scope-col no">
+        <h3>受けられません</h3>
+        <ul>
+          <li>患者さん個人の医療相談・受診や治療に関するご相談</li>
+          <li>患者データそのものをお預かりする形の作業</li>
+          <li>医療広告規制・薬機法に抵触する内容の制作</li>
+          <li>効果や成果を保証する形での請負</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="caution">
+      <p><strong>患者さんの個人情報は書かないでください。</strong>お困りごとの背景を説明する際も、氏名・生年月日・ID・画像・カルテの記載など、個人が特定されうる情報は含めずにお書きください。必要な情報は、契約と体制を整えたうえで改めて伺います。</p>
+      <p>いただいた内容は本件のご連絡以外には使いません。第三者への提供もしません。</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>ご相談フォーム</h2><span class="fill"></span>
+    </div>
+
+    <form class="form" id="contactForm" novalidate>
+
+      <div class="row">
+        <div class="field">
+          <label for="f-name">お名前 <span class="req">必須</span></label>
+          <input type="text" id="f-name" name="name" required maxlength="100" autocomplete="name">
+        </div>
+        <div class="field">
+          <label for="f-org">所属</label>
+          <input type="text" id="f-org" name="org" maxlength="120" autocomplete="organization" placeholder="医院名・法人名・部署など">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="f-email">メールアドレス <span class="req">必須</span></label>
+          <input type="email" id="f-email" name="email" required maxlength="200" autocomplete="email" inputmode="email">
+          <span class="hint">こちらに返信します。お間違いのないようご確認ください。</span>
+        </div>
+        <div class="field">
+          <label for="f-type">ご相談の種類 <span class="req">必須</span></label>
+          <select id="f-type" name="type" required>
+            <option value="">選択してください</option>
+            <option>新規開発のご依頼</option>
+            <option>既存システムの改修・引き継ぎ</option>
+            <option>相談・壁打ち（単発）</option>
+            <option>講演・執筆・取材</option>
+            <option>その他</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label for="f-budget">ご予算の目安</label>
+          <select id="f-budget" name="budget">
+            <option value="">未定 / これから相談したい</option>
+            <option>〜30万円</option>
+            <option>30〜100万円</option>
+            <option>100〜300万円</option>
+            <option>300万円〜</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="f-when">ご希望の時期</label>
+          <select id="f-when" name="when">
+            <option value="">未定</option>
+            <option>できるだけ早く</option>
+            <option>3か月以内</option>
+            <option>半年以内</option>
+            <option>1年以内</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="f-message">ご相談内容 <span class="req">必須</span></label>
+        <textarea id="f-message" name="message" required maxlength="5000"
+          placeholder="いま現場で何に困っているか、どういう状態になれば解決と言えるか。この2つが分かると話が早いです。決まっていない部分は「未定」で構いません。"></textarea>
+        <span class="hint">最大5,000文字。<strong>患者さんの個人情報は含めないでください。</strong></span>
+      </div>
+
+      <!-- 自動投稿よけ。人間には見えず、埋まっていれば送信は破棄される -->
+      <div class="trap" aria-hidden="true">
+        <label for="f-website">この欄は入力しないでください</label>
+        <input type="text" id="f-website" name="website" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="consent">
+        <input type="checkbox" id="f-consent" name="consent" required>
+        <label for="f-consent">患者さんの個人情報を含めていないことを確認しました。また、いただいた内容をご連絡のために利用することに同意します。</label>
+      </div>
+
+      <div class="actions">
+        <button class="submit" id="submitBtn" type="submit">送信する</button>
+        <p class="status" id="status" role="status" aria-live="polite"></p>
+      </div>
+
+    </form>
+
+    <div class="done" id="done" data-shown="0">
+      <h2>送信しました</h2>
+      <p>ありがとうございます。内容を確認のうえ、ご記入いただいたメールアドレスに返信します。診療の合間に見ているため、数日いただくことがあります。</p>
+      <p>3日ほど経っても返信が届かない場合、迷惑メールフォルダに振り分けられている可能性があります。お手数ですが一度ご確認ください。</p>
+      <a class="back" href="index.html">← 実装事例の一覧に戻る</a>
+    </div>
+  </section>
+
+  <footer class="note">
+    <h2>お伝えしておくこと</h2>
+    <p>医療・臨床に関わる案件では、導入先の医療機関名、患者データ、契約に関する情報を一切公開しません。このサイトに掲載する場合も、技術構成と何を解決するものかだけを記載します。</p>
+    <p>本業は診療です。お引き受けできる件数に限りがあり、内容や時期によってはお断りすることがあります。ご了承ください。</p>
+  </footer>
+
+</div>
+
+<script>
+  /* ─────────────────────────────────────────────
+     送信先 — Google Apps Script のウェブアプリURL
+     apps-script/README.md の手順でデプロイし、
+     発行された .../exec の URL をここに貼る
+     ───────────────────────────────────────────── */
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbzSK2xescsWfq_oslAh5ejwUVizrOITqqHw5MEVcGFICM7nO0cKApLd8axeKwSQqzntrg/exec';
+
+  (function () {
+    var form   = document.getElementById('contactForm');
+    var btn    = document.getElementById('submitBtn');
+    var status = document.getElementById('status');
+    var done   = document.getElementById('done');
+
+    function say(text, cls) {
+      status.className = 'status' + (cls ? ' ' + cls : '');
+      status.textContent = text;
+    }
+
+    /* 失敗したときだけ、直接の連絡先を組み立てて出す。
+       素の状態でページに書かないのは収集対策 */
+    function fallback() {
+      var addr = ['stvisualrevolution', '@', 'gmail', '.', 'com'].join('');
+      status.className = 'status err';
+      status.innerHTML = '送信できませんでした。お手数ですが直接ご連絡ください → ' +
+        '<a href="mailto:' + addr + '">' + addr + '</a>';
+    }
+
+    function firstInvalid() {
+      var els = form.querySelectorAll('input, select, textarea');
+      for (var i = 0; i < els.length; i++) {
+        if (!els[i].checkValidity()) return els[i];
+      }
+      return null;
+    }
+
+    /* Apps Script は POST に 302 を返すため、プリフライトの起きない
+       単純リクエスト(text/plain)で投げる。CORS で応答が読めない環境が
+       あるので、その場合は no-cors で投げ直す（届きはする） */
+    function send(payload) {
+      var body = JSON.stringify(payload);
+      var opts = {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: body
+      };
+      return fetch(ENDPOINT, opts)
+        .then(function (res) { return res.json(); })
+        .catch(function () {
+          return fetch(ENDPOINT, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: body
+          }).then(function () { return { ok: true, opaque: true }; });
+        });
+    }
+
+    form.addEventListener('submit', function (ev) {
+      ev.preventDefault();
+
+      var bad = firstInvalid();
+      if (bad) {
+        say('未入力の項目があります。', 'err');
+        bad.focus();
+        if (bad.reportValidity) bad.reportValidity();
+        return;
+      }
+
+      if (ENDPOINT.indexOf('PASTE_') === 0) {
+        fallback();
+        return;
+      }
+
+      var data = new FormData(form);
+      var payload = {
+        name:    (data.get('name')    || '').toString().trim(),
+        org:     (data.get('org')     || '').toString().trim(),
+        email:   (data.get('email')   || '').toString().trim(),
+        type:    (data.get('type')    || '').toString().trim(),
+        budget:  (data.get('budget')  || '').toString().trim(),
+        when:    (data.get('when')    || '').toString().trim(),
+        message: (data.get('message') || '').toString().trim(),
+        website: (data.get('website') || '').toString(),
+        page:    location.href
+      };
+
+      btn.disabled = true;
+      say('送信しています…');
+
+      send(payload).then(function (res) {
+        if (res && res.ok) {
+          form.style.display = 'none';
+          done.setAttribute('data-shown', '1');
+          done.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } else {
+          btn.disabled = false;
+          say((res && res.error) || '送信できませんでした。少し時間をおいて、もう一度お試しください。', 'err');
+        }
+      }).catch(function () {
+        btn.disabled = false;
+        fallback();
+      });
+    });
+  })();
+</script>
+<script>
+  (function () {
+    var root = document.documentElement;
+    var btn  = document.getElementById('themeToggle');
+    var saved = null;
+    try { saved = localStorage.getItem('ledger-theme'); } catch (e) {}
+    if (saved) root.setAttribute('data-theme', saved);
+    btn.addEventListener('click', function () {
+      var cur = root.getAttribute('data-theme');
+      if (!cur) {
+        cur = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('ledger-theme', next); } catch (e) {}
+    });
+  })();
+</script>
+</body>
+</html>
