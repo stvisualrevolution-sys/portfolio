@@ -126,6 +126,21 @@
   }
   .featured-cta:hover { opacity: .88; }
   .featured-cta:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 3px; }
+  /* 併記する2番目の導線。相談ボタンと張り合わないよう、面を持たせず枠線だけにする */
+  .featured-cta-ghost {
+    background: transparent;
+    color: var(--cobalt);
+    border: 1px solid var(--cobalt);
+    padding: calc(.95em - 1px) calc(1.9em - 1px);
+    transition: background .15s, color .15s;
+  }
+  .featured-cta-ghost:hover { background: var(--cobalt); color: var(--ground); opacity: 1; }
+  .featured-demo-note {
+    margin: var(--s4) 0 0;
+    font-size: .84rem;
+    line-height: 1.75;
+    color: var(--slate);
+  }
   .featured-price {
     font-family: var(--f-data);
     font-size: .78rem;
@@ -822,8 +837,15 @@
 
       <div class="featured-actions">
         <a class="featured-cta" href="contact.html?type=surgical-ledger#form">導入について相談する <span aria-hidden="true">→</span></a>
+        <a class="featured-cta featured-cta-ghost" href="https://surgery-registry-demo.vercel.app" target="_blank" rel="noopener">デモを触ってみる <span aria-hidden="true">↗</span></a>
         <span class="featured-price">フォームは「電子手術台帳の導入相談」で開きます ／ 氏名と連絡先だけで送信できます</span>
       </div>
+
+      <p class="featured-demo-note">
+        デモは実際に病院で動いているものと同じシステムに、架空の患者データを入れたものです。
+        ログインは要りません。登録も並べ替えも削除も、遠慮なく触ってみてください。
+        入力した内容はどこにも保存されず、しばらく置くと元の状態に戻ります。
+      </p>
 
       <p style="margin: var(--s5) 0 0;"><span class="redacted">導入先の医療機関名は非公開</span></p>
     </section>
@@ -899,6 +921,7 @@
           <p class="entry-sum">手術予定の登録・枠調整・申込書出力までを一手に引き受ける院内Webシステム。週間タイムライン上で枠を動かし、Excel取込とバックアップにも対応する。本体は約18,000行、リリースは48版を数え、実際の病院内サーバーで稼働中。操作方法をAIが日本語で答えるヘルプボットも付属する。</p>
           <div class="tags"><span class="tag">Python</span><span class="tag">Flask</span><span class="tag">SQLite</span><span class="tag">Next.js</span><span class="tag">Gemini</span></div>
           <span class="redacted">導入先の医療機関名は非公開</span>
+          <a class="entry-link" href="https://surgery-registry-demo.vercel.app" target="_blank" rel="noopener">デモを触ってみる（架空データ・ログイン不要） <span class="arrow">↗</span></a>
           <a class="entry-ask" href="contact.html?type=surgical-ledger#form">導入について相談する <span class="arrow">→</span></a>
         </div>
       </article>
