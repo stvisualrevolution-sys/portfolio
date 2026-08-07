@@ -939,7 +939,7 @@
         </div>
       </article>
 
-      <article class="entry" data-cat="med">
+      <article class="entry" data-cat="med tool">
         <div class="entry-meta">
           <span class="date">2026.07.08</span>
           <span class="status"><span class="dot live"></span>配信中</span>
@@ -1246,15 +1246,21 @@
 <script>
   (function () {
     var chips = Array.prototype.slice.call(document.querySelectorAll('.chip'));
-    var entries = Array.prototype.slice.call(document.querySelectorAll('.entry'));
     var sections = Array.prototype.slice.call(document.querySelectorAll('section[data-sec]'));
 
+    // data-cat は空白区切りで複数持てる（例 "med tool"）。
+    // 両方の分類に顔を出すものがあるので、節の件数はそのつど数え直す。
     function apply(cat) {
-      entries.forEach(function (el) {
-        el.style.display = (cat === 'all' || el.dataset.cat === cat) ? '' : 'none';
-      });
       sections.forEach(function (sec) {
-        sec.style.display = (cat === 'all' || sec.dataset.sec === cat) ? '' : 'none';
+        var shown = 0;
+        Array.prototype.forEach.call(sec.querySelectorAll('.entry'), function (el) {
+          var hit = cat === 'all' || el.dataset.cat.split(' ').indexOf(cat) !== -1;
+          el.style.display = hit ? '' : 'none';
+          if (hit) shown++;
+        });
+        sec.style.display = shown ? '' : 'none';
+        var count = sec.querySelector('.section-head .count');
+        if (count) count.textContent = shown;
       });
     }
 
