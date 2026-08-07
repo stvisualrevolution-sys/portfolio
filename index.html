@@ -1247,6 +1247,7 @@
   (function () {
     var chips = Array.prototype.slice.call(document.querySelectorAll('.chip'));
     var sections = Array.prototype.slice.call(document.querySelectorAll('section[data-sec]'));
+    var bar = document.querySelector('.filters');
 
     // data-cat は空白区切りで複数持てる（例 "med tool"）。
     // 両方の分類に顔を出すものがあるので、節の件数はそのつど数え直す。
@@ -1264,10 +1265,28 @@
       });
     }
 
+    // 絞り込んだ結果の先頭へ滑らかに移動する。
+    // 注目枠が縦に長いので、押しただけでは変化が見えないため。
+    function reveal() {
+      var target = null;
+      for (var i = 0; i < sections.length; i++) {
+        if (sections[i].style.display !== 'none') { target = sections[i]; break; }
+      }
+      if (!target) return;
+      var y = target.getBoundingClientRect().top + window.pageYOffset - bar.offsetHeight - 8;
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      try {
+        window.scrollTo({ top: y, behavior: reduce ? 'auto' : 'smooth' });
+      } catch (e) {
+        window.scrollTo(0, y);
+      }
+    }
+
     chips.forEach(function (chip) {
       chip.addEventListener('click', function () {
         chips.forEach(function (c) { c.setAttribute('aria-pressed', String(c === chip)); });
         apply(chip.dataset.cat);
+        reveal();
       });
     });
   })();
