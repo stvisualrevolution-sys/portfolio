@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>クリニックAI化パック — 契約して終わり、を終わらせる導入支援</title>
+<meta name="description" content="ChatGPT / Claudeの初期設計から院内マニュアル、議事録、患者説明、SNS・HP、問診要約、スタッフ研修、1か月伴走まで。現役の眼科医が、医療機関の業務にAIを組み込む実装支援パッケージ。298,000円。">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://stvisualrevolution-sys.github.io/portfolio/clinic-ai-pack.html">
+<meta property="og:site_name" content="医療 × AI 実装事例">
+<meta property="og:title" content="クリニックAI化パック — 契約して終わり、を終わらせる導入支援">
+<meta property="og:description" content="AI導入で一番もったいないのは「契約した」で終わること。現役の眼科医が、院内業務にAIが実際に使われる状態まで作ります。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="クリニックAI化パック — 契約して終わり、を終わらせる導入支援">
+<meta name="twitter:description" content="AI導入で一番もったいないのは「契約した」で終わること。現役の眼科医が、院内業務にAIが実際に使われる状態まで作ります。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='13'%20fill='%230B1220'/%3E%3Cpath%20d='M7%2035h9.5l4.5-14%206.5%2027%205.5-18%203.5%205h15'%20fill='none'%20stroke='%234C7BFF'%20stroke-width='5'%20stroke-linecap='round'%20stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+  /* ─────────────────────────────────────────────
+     クリニックAI化パック — 一覧ページと同じ組み。
+     色: 細隙灯のコバルトブルーフィルタ由来
+     字: 明朝(見出し) × ゴシック(本文) × 等幅(数値)
+     ───────────────────────────────────────────── */
+
+  :root {
+    --ground:      #F4F6F8;
+    --ground-sub:  #E9EDF1;
+    --ink:         #0F1620;
+    --ink-soft:    #3C4654;
+    --slate:       #63707F;
+    --rule:        #C9D2DB;
+    --rule-soft:   #DDE4EA;
+    --cobalt:      #1A46C8;
+    --cobalt-soft: #E4EAFA;
+    --fluor:       #7A9410;
+    --amber:       #A56A00;
+
+    --f-display: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Songti SC", serif;
+    --f-body:    "Hiragino Sans", "Yu Gothic", "YuGothic", system-ui, -apple-system, sans-serif;
+    --f-data:    ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
+
+    --s1: .25rem;  --s2: .5rem;   --s3: .75rem;  --s4: 1rem;
+    --s5: 1.5rem;  --s6: 2.25rem; --s7: 3.5rem;  --s8: 5.5rem;
+
+    --measure: 34rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:      #0C1219;
+      --ground-sub:  #131C26;
+      --ink:         #E7EDF3;
+      --ink-soft:    #B4C0CD;
+      --slate:       #8593A2;
+      --rule:        #27333F;
+      --rule-soft:   #1B242E;
+      --cobalt:      #7D9CFF;
+      --cobalt-soft: #16233F;
+      --fluor:       #B9D93F;
+      --amber:       #D9A03C;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground:      #0C1219;
+    --ground-sub:  #131C26;
+    --ink:         #E7EDF3;
+    --ink-soft:    #B4C0CD;
+    --slate:       #8593A2;
+    --rule:        #27333F;
+    --rule-soft:   #1B242E;
+    --cobalt:      #7D9CFF;
+    --cobalt-soft: #16233F;
+    --fluor:       #B9D93F;
+    --amber:       #D9A03C;
+  }
+
+  :root[data-theme="light"] {
+    --ground:      #F4F6F8;
+    --ground-sub:  #E9EDF1;
+    --ink:         #0F1620;
+    --ink-soft:    #3C4654;
+    --slate:       #63707F;
+    --rule:        #C9D2DB;
+    --rule-soft:   #DDE4EA;
+    --cobalt:      #1A46C8;
+    --cobalt-soft: #E4EAFA;
+    --fluor:       #7A9410;
+    --amber:       #A56A00;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--f-body);
+    font-size: 16px;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+    font-feature-settings: "palt" 1;
+  }
+
+  img, svg { max-width: 100%; }
+  button { font: inherit; color: inherit; }
+  strong { font-weight: 700; color: var(--ink); }
+
+  .wrap { max-width: 62rem; margin: 0 auto; padding: 0 var(--s5) var(--s8); }
+
+  /* ── 上端の帯 ─────────────────────────────── */
+
+  .topline {
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: var(--s3) var(--s4);
+    padding: var(--s5) 0;
+  }
+  .eyebrow {
+    font-family: var(--f-data); font-size: .7rem;
+    letter-spacing: .14em; text-transform: uppercase;
+    color: var(--slate); margin: 0;
+  }
+  .top-actions { display: flex; flex-wrap: wrap; gap: var(--s3); flex-shrink: 0; }
+  .theme-toggle {
+    flex-shrink: 0; background: var(--ground);
+    border: 1px solid var(--rule); color: var(--ink-soft);
+    font-family: var(--f-data); font-size: .68rem; letter-spacing: .1em;
+    padding: .4rem .7rem; cursor: pointer; text-decoration: none;
+    display: inline-flex; align-items: center;
+    transition: border-color .15s, color .15s;
+  }
+  .theme-toggle:hover { border-color: var(--cobalt); color: var(--cobalt); }
+  .theme-toggle:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+  .theme-toggle.cta { border-color: var(--cobalt); color: var(--cobalt); }
+  .theme-toggle.cta:hover { background: var(--cobalt); color: var(--ground); }
+
+  /* ── 冒頭 ─────────────────────────────────── */
+
+  .hero { padding: var(--s6) 0 var(--s7); border-bottom: 2px solid var(--ink); }
+
+  .flag {
+    display: inline-flex; align-items: center; gap: .5em;
+    font-family: var(--f-data); font-size: .68rem;
+    letter-spacing: .12em; text-transform: uppercase;
+    background: var(--cobalt); color: var(--ground);
+    border-radius: 999px; padding: .38em 1em; margin-bottom: var(--s4);
+  }
+  .flag .dot { width: .45em; height: .45em; border-radius: 50%; background: var(--ground); }
+
+  h1 {
+    font-family: var(--f-display); font-weight: 600;
+    font-size: clamp(2.1rem, 6vw, 3.3rem);
+    line-height: 1.18; letter-spacing: .01em;
+    text-wrap: balance; margin: 0 0 var(--s3);
+  }
+  .hero-kicker {
+    font-family: var(--f-display); font-weight: 600;
+    font-size: clamp(1.1rem, 3vw, 1.5rem);
+    line-height: 1.55; color: var(--cobalt);
+    text-wrap: balance; margin: 0 0 var(--s5);
+  }
+  .hero-lead {
+    font-size: 1.05rem; line-height: 1.9; color: var(--ink-soft);
+    max-width: var(--measure); margin: 0 0 var(--s6);
+  }
+
+  .amount {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--s2) var(--s3);
+    border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
+    padding: var(--s4) 0; margin-bottom: var(--s5);
+  }
+  .amount .label {
+    font-family: var(--f-data); font-size: .68rem; letter-spacing: .12em;
+    color: var(--slate); flex-basis: 100%;
+  }
+  .amount .figure {
+    font-family: var(--f-data); font-weight: 600;
+    font-size: clamp(1.9rem, 5.5vw, 2.7rem);
+    font-variant-numeric: tabular-nums; letter-spacing: .01em; color: var(--ink);
+  }
+  .amount .unit { font-size: .5em; }
+  .amount .tax { font-size: .34em; letter-spacing: .1em; color: var(--slate); margin-left: .5em; vertical-align: .5em; }
+  .amount .gross {
+    font-family: var(--f-data); font-size: .78rem;
+    font-variant-numeric: tabular-nums; color: var(--slate); letter-spacing: .02em;
+  }
+  .amount .terms { font-size: .84rem; line-height: 1.75; color: var(--slate); flex-basis: 100%; }
+
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s4); }
+  .cta {
+    display: inline-flex; align-items: center; gap: .5em;
+    background: var(--cobalt); color: var(--ground);
+    font-size: .97rem; font-weight: 600; text-decoration: none;
+    padding: .95em 1.9em; border-radius: 3px; transition: opacity .15s;
+  }
+  .cta:hover { opacity: .88; }
+  .cta:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 3px; }
+  .cta-ghost {
+    background: transparent; color: var(--cobalt);
+    border: 1px solid var(--cobalt);
+    padding: calc(.95em - 1px) calc(1.9em - 1px);
+    transition: background .15s, color .15s;
+  }
+  .cta-ghost:hover { background: var(--cobalt); color: var(--ground); opacity: 1; }
+  .cta-note { font-family: var(--f-data); font-size: .76rem; color: var(--slate); line-height: 1.7; }
+
+  /* ── 章 ───────────────────────────────────── */
+
+  section.doc { padding-top: var(--s8); }
+  .head { display: flex; align-items: baseline; gap: var(--s4); margin-bottom: var(--s5); }
+  .head h2 {
+    font-family: var(--f-display); font-weight: 600;
+    font-size: clamp(1.45rem, 3.6vw, 2rem);
+    line-height: 1.3; letter-spacing: .01em; text-wrap: balance; margin: 0;
+  }
+  .head .fill { flex: 1; height: 1px; background: var(--rule); }
+  .head .tag { font-family: var(--f-data); font-size: .66rem; letter-spacing: .12em; color: var(--slate); flex-shrink: 0; }
+
+  .doc > p { max-width: var(--measure); color: var(--ink-soft); }
+
+  h3.sub {
+    font-family: var(--f-display); font-weight: 600;
+    font-size: 1.2rem; line-height: 1.45;
+    margin: var(--s6) 0 var(--s3); color: var(--ink);
+  }
+
+  /* ── 該当するかの点検 ─────────────────────── */
+
+  .check { list-style: none; padding: 0; margin: 0 0 var(--s5); border-top: 1px solid var(--rule); }
+  .check li {
+    display: flex; gap: var(--s4); align-items: flex-start;
+    border-bottom: 1px solid var(--rule-soft); padding: var(--s3) 0;
+    font-size: .95rem; line-height: 1.8; color: var(--ink-soft);
+  }
+  .check li::before {
+    content: ""; flex-shrink: 0; margin-top: .55em;
+    width: .95em; height: .95em; border: 2px solid var(--rule); border-radius: 2px;
+  }
+  .check.done li::before {
+    border-color: var(--fluor); background: var(--fluor);
+    box-shadow: inset 0 0 0 2px var(--ground);
+  }
+
+  /* ── 8つの支援 ────────────────────────────── */
+
+  .svc { border-top: 1px solid var(--rule); }
+  .svc-item {
+    display: grid; grid-template-columns: 3.5rem 1fr; gap: var(--s4);
+    border-bottom: 1px solid var(--rule-soft); padding: var(--s5) 0;
+  }
+  .svc-no {
+    font-family: var(--f-data); font-size: .78rem; font-weight: 600;
+    font-variant-numeric: tabular-nums; color: var(--cobalt); line-height: 2.1;
+  }
+  .svc-item h3 {
+    font-family: var(--f-body); font-weight: 700; font-size: 1.05rem;
+    line-height: 1.6; margin: 0 0 var(--s2); color: var(--ink);
+  }
+  .svc-item p { font-size: .93rem; line-height: 1.85; color: var(--ink-soft); margin: 0 0 var(--s3); max-width: var(--measure); }
+  .deliver {
+    display: flex; flex-wrap: wrap; gap: var(--s2) var(--s3);
+    align-items: baseline;
+    border-left: 2px solid var(--cobalt);
+    padding: var(--s2) 0 var(--s2) var(--s4);
+  }
+  .deliver .dl {
+    font-family: var(--f-data); font-size: .64rem; letter-spacing: .12em;
+    color: var(--cobalt); flex-shrink: 0;
+  }
+  .deliver .dv { font-size: .85rem; line-height: 1.75; color: var(--slate); }
+
+  @media (max-width: 560px) {
+    .svc-item { grid-template-columns: 1fr; gap: var(--s2); }
+    .svc-no { line-height: 1.6; }
+  }
+
+  /* ── 導入の流れ ───────────────────────────── */
+
+  .steps { list-style: none; padding: 0; margin: 0 0 var(--s5); display: grid; gap: var(--s5); }
+  .steps li { display: grid; grid-template-columns: 5.5rem 1fr; gap: var(--s4); }
+  .steps .sn {
+    font-family: var(--f-data); font-size: .66rem; letter-spacing: .12em;
+    color: var(--cobalt); border-top: 2px solid var(--cobalt); padding-top: var(--s2);
+  }
+  .steps b { display: block; font-size: 1rem; color: var(--ink); margin-bottom: var(--s1); }
+  .steps span.d { display: block; font-size: .91rem; line-height: 1.8; color: var(--ink-soft); max-width: var(--measure); }
+  @media (max-width: 560px) { .steps li { grid-template-columns: 1fr; gap: var(--s2); } }
+
+  /* ── 含む / 含まない ──────────────────────── */
+
+  .scope { display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: var(--s5) var(--s6); margin-bottom: var(--s5); }
+  .scope h3 {
+    font-family: var(--f-data); font-size: .68rem; letter-spacing: .12em;
+    margin: 0 0 var(--s3); padding-bottom: var(--s2);
+    border-bottom: 1px solid var(--rule);
+  }
+  .scope .in h3  { color: var(--fluor); }
+  .scope .out h3 { color: var(--amber); }
+  .scope ul { list-style: none; padding: 0; margin: 0; }
+  .scope li {
+    display: flex; gap: var(--s3); align-items: baseline;
+    font-size: .89rem; line-height: 1.8; color: var(--ink-soft);
+    padding: var(--s2) 0; border-bottom: 1px solid var(--rule-soft);
+  }
+  .scope li::before { content: "＋"; color: var(--fluor); font-family: var(--f-data); font-size: .72rem; flex-shrink: 0; }
+  .scope .out li::before { content: "△"; color: var(--amber); }
+
+  /* ── 運用設計 ─────────────────────────────── */
+
+  .rules { list-style: none; counter-reset: r; padding: 0; margin: 0 0 var(--s5); border-top: 1px solid var(--rule); }
+  .rules li {
+    counter-increment: r;
+    display: flex; gap: var(--s4); align-items: baseline;
+    border-bottom: 1px solid var(--rule-soft); padding: var(--s3) 0;
+    font-size: .93rem; line-height: 1.85; color: var(--ink-soft);
+  }
+  .rules li::before {
+    content: counter(r, decimal-leading-zero);
+    font-family: var(--f-data); font-size: .7rem; color: var(--fluor);
+    font-variant-numeric: tabular-nums; flex-shrink: 0;
+  }
+
+  .disclaim {
+    border-left: 3px solid var(--amber);
+    background: var(--ground-sub);
+    padding: var(--s4) var(--s4) var(--s4) var(--s5);
+    font-size: .89rem; line-height: 1.9; color: var(--ink-soft);
+  }
+  .disclaim b { color: var(--ink); }
+
+  /* ── FAQ ──────────────────────────────────── */
+
+  .faq { border-top: 1px solid var(--rule); margin-bottom: var(--s5); }
+  .faq dt {
+    font-weight: 700; font-size: .97rem; color: var(--ink);
+    padding: var(--s4) 0 var(--s2);
+  }
+  .faq dd {
+    margin: 0 0 0; padding: 0 0 var(--s4);
+    border-bottom: 1px solid var(--rule-soft);
+    font-size: .92rem; line-height: 1.85; color: var(--ink-soft);
+    max-width: var(--measure);
+  }
+
+  /* ── 終端 ─────────────────────────────────── */
+
+  .close {
+    margin-top: var(--s8);
+    border: 2px solid var(--cobalt); border-radius: 4px;
+    background: linear-gradient(180deg, var(--cobalt-soft), transparent 70%);
+    padding: var(--s6) var(--s5);
+  }
+  .close h2 {
+    font-family: var(--f-display); font-weight: 600;
+    font-size: clamp(1.4rem, 4vw, 2rem); line-height: 1.35;
+    text-wrap: balance; margin: 0 0 var(--s4);
+  }
+  .close p { font-size: .97rem; line-height: 1.9; color: var(--ink-soft); max-width: var(--measure); margin: 0 0 var(--s5); }
+
+  footer.note {
+    margin-top: var(--s7); padding-top: var(--s5);
+    border-top: 1px solid var(--rule);
+    font-size: .82rem; line-height: 1.85; color: var(--slate);
+  }
+  footer.note p { max-width: none; }
+  footer.note a { color: var(--cobalt); }
+
+  @media (max-width: 560px) {
+    .close { padding: var(--s5) var(--s4); }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <div class="topline">
+    <p class="eyebrow">Clinic AI Package — 2026</p>
+    <div class="top-actions">
+      <a class="theme-toggle" href="index.html">← 実装事例の一覧</a>
+      <a class="theme-toggle cta" href="contact.html?type=clinic-ai-pack#form">無料AI化診断 →</a>
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="配色を切り替える">◐ THEME</button>
+    </div>
+  </div>
+
+  <header class="hero">
+    <span class="flag"><span class="dot"></span>先着3施設 — AI化診断 無料</span>
+    <h1>クリニックAI化パック</h1>
+    <p class="hero-kicker">「AIを契約したけれど、誰も使っていない」を終わらせる。</p>
+
+    <p class="hero-lead">
+      AI導入で一番もったいないのは、<strong>契約したところで止まってしまう</strong>ことです。
+      ChatGPT / Claude の初期設計から、院内マニュアル、議事録、患者説明、SNS・HP、問診要約、スタッフ研修まで。
+      ツールを渡して終わりにせず、<strong>現場で実際に使われる状態</strong>まで一緒に作る実装支援パッケージです。
+      作業をするのは、AI業者ではなく現役の眼科医です。
+    </p>
+
+    <div class="amount">
+      <span class="label">初期導入価格 — 8項目の設計・テンプレート・研修・1か月伴走を一括</span>
+      <span class="figure">298,000<span class="unit">円</span><span class="tax">税別</span></span>
+      <span class="gross">税込 327,800円</span>
+      <span class="terms">
+        施設の規模、既存のIT環境、資料の量によって、含める項目を調整します。
+        導入後も伴走が必要な場合は、AI顧問（月 50,000円・税別／税込 55,000円）に切り替えられます。
+      </span>
+    </div>
+
+    <div class="actions">
+      <a class="cta" href="contact.html?type=clinic-ai-pack#form">無料のAI化診断を申し込む <span aria-hidden="true">→</span></a>
+      <a class="cta cta-ghost" href="https://stvisualrevolution-sys.github.io/clinic-ai-guide/">先に無料の教材を読む <span aria-hidden="true">↗</span></a>
+      <span class="cta-note">30分オンライン ／ 売り込みはしません<br>合わなければ、こちらからそう申し上げます</span>
+    </div>
+  </header>
+
+  <main>
+
+  <!-- ══ 向いている施設 ══════════════════════ -->
+  <section class="doc" id="fit">
+    <div class="head">
+      <h2>ひとつでも当てはまれば、効きます</h2>
+      <span class="fill"></span><span class="tag">WHO IT IS FOR</span>
+    </div>
+
+    <ul class="check">
+      <li>ChatGPT や Claude に興味はあるが、院内で何に使えるのか整理できていない。</li>
+      <li>院長か一部のスタッフだけが使っていて、チーム全体に定着していない。</li>
+      <li>文章作成、会議、マニュアル、患者説明、広報といった<strong>細かい事務時間</strong>を減らしたい。</li>
+      <li>AI導入にともなう個人情報の扱い、入力ルール、スタッフ教育まで含めて設計したい。</li>
+      <li>高額なシステム開発に踏み切る前に、まず既存のAIツールで成果が出るか試したい。</li>
+    </ul>
+
+    <h3 class="sub">1か月後に、こうなっています</h3>
+    <ul class="check done">
+      <li><strong>誰が・何の業務で・どのAIを・どう使うか</strong>が、院内で明確になっている。</li>
+      <li>よく使う業務には、すぐ使えるプロンプト・テンプレート・運用手順が用意されている。</li>
+      <li>スタッフが最低限のAIリテラシーと注意点を理解していて、自分たちで回せる。</li>
+      <li>1か月運用したうえで、<strong>続けるべきAI活用と、要らないものを切り分けられる。</strong></li>
+    </ul>
+  </section>
+
+  <!-- ══ なぜ医師か ══════════════════════════ -->
+  <section class="doc" id="why">
+    <div class="head">
+      <h2>入れる人間が、現場を知っている</h2>
+      <span class="fill"></span><span class="tag">WHY A PHYSICIAN</span>
+    </div>
+    <p>
+      外来がどこで詰まるか、スタッフが何を面倒がるか、どんな手順なら続かないか。
+      こちらは当事者としてそれを知っています。だから<strong>「理屈は正しいが、現場が回らなくなる入れ方」</strong>をしません。
+      説明も、医療者の言葉のまま通じます。通訳がいりません。
+    </p>
+    <p>
+      このパックで扱う内容は、<a href="index.html">自院の困りごとをそのままシステムにしてきた23件の実装</a>と、
+      そこで実際に使ってきた手順が土台になっています。机上の一般論ではありません。
+    </p>
+    <p>
+      そして、<strong>「AIで何でもできます」とは言いません。</strong>
+      いま院内にある業務のどこを短く・ラクに・標準化できるかを先に診断してから、そこだけに絞って入れます。
+      これがこのサービスの中心にある考え方です。
+    </p>
+  </section>
+
+  <!-- ══ 8つの支援 ═══════════════════════════ -->
+  <section class="doc" id="contents">
+    <div class="head">
+      <h2>パックの中身 — 8つの支援</h2>
+      <span class="fill"></span><span class="tag">WHAT YOU GET</span>
+    </div>
+    <p>それぞれに「何をするか」と「何が手元に残るか」を決めてあります。口頭のアドバイスで終わりません。</p>
+
+    <div class="svc">
+
+      <div class="svc-item">
+        <span class="svc-no">01</span>
+        <div>
+          <h3>ChatGPT / Claude 導入設計</h3>
+          <p>院内の用途に合わせ、どのツールを、誰が、何に使うかを整理します。アカウント運用、基本設定、モデルの使い分け、院内での基本ルールまで設計します。</p>
+          <div class="deliver"><span class="dl">納品</span><span class="dv">AI利用方針のたたき台／用途別ツール一覧／初期設定チェックリスト／よく使うプロンプト集</span></div>
+        </div>
+      </div>
+
+      <div class="svc-item">
+        <span class="svc-no">02</span>
+        <div>
+          <h3>院内マニュアルのAI化</h3>
+          <p>既存のマニュアル・FAQ・院内ルールを整理し、スタッフが必要な情報を探しやすい形にします。文書の要約・検索・更新補助にAIを使う運用を作ります。</p>
+          <div class="deliver"><span class="dl">納品</span><span class="dv">マニュアル整理方針／AI検索用の文書構成案／FAQテンプレート／更新フロー</span></div>
+        </div>
+      </div>
+
+      <div class="svc-item">
+        <span class="svc-no">03</span>
+        <div>
+          <h3>議事録の自動化</h3>
+          <p>定例会議や打ち合わせで、文字起こし → 要点整理 → 決定事項 → 担当者と期限まで、一定のフォーマットに落ちる流れを構築します。</p>
+          <div class="deliver"><span class="dl">納品</span><span class="dv">議事録テンプレート／要約プロンプト／ToDo抽出フォーマット／運用手順</span></div>
+        </div>
+      </div>
+
+      <div class="svc-item">
+        <span class="svc-no">04</span>
+        <div>
+          <h3>患者説明文の生成支援</h3>
+          <p>疾患説明、検査説明、術前・術後の案内などについて、医療者が確認・修正して使う<strong>「下書き」を作る仕組み</strong>を整えます。出力をそのまま渡す運用にはしません。</p>
+          <div class="deliver"><span class="dl">納品</span><span class="dv">患者向け文章テンプレート／やさしい日本語化プロンプト／説明文チェック手順</span></div>
+        </div>
+      </div>
+
+      <div class="svc-item">
+        <span class="svc-no">05</span>
+        <div>
+          <h3>SNS・HP記事の作成フロー</h3>
+          <p>院内のお知らせ、疾患啓発、採用、SNS投稿、HP記事などを効率よく作るため、テーマ出し → 構成 → 原稿 → 確認までの型を作ります。</p>
+          <div class="deliver"><span class="dl">納品</span><span class="dv">投稿テンプレート／記事構成テンプレート／月間ネタ出しの方法／校正チェックリスト</span></div>
+        </div>
+      </div>
+
+      <div class="svc-item">
+        <span class="svc-no">06</span>
+        <div>
+          <h3>問診 → SOAP要約ワークフローの設計</h3>
+          <p>問診情報を診療の前後で整理しやすくするため、入力項目・要約フォーマット・医師が確認する流れを設計します。既存システムとの連携が必要な場合は、別途要件を整理します。</p>
+          <div class="deliver"><span class="dl">納品</span><span class="dv">問診項目案／SOAP要約フォーマット／プロンプト／運用フロー図</span></div>
+        </div>
+      </div>
+
+      <div class="svc-item">
+        <span class="svc-no">07</span>
+        <div>
+          <h3>スタッフ向け 2時間 AI研修</h3>
+          <p>生成AIの基本、良い指示の出し方、院内で使いやすい具体例、注意すべき点を、<strong>非エンジニアのスタッフに分かる言葉で</strong>実施します。</p>
+          <div class="deliver"><span class="dl">納品</span><span class="dv">2時間研修／院内事例をもとにした演習／研修資料／質疑応答</span></div>
+        </div>
+      </div>
+
+      <div class="svc-item">
+        <span class="svc-no">08</span>
+        <div>
+          <h3>1か月のチャットサポート</h3>
+          <p>実際に使い始めると必ず出てくる「この業務にも使える？」「このプロンプトを直したい」に対応します。<strong>定着するかどうかは、この1か月で決まります。</strong></p>
+          <div class="deliver"><span class="dl">納品</span><span class="dv">チャット相談／プロンプト改善／運用上の質疑応答／1か月後の改善ポイント整理</span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ 導入の流れ ══════════════════════════ -->
+  <section class="doc" id="flow">
+    <div class="head">
+      <h2>導入の流れ</h2>
+      <span class="fill"></span><span class="tag">PROCESS</span>
+    </div>
+    <p>契約して終わりではありません。診断 → 設計 → 研修 → 定着まで通します。</p>
+
+    <ol class="steps">
+      <li><span class="sn">STEP 1</span><span><b>事前ヒアリング</b><span class="d">現在の業務、困りごと、お使いのITツール、今のAI利用状況をうかがい、AI化の候補を洗い出します。</span></span></li>
+      <li><span class="sn">STEP 2</span><span><b>AI化ポイントの優先順位づけ</b><span class="d">「削減できる時間」「実装の簡単さ」「リスク」「現場の使いやすさ」の4つで順番を決めます。全部やろうとしません。</span></span></li>
+      <li><span class="sn">STEP 3</span><span><b>初期設計・テンプレート作成</b><span class="d">実際の院内業務に合わせて、プロンプト、文書テンプレート、議事録、患者説明、記事作成などの型を作ります。</span></span></li>
+      <li><span class="sn">STEP 4</span><span><b>スタッフ研修 2時間</b><span class="d">実演と演習で、翌日から使う業務を中心に、操作方法と注意点を共有します。</span></span></li>
+      <li><span class="sn">STEP 5</span><span><b>1か月の実運用</b><span class="d">現場で使いながら出てくる質問・修正・改善に、チャットで対応します。</span></span></li>
+      <li><span class="sn">STEP 6</span><span><b>振り返り</b><span class="d">続けて使う業務、改善が必要な業務、将来的にシステム開発すべき業務を整理してお渡しします。</span></span></li>
+    </ol>
+
+    <p><strong>標準スケジュールの目安：</strong>ヒアリングから初期導入・研修まで約2〜4週間、そのあと1か月の伴走支援。院内の規模、資料の量、連携要件によって変わります。</p>
+  </section>
+
+  <!-- ══ 料金 ════════════════════════════════ -->
+  <section class="doc" id="price">
+    <div class="head">
+      <h2>298,000円に、何が含まれるか</h2>
+      <span class="fill"></span><span class="tag">SCOPE</span>
+    </div>
+    <p>後から揉めないように、<strong>含まれないものも最初に書いておきます。</strong></p>
+
+    <div class="scope">
+      <div class="in">
+        <h3>基本料金に含むもの</h3>
+        <ul>
+          <li>事前ヒアリング 1回</li>
+          <li>業務の棚卸しと、AI活用候補の整理</li>
+          <li>8項目のうち、院内で必要な部分の初期設計</li>
+          <li>主要なテンプレート・プロンプトの作成</li>
+          <li>スタッフ向けオンライン研修 2時間</li>
+          <li>導入後1か月のチャット相談・軽微な調整</li>
+        </ul>
+      </div>
+      <div class="out">
+        <h3>原則として別見積になるもの</h3>
+        <ul>
+          <li>電子カルテ・予約・問診システム等とのAPI連携や独自開発</li>
+          <li>専用アプリ・SaaS・Bot などの開発</li>
+          <li>大量の既存文書の整備・データ移行</li>
+          <li>複数拠点への大規模展開、追加研修、長期の常駐支援</li>
+          <li>ChatGPT・Claude など外部サービスそのものの利用料金</li>
+          <li>法務・セキュリティ・個人情報保護の専門家による正式な監査や認証</li>
+        </ul>
+      </div>
+    </div>
+
+    <p>導入をお受けできるのは、伴走の質を落とさないため<strong>月に3施設まで</strong>です。</p>
+  </section>
+
+  <!-- ══ 運用設計 ════════════════════════════ -->
+  <section class="doc" id="safety">
+    <div class="head">
+      <h2>医療機関だからこその運用設計</h2>
+      <span class="fill"></span><span class="tag">SAFETY</span>
+    </div>
+    <p>
+      AIの便利さだけを持ち込むと、便利になる前に事故になります。
+      このパックでは、<strong>入力ルールと確認プロセスを必ずセットで</strong>設計します。導入時に、次の5つを院内で明文化します。
+    </p>
+
+    <ol class="rules">
+      <li>患者を識別できる情報を、院内ルールで許可されていない外部AIサービスへ無断で入力しない。</li>
+      <li>患者説明文や診療関連の文書は、AIの出力をそのまま確定せず、<strong>最終的に必ず医療者が内容を確認する。</strong></li>
+      <li>使用するAIサービスのプラン、データの利用条件、管理設定を確認し、用途に応じて使い分ける。</li>
+      <li>問診 → SOAP要約は<strong>「要約支援」として位置づけ</strong>、診断や最終記録を自動で確定する運用にはしない。</li>
+      <li>スタッフ全員が同じ基準で使えるよう、禁止事項・確認事項・問い合わせ先を簡潔に文書化する。</li>
+    </ol>
+
+    <p class="disclaim">
+      <b>本サービスの位置づけについて。</b>
+      このサービスはAI導入と業務改善の支援を目的とするものであり、法務・情報セキュリティ監査、医療機器該当性の判定、個別システムの安全性認証等を代替するものではありません。
+      必要に応じて、各分野の専門家・ベンダーと連携して進めます。
+      また、医療情報の取り扱いに関する国のガイドラインは改定されるため、導入時点の最新版を確認したうえで院内ルールに反映します。
+    </p>
+  </section>
+
+  <!-- ══ FAQ ═════════════════════════════════ -->
+  <section class="doc" id="faq">
+    <div class="head">
+      <h2>よくあるご質問</h2>
+      <span class="fill"></span><span class="tag">FAQ</span>
+    </div>
+
+    <dl class="faq">
+      <dt>AIに詳しいスタッフがいなくても大丈夫ですか。</dt>
+      <dd>はい。むしろ、そういう院でも回るように作ります。ツールの操作方法ではなく<strong>「業務ごとの型」</strong>を中心に設計するので、詳しい人が1人いなくなっても止まりません。</dd>
+
+      <dt>ChatGPTとClaude、どちらを使うのですか。</dt>
+      <dd>用途、契約状況、院内ルールに応じて選びます。<strong>必ず両方を導入する必要はありません。</strong>1つで足りるなら1つにします。</dd>
+
+      <dt>すでにChatGPTを契約しています。無駄になりませんか。</dt>
+      <dd>なりません。既存の環境を前提に、使い方・プロンプト・運用ルールを整理する形で対応できます。むしろ、その方が早く成果が出ます。</dd>
+
+      <dt>電子カルテと自動で連携できますか。</dt>
+      <dd>製品、API、院内環境によります。<strong>標準パックではワークフローの設計までとし</strong>、システム連携や独自開発が必要な場合は別途お見積りします。できないことを、できると言いません。</dd>
+
+      <dt>研修は何人まで受けられますか。</dt>
+      <dd>オンライン研修を想定しています。人数や拠点数が多い場合は、運営方法と追加回の有無を事前に調整します。</dd>
+
+      <dt>まだ「何をAI化できるか」も分かっていません。</dt>
+      <dd>その段階で問題ありません。むしろ標準的です。まず現在の業務と困りごとをうかがい、費用対効果が出やすいところから設計します。<strong>無料のAI化診断は、そのための30分です。</strong></dd>
+    </dl>
+  </section>
+
+  </main>
+
+  <section class="close">
+    <h2>「うちのクリニックなら、何をAI化できる？」<br>その段階で大丈夫です。</h2>
+    <p>
+      まず現在の業務と困りごとを30分うかがい、AI化しやすい業務を整理してお返しします。
+      その場で「御院なら、この作業をここまで減らせます」を具体的にお伝えします。
+      売り込みはしません。合わないと思えば、こちらからそう申し上げます。
+    </p>
+    <div class="actions">
+      <a class="cta" href="contact.html?type=clinic-ai-pack#form">無料のAI化診断を申し込む <span aria-hidden="true">→</span></a>
+      <span class="cta-note">お名前と連絡先だけで送信できます<br>ご相談の種類と本文は入力済みで開きます</span>
+    </div>
+  </section>
+
+  <footer class="note">
+    <p>
+      医療・臨床に関わる案件では、導入先の医療機関名、患者データ、契約に関する情報を一切公開しません。
+      価格は初期導入価格であり、施設の規模・既存環境・要件により調整のうえ、正式なお見積りをお出しします。
+    </p>
+    <p><a href="index.html">← 医療 × AI 実装事例の一覧へ戻る</a></p>
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var btn  = document.getElementById('themeToggle');
+    var saved = null;
+    try { saved = localStorage.getItem('ledger-theme'); } catch (e) {}
+    if (saved) root.setAttribute('data-theme', saved);
+    btn.addEventListener('click', function () {
+      var cur = root.getAttribute('data-theme');
+      if (!cur) {
+        cur = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('ledger-theme', next); } catch (e) {}
+    });
+  })();
+</script>
+</body>
+</html>

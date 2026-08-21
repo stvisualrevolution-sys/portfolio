@@ -626,6 +626,7 @@
           <label for="f-type">ご相談の種類 <span class="req">必須</span></label>
           <select id="f-type" name="type" required>
             <option value="">選択してください</option>
+            <option>クリニックAI化パック／無料AI化診断</option>
             <option>電子手術台帳の導入相談</option>
             <option>既存プロダクトの導入相談</option>
             <option>新規開発のご依頼</option>
@@ -762,8 +763,14 @@
     'legal-pages':       ['アプリ法務ページ 一式', 'build']
   };
 
-  /* 電子手術台帳だけは価格を掲載しているので、専用の種類と文面を持たせる */
+  /* 価格を掲載しているものは、専用の種類と文面を持たせる */
   var PRESETS = {
+    'clinic-ai-pack': {
+      type:    'クリニックAI化パック／無料AI化診断',
+      title:   'クリニックAI化パック — 無料AI化診断のお申し込み',
+      note:    'ご相談の種類と本文は入力済みです。お名前とメールアドレスをご記入いただければ、そのまま送信できます。いま一番めんどうに感じている作業が分かると、30分の診断がぐっと具体的になります。',
+      message: 'クリニックAI化パックに関心があります。まず無料のAI化診断をお願いしたいです。\n\n■ いま一番めんどうな作業（分かる範囲で）：\n\n■ 施設の規模（常勤医・スタッフの人数など）：\n'
+    },
     'surgical-ledger': {
       type:    '電子手術台帳の導入相談',
       title:   '電子手術台帳 — 導入のご相談',

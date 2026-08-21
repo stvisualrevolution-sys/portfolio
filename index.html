@@ -193,8 +193,93 @@
     flex-basis: 100%;
   }
 
+  /* ── 主力商品の1枠だけ、他より一段強く見せる ─────── */
+  .featured.featured-hero { margin-top: var(--s5); }
+  .featured-hero .featured-flag {
+    background: var(--cobalt);
+    color: var(--ground);
+    border-color: var(--cobalt);
+  }
+  .featured-hero .featured-flag .dot { background: var(--ground); }
+  .featured-kicker {
+    font-family: var(--f-display);
+    font-size: clamp(1.05rem, 2.7vw, 1.4rem);
+    font-weight: 600;
+    line-height: 1.6;
+    color: var(--cobalt);
+    margin: var(--s2) 0 0;
+  }
+
+  /* パックの中身。伝票の封入物のように番号で並べる */
+  .pack-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--s5);
+    border-top: 1px solid var(--rule);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+    gap: 0 var(--s5);
+  }
+  .pack-list li {
+    display: flex;
+    gap: var(--s3);
+    align-items: baseline;
+    border-bottom: 1px solid var(--rule-soft);
+    padding: var(--s3) 0;
+    font-size: .92rem;
+    line-height: 1.7;
+    color: var(--ink-soft);
+  }
+  .pack-list .no {
+    font-family: var(--f-data);
+    font-size: .72rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--cobalt);
+    flex-shrink: 0;
+  }
+  .pack-list .plus {
+    color: var(--fluor);
+    font-family: var(--f-data);
+    font-size: .72rem;
+    flex-shrink: 0;
+  }
+  .pack-list li:last-child { color: var(--ink); font-weight: 600; }
+
+  /* 相談する前に、何が起きるかを見せておく */
+  .pack-flow {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--s5);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    gap: var(--s4);
+  }
+  .pack-flow li { border-top: 2px solid var(--cobalt); padding-top: var(--s3); }
+  .pack-flow b {
+    display: block;
+    font-family: var(--f-data);
+    font-size: .66rem;
+    letter-spacing: .12em;
+    color: var(--cobalt);
+    margin-bottom: .5em;
+  }
+  .pack-flow span { display: block; font-size: .84rem; line-height: 1.75; color: var(--slate); }
+
+  /* 一番聞かれること（患者情報）への答えを、価格の手前に置く */
+  .pack-safety {
+    border-left: 3px solid var(--fluor);
+    background: var(--ground-sub);
+    padding: var(--s4) var(--s4) var(--s4) var(--s5);
+    margin: 0 0 var(--s5);
+    font-size: .9rem;
+    line-height: 1.9;
+    color: var(--ink-soft);
+  }
+  .pack-safety b { color: var(--ink); }
+
   @media (max-width: 560px) {
     .featured { padding: var(--s5) var(--s4) var(--s4); }
+    .pack-list { gap: 0; }
   }
 
   </style>
@@ -729,7 +814,8 @@
       <p class="eyebrow">Clinical AI Implementation — 2026</p>
       <div class="top-actions">
         <a class="theme-toggle" href="progress.html">進捗 →</a>
-        <a class="theme-toggle cta" href="contact.html">仕事の相談 →</a>
+        <a class="theme-toggle" href="contact.html">仕事の相談 →</a>
+        <a class="theme-toggle cta" href="clinic-ai-pack.html">クリニックAI化パック →</a>
         <button class="theme-toggle" id="themeToggle" type="button" aria-label="配色を切り替える">◐ THEME</button>
       </div>
     </div>
@@ -758,8 +844,75 @@
 
   <main>
 
+    <!-- ══ 主力：クリニックAI化パック ══════════════ -->
+    <!-- 詳細は clinic-ai-pack.html。ここは入口なので、中身を書きすぎないこと -->
+    <section class="featured featured-hero" id="ai-pack" aria-labelledby="pack-title">
+      <span class="featured-flag"><span class="dot"></span>先着3施設 — AI化診断 無料</span>
+      <h2 id="pack-title">クリニックAI化パック</h2>
+      <p class="featured-kicker">「AIを契約したけれど、誰も使っていない」を終わらせる。</p>
+
+      <p class="featured-lead">
+        AI導入で一番もったいないのは、<strong>契約したところで止まってしまう</strong>ことです。
+        ChatGPT / Claude の初期設計から、院内マニュアル、議事録、患者説明、SNS・HP、問診要約、スタッフ研修まで。
+        ツールを渡して終わりにせず、<strong>現場で実際に使われる状態</strong>まで一緒に作ります。
+        作業をするのは、AI業者ではなく現役の眼科医です。
+      </p>
+
+      <ul class="featured-points">
+        <li>
+          <b>入れる人間が、現場を知っている</b>
+          <span>外来がどこで詰まるか、スタッフが何を面倒がるかを当事者として知っています。だから「理屈は正しいが現場が回らない入れ方」をしません。説明も医療者の言葉のまま通じます。</span>
+        </li>
+        <li>
+          <b>入力ルールと確認プロセスを、必ずセットで作る</b>
+          <span>患者情報をどこまで渡してよいか、AIの出力を誰が確認するか。導入時に5つの原則を院内で明文化します。ここが曖昧なままの導入は、便利になる前に事故になります。</span>
+        </li>
+        <li>
+          <b>入れて終わりにしない</b>
+          <span>研修は2時間、そのあと1か月チャットで伴走します。「契約したのに誰も使っていない」が起きるのは、この1か月を誰も見ていないからです。</span>
+        </li>
+      </ul>
+
+      <ul class="pack-list">
+        <li><span class="no">01</span>ChatGPT / Claude 導入設計</li>
+        <li><span class="no">02</span>院内マニュアルのAI化</li>
+        <li><span class="no">03</span>議事録の自動化</li>
+        <li><span class="no">04</span>患者説明文の生成支援</li>
+        <li><span class="no">05</span>SNS・HP記事の作成フロー</li>
+        <li><span class="no">06</span>問診 → SOAP要約ワークフローの設計</li>
+        <li><span class="no">07</span>スタッフ向け 2時間 AI研修</li>
+        <li><span class="no">08</span>導入後 1か月のチャットサポート</li>
+        <li><span class="plus">＋</span>それぞれに「何が手元に残るか」を決めてあります</li>
+      </ul>
+
+      <div class="featured-amount">
+        <span class="figure">298,000<span class="unit">円</span><span class="tax">税別</span></span>
+        <span class="gross">税込 327,800円</span>
+        <span class="terms">
+          初期導入価格。施設の規模と既存環境によって、含める項目を調整します。
+          導入後も伴走が必要な場合は、AI顧問（月 50,000円・税別／税込 55,000円）に切り替えられます。
+        </span>
+      </div>
+
+      <p class="featured-who">
+        無床診療所 ／ 単科クリニック ／ 有床診療所 ／ 中小規模の病院 ／ これから開業される先生<br>
+        電子カルテはそのままで構いません。すでにChatGPTを契約済みでも、その環境を前提に整理できます。
+      </p>
+
+      <div class="featured-actions">
+        <a class="featured-cta" href="clinic-ai-pack.html">パックの詳細と料金を見る <span aria-hidden="true">→</span></a>
+        <a class="featured-cta featured-cta-ghost" href="contact.html?type=clinic-ai-pack#form">無料のAI化診断を申し込む <span aria-hidden="true">→</span></a>
+        <span class="featured-price">診断は30分オンライン ／ 売り込みはしません</span>
+      </div>
+
+      <p class="featured-demo-note">
+        導入をお受けできるのは、伴走の質を落とさないため<strong>月に3施設まで</strong>です。
+        無料のAI化診断は、まず先着3施設で受け付けています。
+      </p>
+    </section>
+
     <!-- ══ 注目：Dr. Reply ══════════════════════ -->
-    <section class="featured" aria-labelledby="featured-title">
+    <section class="featured featured-sub" aria-labelledby="featured-title">
       <span class="featured-flag"><span class="dot"></span>Now Live — 一般公開中</span>
       <h2 id="featured-title">Dr. Reply</h2>
       <a class="featured-url" href="https://drreply.jp" target="_blank" rel="noopener">https://drreply.jp</a>
