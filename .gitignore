@@ -1,2 +1,25 @@
+# macOS が自動で作る不要ファイル
 .DS_Store
 output/
+
+# 一時ファイル置き場（患者情報が紛れうるので丸ごと除外）
+tmp/
+
+# 患者情報・個人情報が入りうるファイル形式は丸ごと除外
+# （このリポジトリは公開です。特に厳しくしています）
+*.csv
+*.xlsx
+*.xls
+*.numbers
+*.pdf
+*.docx
+患者*
+
+# パスワード・APIキーなどの秘密情報
+.env
+.env.*
+*.key
+*.pem
+
+# ローカル個人設定
+.claude/settings.local.json
