@@ -316,6 +316,39 @@
 
   .theme-toggle.cta { border-color: var(--cobalt); color: var(--cobalt); }
   .theme-toggle.cta:hover { background: var(--cobalt); color: var(--ground); }
+
+  /* ── ページ最上部のお知らせバー ── */
+  .notice-bar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--s2) var(--s3);
+    padding: var(--s3) 0;
+    margin-top: var(--s4);
+    border-bottom: 1px solid var(--rule);
+    text-decoration: none;
+    color: var(--ink-soft);
+    font-size: .85rem;
+    transition: color .15s;
+  }
+  .notice-bar:hover { color: var(--cobalt); }
+  .notice-tag {
+    font-family: var(--f-data);
+    font-size: .62rem;
+    letter-spacing: .14em;
+    color: var(--cobalt);
+    border: 1px solid var(--cobalt);
+    border-radius: 999px;
+    padding: .2em .8em;
+    flex-shrink: 0;
+  }
+  .notice-date {
+    font-family: var(--f-data);
+    font-size: .72rem;
+    color: var(--slate);
+    flex-shrink: 0;
+  }
+  .notice-arrow { font-family: var(--f-data); color: var(--cobalt); }
 </style>
 <style>
   /* ─────────────────────────────────────────────
@@ -809,6 +842,13 @@
 <body>
 
 <div class="wrap">
+
+  <a class="notice-bar" href="https://naion-patient-guide.vercel.app" target="_blank" rel="noopener">
+    <span class="notice-tag">NEW</span>
+    <span class="notice-date">2026.08.30</span>
+    <span class="notice-text">患者さん向け資料「マンジャロと目のはなし」を公開しました — GLP-1薬と目の病気NAION、最新エビデンスのやさしい解説</span>
+    <span class="notice-arrow">↗</span>
+  </a>
 
   <header class="masthead">
     <div class="topline">
