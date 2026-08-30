@@ -792,6 +792,49 @@
   .cta-link:hover { opacity: .85; }
   .cta-link:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 3px; }
 
+  /* ── そのほかの提供サービス（一行ずつの控えめな表記） ── */
+
+  .services-min {
+    margin-top: var(--s6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s3);
+  }
+
+  .services-min h2 {
+    font-family: var(--f-data);
+    font-size: .7rem;
+    font-weight: 400;
+    letter-spacing: .12em;
+    color: var(--slate);
+    margin: 0;
+  }
+
+  .services-min ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s2);
+  }
+
+  .services-min li {
+    font-size: .8rem;
+    line-height: 1.8;
+    color: var(--slate);
+  }
+
+  .services-min a {
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule);
+  }
+  .services-min a:hover { color: var(--cobalt); border-bottom-color: var(--cobalt); }
+  .services-min a:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+
+  .services-min li span { margin-left: .6em; }
+
   /* ── 注記 ──────────────────────────────────── */
 
   .note {
@@ -856,7 +899,6 @@
       <div class="top-actions">
         <a class="theme-toggle" href="progress.html">進捗 →</a>
         <a class="theme-toggle" href="contact.html">仕事の相談 →</a>
-        <a class="theme-toggle cta" href="clinic-ai-pack.html">クリニックAI化パック →</a>
         <button class="theme-toggle" id="themeToggle" type="button" aria-label="配色を切り替える">◐ THEME</button>
       </div>
     </div>
@@ -885,110 +927,44 @@
 
   <main>
 
-    <!-- ══ 主力：クリニックAI化パック ══════════════ -->
-    <!-- 詳細は clinic-ai-pack.html。ここは入口なので、中身を書きすぎないこと -->
-    <section class="featured featured-hero" id="ai-pack" aria-labelledby="pack-title">
-      <span class="featured-flag"><span class="dot"></span>先着3施設 — AI化診断 無料</span>
-      <h2 id="pack-title">クリニックAI化パック</h2>
-      <p class="featured-kicker">「AIを契約したけれど、誰も使っていない」を終わらせる。</p>
+    <!-- ══ 注目：クリニックのAI、最初の3段階（無料教材） ══ -->
+    <section class="featured featured-sub" aria-labelledby="guide-title">
+      <span class="featured-flag"><span class="dot"></span>無料公開中 — 登録不要</span>
+      <h2 id="guide-title">クリニックのAI、最初の3段階</h2>
+      <a class="featured-url" href="https://stvisualrevolution-sys.github.io/clinic-ai-guide/">stvisualrevolution-sys.github.io/clinic-ai-guide</a>
 
       <p class="featured-lead">
-        AI導入で一番もったいないのは、<strong>契約したところで止まってしまう</strong>ことです。
-        ChatGPT / Claude の初期設計から、院内マニュアル、議事録、患者説明、SNS・HP、問診要約、スタッフ研修まで。
-        ツールを渡して終わりにせず、<strong>現場で実際に使われる状態</strong>まで一緒に作ります。
-        作業をするのは、AI業者ではなく現役の眼科医です。
+        「うちにAI、どう入れたらいい？」というご相談が増えました。ただ、
+        <strong>相談する側がAIを一度も触っていないと、話が噛み合いません。</strong>
+        AIが何を間違えるかを知らないままでは、任せていい範囲の判断ができないからです。
+        そこで、<strong>相談の前に読んでもらうための教材</strong>を無料で公開しました。
+        費用はかかりません。必要なのは無料のAIサービスひとつと、数時間です。
       </p>
 
       <ul class="featured-points">
         <li>
-          <b>入れる人間が、現場を知っている</b>
-          <span>外来がどこで詰まるか、スタッフが何を面倒がるかを当事者として知っています。だから「理屈は正しいが現場が回らない入れ方」をしません。説明も医療者の言葉のまま通じます。</span>
+          <b>段階0 ── AIの当たり外れがわかる</b>
+          <span>まずAIにわざと間違えてもらう演習から始めます。そのうえで自院の業務を「任せていい／絶対に渡さない」に仕分けします。医療で使うなら、ここを飛ばすと事故になります。</span>
         </li>
         <li>
-          <b>入力ルールと確認プロセスを、必ずセットで作る</b>
-          <span>患者情報をどこまで渡してよいか、AIの出力を誰が確認するか。導入時に5つの原則を院内で明文化します。ここが曖昧なままの導入は、便利になる前に事故になります。</span>
+          <b>段階1 ── 毎日の仕事をAIと回せる</b>
+          <span>患者さん向けの説明文、院内掲示、求人原稿、議事録。実務でそのまま使える頼み方を、悪い例と良い例を並べて載せています。コピーしてすぐ試せます。</span>
         </li>
         <li>
-          <b>入れて終わりにしない</b>
-          <span>研修は2時間、そのあと1か月チャットで伴走します。「契約したのに誰も使っていない」が起きるのは、この1か月を誰も見ていないからです。</span>
-        </li>
-      </ul>
-
-      <ul class="pack-list">
-        <li><span class="no">01</span>ChatGPT / Claude 導入設計</li>
-        <li><span class="no">02</span>院内マニュアルのAI化</li>
-        <li><span class="no">03</span>議事録の自動化</li>
-        <li><span class="no">04</span>患者説明文の生成支援</li>
-        <li><span class="no">05</span>SNS・HP記事の作成フロー</li>
-        <li><span class="no">06</span>問診 → SOAP要約ワークフローの設計</li>
-        <li><span class="no">07</span>スタッフ向け 2時間 AI研修</li>
-        <li><span class="no">08</span>導入後 1か月のチャットサポート</li>
-        <li><span class="plus">＋</span>それぞれに「何が手元に残るか」を決めてあります</li>
-      </ul>
-
-      <div class="featured-amount">
-        <span class="figure">298,000<span class="unit">円</span><span class="tax">税別</span></span>
-        <span class="gross">税込 327,800円</span>
-        <span class="terms">
-          初期導入価格。施設の規模と既存環境によって、含める項目を調整します。
-          導入後も伴走が必要な場合は、AI顧問（月 50,000円・税別／税込 55,000円）に切り替えられます。
-        </span>
-      </div>
-
-      <p class="featured-who">
-        無床診療所 ／ 単科クリニック ／ 有床診療所 ／ 中小規模の病院 ／ これから開業される先生<br>
-        電子カルテはそのままで構いません。すでにChatGPTを契約済みでも、その環境を前提に整理できます。
-      </p>
-
-      <div class="featured-actions">
-        <a class="featured-cta" href="clinic-ai-pack.html">パックの詳細と料金を見る <span aria-hidden="true">→</span></a>
-        <a class="featured-cta featured-cta-ghost" href="contact.html?type=clinic-ai-pack#form">無料のAI化診断を申し込む <span aria-hidden="true">→</span></a>
-        <span class="featured-price">診断は30分オンライン ／ 売り込みはしません</span>
-      </div>
-
-      <p class="featured-demo-note">
-        導入をお受けできるのは、伴走の質を落とさないため<strong>月に3施設まで</strong>です。
-        無料のAI化診断は、まず先着3施設で受け付けています。
-      </p>
-    </section>
-
-    <!-- ══ 注目：Dr. Reply ══════════════════════ -->
-    <section class="featured featured-sub" aria-labelledby="featured-title">
-      <span class="featured-flag"><span class="dot"></span>Now Live — 一般公開中</span>
-      <h2 id="featured-title">Dr. Reply</h2>
-      <a class="featured-url" href="https://drreply.jp" target="_blank" rel="noopener">https://drreply.jp</a>
-
-      <p class="featured-lead">
-        Xを伸ばしたいけど、何を書けばいいか分からない。そもそも毎日開く時間がない。
-        ——その2つを、朝の数分に畳んでしまう道具をつくりました。
-        あなたの業種と専門領域を設定しておくと、<strong>いま反応すべき実在の投稿</strong>と、
-        <strong>あなたらしい投稿案</strong>が用意された状態で1日が始まります。
-      </p>
-
-      <ul class="featured-points">
-        <li>
-          <b>探す時間をゼロにする</b>
-          <span>設定した業種とキーワードでX上の公開投稿を集め、返信する価値が高い順にAIが採点します。眺めるのは上位だけで済みます。</span>
-        </li>
-        <li>
-          <b>勝手に投稿しない</b>
-          <span>自動フォロー・自動DM・無差別な自動返信は一切しません。文面はすべて下書きで、あなたが確認して押した時だけ送信されます。</span>
-        </li>
-        <li>
-          <b>業種に合わせて変わる</b>
-          <span>医療なら医療広告、美容なら薬機法。業種ごとに踏みやすい表現をAIに避けさせています。検索する母集団も業種ごとに切り替わります。</span>
+          <b>段階2 ── 指示書が書ける</b>
+          <span>毎回ゼロから説明するのをやめて、使い回せる1枚にまとめます。ここを越えると「AIを使う人」から「AIに仕事を渡せる人」に変わります。</span>
         </li>
       </ul>
 
       <p class="featured-who">
-        医療・クリニック ／ 歯科 ／ 美容サロン・エステ ／ パーソナルジム ／ 士業 ／
-        コーチ・コンサル ／ クリエイター・アーティスト ／ 飲食 ／ EC・ハンドメイド ／
-        不動産 ／ 教室・スクール ／ フリーランス・個人事業主
+        全8段階のうち、0〜2を公開しています。<strong>運営の判断ができるようになるのは段階2まで。</strong>
+        多くの院にとって必要なのはここまでで、それ以上は1院に1人いれば足ります。<br>
+        院長・事務長 ／ 開業準備中の方 ／ 院内のDX担当者 ／ 何から手を付けるか決めかねている方
       </p>
 
       <div class="featured-actions">
-        <a class="featured-cta" href="https://drreply.jp" target="_blank" rel="noopener">使ってみる <span aria-hidden="true">↗</span></a>
-        <span class="featured-price">月額 ¥5,478（税込）から ／ 解約はいつでも</span>
+        <a class="featured-cta" href="https://stvisualrevolution-sys.github.io/clinic-ai-guide/">教材を読む（無料） <span aria-hidden="true">→</span></a>
+        <span class="featured-price">全編無料 ／ 登録不要 ／ 院内研修にそのまま使っていただいて構いません</span>
       </div>
     </section>
 
@@ -1042,47 +1018,6 @@
       </p>
 
       <p style="margin: var(--s5) 0 0;"><span class="redacted">導入先の医療機関名は非公開</span></p>
-    </section>
-
-    <!-- ══ 注目：クリニックのAI、最初の3段階（無料教材） ══ -->
-    <section class="featured featured-sub" aria-labelledby="guide-title">
-      <span class="featured-flag"><span class="dot"></span>無料公開中 — 登録不要</span>
-      <h2 id="guide-title">クリニックのAI、最初の3段階</h2>
-      <a class="featured-url" href="https://stvisualrevolution-sys.github.io/clinic-ai-guide/">stvisualrevolution-sys.github.io/clinic-ai-guide</a>
-
-      <p class="featured-lead">
-        「うちにAI、どう入れたらいい？」というご相談が増えました。ただ、
-        <strong>相談する側がAIを一度も触っていないと、話が噛み合いません。</strong>
-        AIが何を間違えるかを知らないままでは、任せていい範囲の判断ができないからです。
-        そこで、<strong>相談の前に読んでもらうための教材</strong>を無料で公開しました。
-        費用はかかりません。必要なのは無料のAIサービスひとつと、数時間です。
-      </p>
-
-      <ul class="featured-points">
-        <li>
-          <b>段階0 ── AIの当たり外れがわかる</b>
-          <span>まずAIにわざと間違えてもらう演習から始めます。そのうえで自院の業務を「任せていい／絶対に渡さない」に仕分けします。医療で使うなら、ここを飛ばすと事故になります。</span>
-        </li>
-        <li>
-          <b>段階1 ── 毎日の仕事をAIと回せる</b>
-          <span>患者さん向けの説明文、院内掲示、求人原稿、議事録。実務でそのまま使える頼み方を、悪い例と良い例を並べて載せています。コピーしてすぐ試せます。</span>
-        </li>
-        <li>
-          <b>段階2 ── 指示書が書ける</b>
-          <span>毎回ゼロから説明するのをやめて、使い回せる1枚にまとめます。ここを越えると「AIを使う人」から「AIに仕事を渡せる人」に変わります。</span>
-        </li>
-      </ul>
-
-      <p class="featured-who">
-        全8段階のうち、0〜2を公開しています。<strong>運営の判断ができるようになるのは段階2まで。</strong>
-        多くの院にとって必要なのはここまでで、それ以上は1院に1人いれば足ります。<br>
-        院長・事務長 ／ 開業準備中の方 ／ 院内のDX担当者 ／ 何から手を付けるか決めかねている方
-      </p>
-
-      <div class="featured-actions">
-        <a class="featured-cta" href="https://stvisualrevolution-sys.github.io/clinic-ai-guide/">教材を読む（無料） <span aria-hidden="true">→</span></a>
-        <span class="featured-price">全編無料 ／ 登録不要 ／ 院内研修にそのまま使っていただいて構いません</span>
-      </div>
     </section>
 
     <!-- ══ 医療・臨床 ══════════════════════════ -->
@@ -1423,6 +1358,21 @@
     <p>ここに並んでいるものは、どれも「自院の一番めんどくさい作業」から始まっています。要件が固まっていない、そもそも何から手を付けるか分からない——その段階からご相談ください。医療現場の言葉がそのまま通じます。</p>
     <p>新規開発のご依頼、既存システムの改修、単発の相談・壁打ち、講演や執筆まで。</p>
     <a class="cta-link" href="contact.html">仕事の相談をする <span aria-hidden="true">→</span></a>
+  </section>
+
+  <!-- ══ そのほかの提供サービス（控えめな一行表記） ══ -->
+  <section class="services-min" aria-labelledby="services-min-title">
+    <h2 id="services-min-title">そのほかの提供サービス</h2>
+    <ul>
+      <li>
+        <a href="clinic-ai-pack.html">クリニックAI化パック</a>
+        <span>院内AI導入の設計・研修・伴走（初期 298,000円 税別）</span>
+      </li>
+      <li>
+        <a href="https://drreply.jp" target="_blank" rel="noopener">Dr. Reply</a>
+        <span>返信相手をAIが選ぶ承認型のX運用支援（月額 5,478円 税込〜）</span>
+      </li>
+    </ul>
   </section>
 
   <footer class="note">
