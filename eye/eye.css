@@ -1,0 +1,83 @@
+/* ─────────────────────────────────────────────
+   眼科の入口ページ（eye/index.html）だけで使う追加の見た目
+
+   土台は ../assets/article.css（色・字体・余白の決まり）。
+   ここには、このページにしかない部品だけを書く。
+   色はすべて article.css の変数（--cobalt など）を使うので、
+   ライト／ダークの切り替えにそのまま追従する。
+   ───────────────────────────────────────────── */
+
+/* ── 道しるべ（トップ › 眼科） ───────────────── */
+
+.trail {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .2em .5em;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--f-data);
+  font-size: .72rem;
+  letter-spacing: .06em;
+  color: var(--slate);
+}
+.trail li { display: inline-flex; align-items: center; gap: .5em; min-width: 0; }
+.trail li + li::before { content: "›"; color: var(--rule); }
+.trail a { color: var(--slate); text-decoration: none; transition: color .15s; }
+.trail a:hover { color: var(--cobalt); }
+.trail a:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+.trail [aria-current] { color: var(--ink-soft); }
+
+/* ── 記事のカード ───────────────────────────── */
+
+.eye-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+  gap: var(--s5);
+  padding: 0 0 var(--s6);
+}
+
+.eye-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+  min-width: 0;
+  padding: var(--s5);
+  border: 1px solid var(--rule);
+  background: var(--ground);
+  transition: border-color .15s, background .15s;
+}
+.eye-card:hover { border-color: var(--cobalt); background: var(--ground-sub); }
+
+.eye-card .card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s2) var(--s3);
+}
+
+.eye-card h3 {
+  font-family: var(--f-display);
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.45;
+  letter-spacing: .02em;
+  margin: 0;
+}
+
+.eye-card p {
+  font-size: .9rem;
+  line-height: 1.85;
+  color: var(--ink-soft);
+  margin: 0;
+  flex: 1;
+}
+
+.eye-card .entry-link { margin-top: var(--s2); }
+
+/* ── 狭い画面 ─────────────────────────────── */
+
+@media (max-width: 40rem) {
+  .eye-card { padding: var(--s4); }
+}

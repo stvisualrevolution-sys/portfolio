@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>目のはなし（眼科） — 医療 × AI 実装事例</title>
+<meta name="description" content="眼科医が、目の病気をやさしく解説する場所です。患者さんやご家族に向けて、学会のガイドラインや研究をもとにまとめた解説ページを並べています。">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://stvisualrevolution-sys.github.io/portfolio/eye/">
+<meta property="og:site_name" content="医療 × AI 実装事例">
+<meta property="og:title" content="目のはなし（眼科） — 医療 × AI 実装事例">
+<meta property="og:description" content="眼科医が、目の病気をやさしく解説する場所です。患者さんやご家族に向けて、学会のガイドラインや研究をもとにまとめた解説ページを並べています。">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="目のはなし（眼科） — 医療 × AI 実装事例">
+<meta name="twitter:description" content="眼科医が、目の病気をやさしく解説する場所です。患者さんやご家族に向けて、学会のガイドラインや研究をもとにまとめた解説ページを並べています。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='13'%20fill='%230B1220'/%3E%3Cpath%20d='M7%2035h9.5l4.5-14%206.5%2027%205.5-18%203.5%205h15'%20fill='none'%20stroke='%234C7BFF'%20stroke-width='5'%20stroke-linecap='round'%20stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/article.css">
+<link rel="stylesheet" href="eye.css">
+</head>
+<body>
+
+<div class="wrap">
+
+  <header class="page-head">
+    <div class="topline">
+      <p class="eyebrow">Ophthalmology — 眼科</p>
+      <div class="top-actions">
+        <a class="back-link" href="../">← トップ</a>
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="配色を切り替える">◐ THEME</button>
+      </div>
+    </div>
+    <nav aria-label="現在の場所">
+      <ol class="trail">
+        <li><a href="../">トップ</a></li>
+        <li><span aria-current="page">眼科</span></li>
+      </ol>
+    </nav>
+    <h1 class="page-title">目のはなし</h1>
+    <p class="page-lede">眼科医が、目の病気をやさしく解説する場所です。患者さんやご家族に向けて、学会のガイドラインや研究をもとに、「わかりやすく、ただし間違いなく」を心がけてまとめています。特定の患者さんの情報は一切扱いません。</p>
+  </header>
+
+  <main>
+
+    <!-- ══ 解説の一覧（新しい順に上から並べる） ══════════
+         1本増やすときは、下の <article class="eye-card"> を
+         まるごとコピーして、いちばん上に貼り、中身を書き換えます。
+         section-head の count（件数）も忘れずに直してください。
+    ══════════════════════════════════════════════ -->
+    <section>
+      <div class="section-head">
+        <h2>解説の一覧</h2><span class="count">2</span><span class="fill"></span>
+      </div>
+
+      <div class="eye-cards">
+
+        <article class="eye-card">
+          <div class="card-meta">
+            <span class="date">2026年10月</span>
+            <span class="cat">患者さん向け</span>
+          </div>
+          <h3>狭隅角と急性緑内障発作</h3>
+          <p>「隅角が狭い」と言われた方とご家族へ。どんな状態か、すぐに受診してほしい症状、薬の説明書の「緑内障の人は使えない」の意味、レーザーと白内障手術による予防と治療を、やさしくまとめました。</p>
+          <a class="entry-link" href="https://angle-closure-patient-guide.vercel.app/" target="_blank" rel="noopener">解説を読む <span class="arrow">↗</span></a>
+        </article>
+
+        <article class="eye-card">
+          <div class="card-meta">
+            <span class="date">2026年8月30日</span>
+            <span class="cat">患者さん向け</span>
+          </div>
+          <h3>マンジャロと目のはなし</h3>
+          <p>GLP-1薬と目の病気NAION、最新エビデンスのやさしい解説です。</p>
+          <a class="entry-link" href="https://naion-patient-guide.vercel.app" target="_blank" rel="noopener">解説を読む <span class="arrow">↗</span></a>
+        </article>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="note">
+    <p>どの解説も一般的な情報をまとめたもので、個別の診断や治療の代わりにはなりません。気になる症状があるときは、眼科を受診してください。</p>
+    <p>↗ が付いているものは、別のサイトで公開しているページです（新しいタブで開きます）。</p>
+    <a class="back-link" href="../">← トップへもどる</a>
+  </footer>
+
+</div>
+
+<script>
+  (function () {
+    var root = document.documentElement;
+    var btn  = document.getElementById('themeToggle');
+    var saved = null;
+    try { saved = localStorage.getItem('ledger-theme'); } catch (e) {}
+    if (saved) root.setAttribute('data-theme', saved);
+    btn.addEventListener('click', function () {
+      var cur = root.getAttribute('data-theme');
+      if (!cur) {
+        cur = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      var next = cur === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('ledger-theme', next); } catch (e) {}
+    });
+  })();
+</script>
+</body>
+</html>

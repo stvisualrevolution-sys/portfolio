@@ -1,0 +1,626 @@
+/* ─────────────────────────────────────────────
+   記事まわり共通スタイル / Articles
+   medical-ai portfolio
+
+   このファイルは articles.html と articles/ 配下の
+   記事ページが共通で読み込みます。
+   デザイントークン（色・字体・余白）は index.html と同じ値。
+   ※ index.html 側の <style> は独立しているので、
+     ここを直しても既存ページの見た目は変わりません。
+   ───────────────────────────────────────────── */
+
+/* ── デザイントークン ─────────────────────── */
+
+:root {
+  --ground:      #F4F6F8;
+  --ground-sub:  #E9EDF1;
+  --ink:         #0F1620;
+  --ink-soft:    #3C4654;
+  --slate:       #63707F;
+  --rule:        #C9D2DB;
+  --rule-soft:   #DDE4EA;
+  --cobalt:      #1A46C8;
+  --cobalt-soft: #E4EAFA;
+  --fluor:       #7A9410;
+  --amber:       #A56A00;
+
+  --f-display: "Hiragino Mincho ProN", "Yu Mincho", "YuMincho", "Songti SC", serif;
+  --f-body:    "Hiragino Sans", "Yu Gothic", "YuGothic", system-ui, -apple-system, sans-serif;
+  --f-data:    ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
+
+  --s1: .25rem;  --s2: .5rem;   --s3: .75rem;  --s4: 1rem;
+  --s5: 1.5rem;  --s6: 2.25rem; --s7: 3.5rem;  --s8: 5.5rem;
+
+  --measure: 34rem;
+  /* 長文を読ませる本文の横幅上限。1行が長すぎると行を見失うため */
+  --measure-read: 38rem;
+}
+
+/* 端末の設定がダークのとき（利用者がボタンで選んでいない場合） */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ground:      #0C1219;
+    --ground-sub:  #131C26;
+    --ink:         #E7EDF3;
+    --ink-soft:    #B4C0CD;
+    --slate:       #8593A2;
+    --rule:        #27333F;
+    --rule-soft:   #1B242E;
+    --cobalt:      #7D9CFF;
+    --cobalt-soft: #16233F;
+    --fluor:       #B9D93F;
+    --amber:       #D9A03C;
+  }
+}
+
+/* ◐ THEME ボタンで明示的に選ばれたとき（端末の設定より優先） */
+:root[data-theme="dark"] {
+  --ground:      #0C1219;
+  --ground-sub:  #131C26;
+  --ink:         #E7EDF3;
+  --ink-soft:    #B4C0CD;
+  --slate:       #8593A2;
+  --rule:        #27333F;
+  --rule-soft:   #1B242E;
+  --cobalt:      #7D9CFF;
+  --cobalt-soft: #16233F;
+  --fluor:       #B9D93F;
+  --amber:       #D9A03C;
+}
+
+:root[data-theme="light"] {
+  --ground:      #F4F6F8;
+  --ground-sub:  #E9EDF1;
+  --ink:         #0F1620;
+  --ink-soft:    #3C4654;
+  --slate:       #63707F;
+  --rule:        #C9D2DB;
+  --rule-soft:   #DDE4EA;
+  --cobalt:      #1A46C8;
+  --cobalt-soft: #E4EAFA;
+  --fluor:       #7A9410;
+  --amber:       #A56A00;
+}
+
+/* ── 土台 ─────────────────────────────────── */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 16px;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "palt" 1;
+  /* ページ全体が横に流れないための保険 */
+  overflow-x: hidden;
+}
+
+img, svg { max-width: 100%; }
+button { font: inherit; color: inherit; }
+
+.wrap {
+  max-width: 62rem;
+  margin: 0 auto;
+  padding: 0 var(--s5) var(--s8);
+}
+
+/* ── ページ頭（index.html の masthead と同じ組み） ── */
+
+.topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: var(--s3) var(--s4);
+}
+
+.top-actions { display: flex; flex-wrap: wrap; gap: var(--s3); flex-shrink: 0; }
+
+.theme-toggle, .back-link {
+  flex-shrink: 0;
+  background: var(--ground);
+  border: 1px solid var(--rule);
+  color: var(--ink-soft);
+  font-family: var(--f-data);
+  font-size: .68rem;
+  letter-spacing: .1em;
+  padding: .4rem .7rem;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  transition: border-color .15s, color .15s, background .15s;
+}
+.theme-toggle:hover, .back-link:hover { border-color: var(--cobalt); color: var(--cobalt); }
+.theme-toggle:focus-visible, .back-link:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+
+.theme-toggle.cta, .back-link.cta { border-color: var(--cobalt); color: var(--cobalt); }
+.theme-toggle.cta:hover, .back-link.cta:hover { background: var(--cobalt); color: var(--ground); }
+
+.eyebrow {
+  font-family: var(--f-data);
+  font-size: .7rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--cobalt);
+  margin: 0;
+}
+
+.page-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s5);
+  padding: var(--s7) 0 var(--s6);
+  border-bottom: 2px solid var(--ink);
+}
+
+.page-title {
+  font-family: var(--f-display);
+  font-size: clamp(1.9rem, 5vw, 2.9rem);
+  font-weight: 600;
+  letter-spacing: .04em;
+  line-height: 1.15;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.page-lede {
+  font-size: .95rem;
+  line-height: 1.9;
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: 44rem;
+}
+
+/* ── 絞り込み ─────────────────────────────── */
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  align-items: center;
+  padding: var(--s5) 0;
+  border-bottom: 1px solid var(--rule);
+  position: sticky;
+  top: 0;
+  background: var(--ground);
+  z-index: 5;
+}
+
+.filters-label {
+  font-family: var(--f-data);
+  font-size: .68rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--slate);
+  margin-right: var(--s2);
+}
+
+.chip {
+  font-family: var(--f-body);
+  font-size: .82rem;
+  color: var(--ink-soft);
+  background: transparent;
+  border: 1px solid var(--rule);
+  padding: var(--s1) var(--s3);
+  cursor: pointer;
+  transition: border-color .15s, color .15s, background .15s;
+}
+
+.chip:hover { border-color: var(--cobalt); color: var(--cobalt); }
+.chip:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+.chip[aria-pressed="true"] {
+  background: var(--cobalt);
+  border-color: var(--cobalt);
+  color: var(--ground);
+}
+
+/* ── 記事一覧 ─────────────────────────────── */
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s3);
+  padding: var(--s7) 0 var(--s4);
+}
+
+.section-head h2 {
+  font-family: var(--f-display);
+  font-size: 1.3rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  margin: 0;
+}
+
+.section-head .count {
+  font-family: var(--f-data);
+  font-size: .72rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--slate);
+}
+
+.section-head .fill {
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+
+.entry {
+  display: grid;
+  grid-template-columns: 7.5rem 1fr;
+  gap: 0 var(--s5);
+  padding: var(--s5) 0;
+  border-bottom: 1px solid var(--rule-soft);
+  transition: background .15s;
+}
+
+.entry:hover { background: var(--ground-sub); }
+
+.entry-meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s2);
+  padding-top: 4px;
+}
+
+.date {
+  font-family: var(--f-data);
+  font-size: .72rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--slate);
+  letter-spacing: .02em;
+}
+
+/* 分類の印。一覧でも記事ページでも同じ見た目にする */
+.cat {
+  align-self: flex-start;
+  font-family: var(--f-data);
+  font-size: .66rem;
+  letter-spacing: .06em;
+  color: var(--cobalt);
+  border: 1px solid var(--cobalt);
+  border-radius: 999px;
+  padding: .18em .8em;
+  white-space: nowrap;
+}
+
+.entry-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+  min-width: 0;
+}
+
+.entry-title {
+  font-family: var(--f-display);
+  font-size: 1.22rem;
+  font-weight: 600;
+  line-height: 1.4;
+  margin: 0;
+  letter-spacing: .02em;
+}
+
+.entry-sum {
+  font-size: .92rem;
+  line-height: 1.85;
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: 42rem;
+}
+
+.entry-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .4em;
+  font-family: var(--f-data);
+  font-size: .72rem;
+  letter-spacing: .03em;
+  color: var(--cobalt);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 1px;
+  align-self: flex-start;
+  transition: border-color .15s;
+}
+.entry-link:hover { border-color: var(--cobalt); }
+.entry-link:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+.entry-link .arrow { font-size: .85em; }
+
+/* 絞り込んだ結果が0件のときだけ出る案内 */
+.empty-note {
+  font-size: .88rem;
+  color: var(--slate);
+  padding: var(--s6) 0;
+  margin: 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+/* ── 記事ページ本体 ───────────────────────── */
+
+.crumb {
+  display: inline-flex;
+  align-items: center;
+  gap: .4em;
+  font-family: var(--f-data);
+  font-size: .72rem;
+  letter-spacing: .06em;
+  color: var(--slate);
+  text-decoration: none;
+  padding: var(--s6) 0 0;
+  transition: color .15s;
+}
+.crumb:hover { color: var(--cobalt); }
+.crumb:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+
+.article-head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+  padding: var(--s4) 0 var(--s6);
+  border-bottom: 2px solid var(--ink);
+  max-width: 46rem;
+}
+
+.article-head h1 {
+  font-family: var(--f-display);
+  font-size: clamp(1.75rem, 4.6vw, 2.6rem);
+  font-weight: 600;
+  letter-spacing: .03em;
+  line-height: 1.3;
+  margin: 0;
+  text-wrap: balance;
+}
+
+.article-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s3) var(--s4);
+}
+
+/* 記事の導入文（リード）。本文より少し大きく */
+.article-lede {
+  font-size: 1.02rem;
+  line-height: 1.95;
+  color: var(--ink-soft);
+  margin: 0;
+  max-width: var(--measure-read);
+}
+
+/* 本文。ここから下が読み物としての組み */
+.article-body {
+  max-width: var(--measure-read);
+  font-size: 17px;
+  line-height: 2;
+  color: var(--ink);
+  padding: var(--s6) 0 var(--s7);
+}
+
+.article-body > * { max-width: 100%; }
+
+.article-body h2 {
+  font-family: var(--f-display);
+  font-size: 1.4rem;
+  font-weight: 600;
+  letter-spacing: .04em;
+  line-height: 1.5;
+  color: var(--ink);
+  margin: var(--s7) 0 var(--s4);
+  padding-bottom: var(--s2);
+  border-bottom: 1px solid var(--rule);
+}
+
+.article-body h3 {
+  font-family: var(--f-display);
+  font-size: 1.13rem;
+  font-weight: 600;
+  letter-spacing: .03em;
+  line-height: 1.6;
+  color: var(--ink);
+  margin: var(--s6) 0 var(--s3);
+}
+
+/* 見出しが本文のいちばん上に来たときだけ余白を詰める */
+.article-body > :first-child { margin-top: 0; }
+
+.article-body p {
+  margin: 0 0 var(--s5);
+}
+
+.article-body ul,
+.article-body ol {
+  margin: 0 0 var(--s5);
+  padding-left: 1.4em;
+}
+
+.article-body li { margin-bottom: var(--s2); }
+.article-body li:last-child { margin-bottom: 0; }
+
+.article-body strong {
+  font-weight: 600;
+  color: var(--ink);
+  background: linear-gradient(transparent 62%, var(--cobalt-soft) 62%);
+}
+
+.article-body em {
+  font-style: normal;
+  color: var(--cobalt);
+}
+
+.article-body a {
+  color: var(--cobalt);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+  transition: border-color .15s;
+}
+.article-body a:hover { border-bottom-color: var(--cobalt); }
+.article-body a:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+
+.article-body blockquote {
+  margin: 0 0 var(--s5);
+  padding: var(--s3) 0 var(--s3) var(--s5);
+  border-left: 3px solid var(--cobalt);
+  color: var(--ink-soft);
+  font-size: .96rem;
+  line-height: 1.95;
+}
+.article-body blockquote p:last-child { margin-bottom: 0; }
+
+.article-body hr {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: var(--s7) 0;
+}
+
+.article-body figure {
+  margin: 0 0 var(--s5);
+}
+
+.article-body figcaption {
+  font-size: .8rem;
+  line-height: 1.8;
+  color: var(--slate);
+  margin-top: var(--s2);
+}
+
+/* 注釈。本文より一段小さく、色を落とす */
+.article-body .note-small,
+.article-body small {
+  display: block;
+  font-size: .82rem;
+  line-height: 1.85;
+  color: var(--slate);
+  margin: 0 0 var(--s5);
+}
+
+/* 補足の囲み。注意書きや「ここが大事」に使う */
+.callout {
+  background: var(--ground-sub);
+  border-left: 3px solid var(--cobalt);
+  padding: var(--s4) var(--s5);
+  margin: 0 0 var(--s5);
+  font-size: .94rem;
+  line-height: 1.9;
+  color: var(--ink-soft);
+}
+.callout p:last-child { margin-bottom: 0; }
+.callout .callout-title {
+  display: block;
+  font-family: var(--f-data);
+  font-size: .68rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--cobalt);
+  margin-bottom: var(--s2);
+}
+
+/* 表。狭い画面では、この枠の中だけを横にスクロールさせる。
+   （ページ全体が横に流れないように） */
+.table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 0 var(--s5);
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.article-body table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 28rem;
+  font-size: .9rem;
+  line-height: 1.7;
+}
+
+.article-body th,
+.article-body td {
+  text-align: left;
+  vertical-align: top;
+  padding: var(--s3) var(--s4) var(--s3) 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+
+.article-body thead th {
+  font-family: var(--f-data);
+  font-size: .7rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--slate);
+  font-weight: 400;
+  border-bottom: 1px solid var(--rule);
+  white-space: nowrap;
+}
+
+.article-body tbody tr:last-child th,
+.article-body tbody tr:last-child td { border-bottom: 0; }
+
+/* 参考文献 */
+.refs {
+  max-width: var(--measure-read);
+  padding: var(--s5) 0 0;
+  border-top: 1px solid var(--rule);
+}
+
+.refs h2 {
+  font-family: var(--f-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  margin: 0 0 var(--s3);
+}
+
+.refs ol {
+  margin: 0;
+  padding-left: 1.4em;
+  font-size: .84rem;
+  line-height: 1.9;
+  color: var(--slate);
+}
+
+.refs li { margin-bottom: var(--s2); }
+
+.refs a {
+  color: var(--ink-soft);
+  text-decoration: none;
+  border-bottom: 1px solid var(--rule);
+}
+.refs a:hover { color: var(--cobalt); border-bottom-color: var(--cobalt); }
+.refs a:focus-visible { outline: 2px solid var(--cobalt); outline-offset: 2px; }
+
+/* ── ページの締め ─────────────────────────── */
+
+.note {
+  margin-top: var(--s7);
+  padding: var(--s5) 0 0;
+  border-top: 2px solid var(--ink);
+  display: flex;
+  flex-direction: column;
+  gap: var(--s3);
+  align-items: flex-start;
+}
+
+.note p {
+  font-size: .86rem;
+  line-height: 1.9;
+  color: var(--slate);
+  margin: 0;
+  max-width: 44rem;
+}
+
+/* ── 狭い画面 ─────────────────────────────── */
+
+@media (max-width: 40rem) {
+  .entry { grid-template-columns: 1fr; gap: var(--s3); }
+  .entry-meta { flex-direction: row; align-items: center; gap: var(--s3); padding-top: 0; }
+  .filters { position: static; }
+  .article-body { font-size: 16.5px; line-height: 1.95; }
+  .article-body blockquote { padding-left: var(--s4); }
+  .callout { padding: var(--s4); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
